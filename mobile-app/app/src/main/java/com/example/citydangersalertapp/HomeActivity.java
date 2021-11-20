@@ -14,7 +14,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.citydangersalertapp.databinding.HomeActivityBinding;
-import com.example.citydangersalertapp.feature.AddDangerFragment;
+import com.example.citydangersalertapp.feature.adddanger.AddDangerFragment;
 import com.example.citydangersalertapp.feature.HomeViewModel;
 import com.example.citydangersalertapp.feature.MyReportsFragment;
 import com.example.citydangersalertapp.feature.NearbyDangersMapFragment;

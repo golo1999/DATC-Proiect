@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModel;
 
 import com.example.citydangersalertapp.HomeActivity;
+import com.example.citydangersalertapp.feature.adddanger.AddDangerFragment;
 
 public class HomeViewModel extends ViewModel {
     private final AddDangerFragment addDangerFragmentInstance = new AddDangerFragment();
