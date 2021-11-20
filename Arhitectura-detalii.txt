@@ -1,0 +1,31 @@
+Mobile App: Java => Alex, George
+Web App: React JS => Andrei, Andreea
+Server: Firebase => Andrei, George
+
+Categorii de dezastre: 
+1. Gropi 
+2. Gunoi 
+3. Vandalizare spatii publice 
+4. Pericole publice
+
+Utilizatorul alege:
+•	categoria, 
+•	locatia pe harta(API), 
+•	incarca o poza, 
+•	alege starea dezastrului: Nou(Nerezolvat)/ Rezolvat
+
+=>Pentru 3 probleme rezolvate >> scadem 2% din impozitul annual
+
+Adminul:
+•	poate vizualiza,
+•	conecta la data de baze,
+•	poate marca problemele rezolvate
+FireBase: 
+•	Nume utilizator
+•	Prenume utilizator
+•	impozit anual utilizator
+•	mail utilizator
+Implementam nivele pentru utilizatori:
+	Lvl 1 Incepator
+	Lvl 2 Intermediar
+	Lvl 3 Avansat
