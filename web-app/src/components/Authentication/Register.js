@@ -1,6 +1,6 @@
-import CustomInput from "./CustomInput";
-import CustomButton from "./CustomButton";
-import CustomText from "./CustomText";
+import CustomInput from "../CustomInput";
+import CustomButton from "../CustomButton";
+import CustomText from "../CustomText";
 
 import classes from "./Register.module.css";
 

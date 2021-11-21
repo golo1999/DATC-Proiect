@@ -12,6 +12,10 @@
   padding: 1vmax;
 }
 
+.input:hover {
+  cursor: default;
+}
+
 .input:not(input[type="checkbox"]) {
   width: 100%;
 }

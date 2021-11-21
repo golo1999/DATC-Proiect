@@ -1,20 +1,20 @@
+import { Fragment, useState } from "react";
+
+import Home from "./components/Home";
+import Login from "./components/Authentication/Login";
+import Register from "./components/Authentication/Register";
+
 import "./App.css";
-import Login from "./components/Login";
-import Register from "./components/Register";
 
-import classes from "./components/Login.module.css";
-import classes1 from "./components/Register.module.css";
+const App = () => {
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
 
-function App() {
   return (
-    // <div className={classes["login-container"]}>
-    //   <Login />
-    // </div>
-
-    <div className={classes1["register-container"]}>
-      <Register />
-    </div>
+    <Fragment>
+      {!isLoggedIn && <Login />}
+      {isLoggedIn && <Home />}
+    </Fragment>
   );
-}
+};
 
 export default App;

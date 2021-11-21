@@ -4,6 +4,7 @@ const CustomInput = (props) => {
   return (
     <div className={classes["input-container"]}>
       <input
+        autoComplete="off"
         className={classes.input}
         id={props.id}
         placeholder={props.placeholder}
