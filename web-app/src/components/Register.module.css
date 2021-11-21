@@ -1,0 +1,10 @@
+.register-container {
+  left: 50%;
+  position: absolute;
+  width: 25vw;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.form {
+}
