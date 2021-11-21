@@ -65,7 +65,7 @@ public class HomeViewModel extends ViewModel {
 
     public void onAddDangerButtonClick(@NonNull Activity parentActivity) {
         if (!(getCurrentFragment() instanceof AddDangerFragment)) {
-            ((HomeActivity) parentActivity).setFragment(getAddDangerFragmentInstance());
+            ((HomeActivity) parentActivity).setFragment(addDangerFragmentInstance);
         }
     }
 }
