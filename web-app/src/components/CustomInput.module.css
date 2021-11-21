@@ -1,0 +1,34 @@
+.input-container {
+  padding: 0.5vmax 0;
+}
+
+.input {
+  background: #adefd1;
+  border-radius: 100vmax;
+  border: 0.25vmax solid #00203f;
+  color: #00203f;
+  font-size: x-large;
+  font-weight: bold;
+  padding: 1vmax;
+}
+
+.input:not(input[type="checkbox"]) {
+  width: 100%;
+}
+
+input[type="checkbox"] {
+  border-radius: 0;
+}
+
+label {
+  padding: 0 0.5vmax;
+  color: #00203f;
+  font-size: x-large;
+  font-weight: bold;
+}
+
+.input::placeholder {
+  color: #00203f;
+  font-weight: bold;
+  font-size: x-large;
+}

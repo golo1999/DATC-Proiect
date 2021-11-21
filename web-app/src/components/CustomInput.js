@@ -1,7 +1,17 @@
-const CustomInput=(props)=>{
-    return <div>
-        <input id={props.id} type={props.type}/>
-        {props.type==="checkbox"&&<label htmlFor="check">Remember me</label>}
+import classes from "./CustomInput.module.css";
+
+const CustomInput = (props) => {
+  return (
+    <div className={classes["input-container"]}>
+      <input
+        className={classes.input}
+        id={props.id}
+        placeholder={props.placeholder}
+        type={props.type}
+      />
+      {props.type === "checkbox" && <label htmlFor="check">Remember me</label>}
     </div>
+  );
 };
- export default CustomInput;
+
+export default CustomInput;
