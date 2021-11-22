@@ -10,7 +10,7 @@
 
         <variable
             name="viewModel"
-            type="com.example.citydangersalertapp.feature.authentication.AuthenticationViewModel" />
+            type="com.example.citydangersalertapp.feature.authentication.LogInViewModel" />
 
     </data>
 
@@ -56,6 +56,7 @@
                 android:importantForAutofill="no"
                 android:inputType="textEmailAddress"
                 android:padding="10sp"
+                android:text="@={viewModel.userEmail}"
                 android:textColor="?attr/colorPrimary"
                 android:textColorHint="?attr/colorPrimary"
                 android:textSize="18sp"
@@ -74,6 +75,7 @@
                 android:importantForAutofill="no"
                 android:inputType="textPassword"
                 android:padding="10sp"
+                android:text="@={viewModel.userPassword}"
                 android:textColor="?attr/colorPrimary"
                 android:textColorHint="?attr/colorPrimary"
                 android:textSize="18sp"
@@ -97,7 +99,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="10sp"
                 android:background="@drawable/rounded_blue_button"
-                android:onClick="@{() -> viewModel.onLogInButtonClickHandler(activity)}"
+                android:onClick="@{() -> viewModel.logInHandler(activity, viewModel.userEmail, viewModel.userPassword)}"
                 android:stateListAnimator="@null"
                 android:text="Login"
                 android:textAlignment="center"
@@ -105,27 +107,17 @@
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <TextView
+                android:id="@+id/registerHereText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10sp">
-
-                <TextView
-                    android:id="@+id/registerHereText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:onClick="@{() -> viewModel.onRegisterHereClickHandler(activity)}"
-                    android:text="Register here"
-                    android:textAlignment="center"
-                    android:textColor="?attr/colorPrimary"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                android:layout_marginTop="10sp"
+                android:onClick="@{() -> viewModel.registerHandler(activity)}"
+                android:text="Register here"
+                android:textAlignment="center"
+                android:textColor="?attr/colorPrimary"
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
         </LinearLayout>
 

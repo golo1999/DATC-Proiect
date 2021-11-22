@@ -1,4 +1,4 @@
-package com.example.citydangersalertapp.feature;
+package com.example.citydangersalertapp.feature.adddanger;
 
 import android.os.Bundle;
 

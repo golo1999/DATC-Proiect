@@ -9,6 +9,17 @@ import androidx.lifecycle.ViewModel;
 import com.example.citydangersalertapp.HomeActivity;
 
 public class AuthenticationViewModel extends ViewModel {
+    private final LogInFragment logInFragmentInstance = new LogInFragment();
+    private final RegisterFragment registerFragmentInstance = new RegisterFragment();
+
+    public LogInFragment getLogInFragmentInstance() {
+        return logInFragmentInstance;
+    }
+
+    public RegisterFragment getRegisterFragmentInstance() {
+        return registerFragmentInstance;
+    }
+
     public void onLogInButtonClickHandler(@NonNull Activity currentActivity) {
 //        final Fragment mountedFragment = currentActivity.getFragmentManager().findFragmentById();
 //
@@ -23,6 +34,6 @@ public class AuthenticationViewModel extends ViewModel {
     }
 
     public void onRegisterHereClickHandler(@NonNull Activity currentActivity) {
-        ((AuthenticationActivity) currentActivity).setFragment(new RegisterFragment());
+        ((AuthenticationActivity) currentActivity).setFragment(registerFragmentInstance);
     }
 }
