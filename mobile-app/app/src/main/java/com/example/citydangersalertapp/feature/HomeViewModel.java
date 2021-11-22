@@ -11,6 +11,7 @@ import com.example.citydangersalertapp.HomeActivity;
 import com.example.citydangersalertapp.feature.addreport.AddReportFragment;
 import com.example.citydangersalertapp.feature.authentication.AuthenticationActivity;
 import com.example.citydangersalertapp.feature.myreports.MyReportsFragment;
+import com.example.citydangersalertapp.feature.nearbydangersmap.NearbyDangersMapFragment;
 
 public class HomeViewModel extends ViewModel {
     private final AddReportFragment addReportFragmentInstance = new AddReportFragment();

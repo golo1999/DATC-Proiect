@@ -1,4 +1,4 @@
-package com.example.citydangersalertapp.feature.authentication;
+package com.example.citydangersalertapp.feature.authentication.register;
 
 import android.app.Activity;
 import android.util.Patterns;
@@ -7,6 +7,8 @@ import androidx.annotation.NonNull;
 import androidx.databinding.ObservableField;
 import androidx.lifecycle.ViewModel;
 
+import com.example.citydangersalertapp.feature.authentication.AuthenticationActivity;
+import com.example.citydangersalertapp.feature.authentication.login.LogInFragment;
 import com.example.citydangersalertapp.utility.MyCustomMethods;
 
 public class RegisterViewModel extends ViewModel {

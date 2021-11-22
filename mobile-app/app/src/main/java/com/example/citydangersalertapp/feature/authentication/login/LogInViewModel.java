@@ -1,4 +1,4 @@
-package com.example.citydangersalertapp.feature.authentication;
+package com.example.citydangersalertapp.feature.authentication.login;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -9,6 +9,8 @@ import androidx.databinding.ObservableField;
 import androidx.lifecycle.ViewModel;
 
 import com.example.citydangersalertapp.HomeActivity;
+import com.example.citydangersalertapp.feature.authentication.AuthenticationActivity;
+import com.example.citydangersalertapp.feature.authentication.register.RegisterFragment;
 import com.example.citydangersalertapp.utility.MyCustomMethods;
 import com.example.citydangersalertapp.utility.MyCustomVariables;
 import com.google.android.gms.tasks.Task;
@@ -63,6 +65,8 @@ public class LogInViewModel extends ViewModel {
                         }
                     });
         }
+
+        MyCustomMethods.closeTheKeyboard(currentActivity);
     }
 
     private boolean loginIsValid(@NonNull Activity currentActivity,

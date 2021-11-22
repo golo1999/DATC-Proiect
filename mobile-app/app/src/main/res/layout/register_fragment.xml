@@ -10,7 +10,7 @@
 
         <variable
             name="viewModel"
-            type="com.example.citydangersalertapp.feature.authentication.RegisterViewModel" />
+            type="com.example.citydangersalertapp.feature.authentication.register.RegisterViewModel" />
 
     </data>
 
@@ -19,7 +19,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".feature.authentication.RegisterFragment">
+        tools:context=".feature.authentication.register.RegisterFragment">
 
         <LinearLayout
             android:id="@+id/registerCenterLayout"

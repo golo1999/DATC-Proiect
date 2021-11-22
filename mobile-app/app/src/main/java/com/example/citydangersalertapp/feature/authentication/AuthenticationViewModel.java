@@ -7,6 +7,8 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 
 import com.example.citydangersalertapp.HomeActivity;
+import com.example.citydangersalertapp.feature.authentication.login.LogInFragment;
+import com.example.citydangersalertapp.feature.authentication.register.RegisterFragment;
 
 public class AuthenticationViewModel extends ViewModel {
     private final LogInFragment logInFragmentInstance = new LogInFragment();

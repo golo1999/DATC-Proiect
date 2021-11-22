@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.citydangersalertapp.R;
 import com.example.citydangersalertapp.databinding.AuthenticationActivityBinding;
+import com.example.citydangersalertapp.feature.authentication.login.LogInFragment;
 
 public class AuthenticationActivity extends AppCompatActivity {
     private AuthenticationActivityBinding binding;

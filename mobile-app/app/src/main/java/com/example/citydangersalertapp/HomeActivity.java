@@ -3,6 +3,7 @@ package com.example.citydangersalertapp;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -15,11 +16,11 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.citydangersalertapp.databinding.HomeActivityBinding;
 import com.example.citydangersalertapp.feature.HomeViewModel;
-import com.example.citydangersalertapp.feature.myreports.MyReportsFragment;
-import com.example.citydangersalertapp.feature.NearbyDangersMapFragment;
 import com.example.citydangersalertapp.feature.ProfileFragment;
 import com.example.citydangersalertapp.feature.SettingsFragment;
 import com.example.citydangersalertapp.feature.addreport.AddReportFragment;
+import com.example.citydangersalertapp.feature.myreports.MyReportsFragment;
+import com.example.citydangersalertapp.feature.nearbydangersmap.NearbyDangersMapFragment;
 import com.google.android.material.navigation.NavigationView;
 
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -107,13 +108,16 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         drawerToggle.getDrawerArrowDrawable().setColor(Color.WHITE);
     }
 
-    public void setFragment(Fragment fragment) {
-        viewModel.setCurrentFragment(fragment);
+    public void setFragment(Fragment newFragment) {
+        viewModel.setCurrentFragment(newFragment);
 
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(binding.fragmentContainer.getId(), fragment)
+                .replace(binding.fragmentContainer.getId(), newFragment)
                 .commit();
+
+        // hiding the button if the new fragment is an instance of AddReportFragment
+        binding.addReportButton.setVisibility(newFragment instanceof AddReportFragment ? View.GONE : View.VISIBLE);
     }
 
     private void setLayoutVariables() {

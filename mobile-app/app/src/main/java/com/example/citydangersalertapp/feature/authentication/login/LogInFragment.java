@@ -1,4 +1,4 @@
-package com.example.citydangersalertapp.feature.authentication;
+package com.example.citydangersalertapp.feature.authentication.login;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.citydangersalertapp.R;
 import com.example.citydangersalertapp.databinding.LogInFragmentBinding;
+import com.example.citydangersalertapp.feature.authentication.AuthenticationActivity;
 
 public class LogInFragment extends Fragment {
     private LogInFragmentBinding binding;

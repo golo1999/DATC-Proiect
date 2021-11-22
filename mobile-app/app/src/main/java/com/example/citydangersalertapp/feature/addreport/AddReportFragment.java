@@ -12,10 +12,10 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.citydangersalertapp.HomeActivity;
 import com.example.citydangersalertapp.R;
-import com.example.citydangersalertapp.databinding.AddDangerFragmentBinding;
+import com.example.citydangersalertapp.databinding.AddReportFragmentBinding;
 
 public class AddReportFragment extends Fragment {
-    private AddDangerFragmentBinding binding;
+    private AddReportFragmentBinding binding;
     private AddReportViewModel viewModel;
 
     public AddReportFragment() {
@@ -42,7 +42,7 @@ public class AddReportFragment extends Fragment {
 
     private void setFragmentVariables(@NonNull LayoutInflater inflater,
                                       ViewGroup container) {
-        binding = DataBindingUtil.inflate(inflater, R.layout.add_danger_fragment, container, false);
+        binding = DataBindingUtil.inflate(inflater, R.layout.add_report_fragment, container, false);
         viewModel = new ViewModelProvider(requireActivity()).get(AddReportViewModel.class);
     }
 

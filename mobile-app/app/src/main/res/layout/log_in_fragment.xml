@@ -10,7 +10,7 @@
 
         <variable
             name="viewModel"
-            type="com.example.citydangersalertapp.feature.authentication.LogInViewModel" />
+            type="com.example.citydangersalertapp.feature.authentication.login.LogInViewModel" />
 
     </data>
 
