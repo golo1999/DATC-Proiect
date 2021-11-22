@@ -9,8 +9,8 @@ import androidx.databinding.ObservableField;
 import androidx.lifecycle.ViewModel;
 
 import com.example.citydangersalertapp.HomeActivity;
-import com.example.citydangersalertapp.MyCustomMethods;
-import com.example.citydangersalertapp.MyCustomVariables;
+import com.example.citydangersalertapp.utility.MyCustomMethods;
+import com.example.citydangersalertapp.utility.MyCustomVariables;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 

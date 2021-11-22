@@ -14,12 +14,12 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.citydangersalertapp.databinding.HomeActivityBinding;
-import com.example.citydangersalertapp.feature.adddanger.AddDangerFragment;
 import com.example.citydangersalertapp.feature.HomeViewModel;
-import com.example.citydangersalertapp.feature.MyReportsFragment;
+import com.example.citydangersalertapp.feature.myreports.MyReportsFragment;
 import com.example.citydangersalertapp.feature.NearbyDangersMapFragment;
 import com.example.citydangersalertapp.feature.ProfileFragment;
 import com.example.citydangersalertapp.feature.SettingsFragment;
+import com.example.citydangersalertapp.feature.addreport.AddReportFragment;
 import com.google.android.material.navigation.NavigationView;
 
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -33,7 +33,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             binding.drawer.closeDrawer(GravityCompat.START);
         }
         // if the current Fragment is AddDanger
-        else if (viewModel.getCurrentFragment() instanceof AddDangerFragment) {
+        else if (viewModel.getCurrentFragment() instanceof AddReportFragment) {
             setFragment(viewModel.getLastFragment());
         } else {
             if (viewModel.getBackPressedTime() + 2000 > System.currentTimeMillis()) {
@@ -83,7 +83,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 !(viewModel.getCurrentFragment() instanceof SettingsFragment)) {
 
         } else if (item.getItemId() == R.id.drawer_menu_log_out) {
-
+            viewModel.logOutHandler(this);
         }
 
 //        setFragment(viewModel.getCurrentFragment());

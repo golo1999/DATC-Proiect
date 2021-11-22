@@ -1,4 +1,4 @@
-package com.example.citydangersalertapp;
+package com.example.citydangersalertapp.utility;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;

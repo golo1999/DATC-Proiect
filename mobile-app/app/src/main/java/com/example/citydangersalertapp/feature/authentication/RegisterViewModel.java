@@ -7,7 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.databinding.ObservableField;
 import androidx.lifecycle.ViewModel;
 
-import com.example.citydangersalertapp.MyCustomMethods;
+import com.example.citydangersalertapp.utility.MyCustomMethods;
 
 public class RegisterViewModel extends ViewModel {
     private final ObservableField<String> userEmail = new ObservableField<>("");
@@ -75,8 +75,6 @@ public class RegisterViewModel extends ViewModel {
                                         String enteredFirstName,
                                         String enteredLastName,
                                         String enteredPIN) {
-        boolean isValid = false;
-
         // if all inputs are valid
         if (Patterns.EMAIL_ADDRESS.matcher(enteredEmail).matches() &&
                 enteredPassword.length() >= 8 &&
@@ -84,7 +82,7 @@ public class RegisterViewModel extends ViewModel {
                 nameIsValid(enteredLastName) &&
                 pinIsValid(enteredPIN)
         ) {
-            isValid = true;
+            return true;
         } else if (enteredEmail.isEmpty() &&
                 enteredPassword.isEmpty() &&
                 enteredFirstName.isEmpty() &&
@@ -106,7 +104,7 @@ public class RegisterViewModel extends ViewModel {
             MyCustomMethods.showShortMessage(currentActivity, "Please complete all the inputs");
         }
 
-        return isValid;
+        return false;
     }
 
     public void registerHandler(@NonNull Activity currentActivity,
@@ -117,8 +115,6 @@ public class RegisterViewModel extends ViewModel {
                                 String enteredPIN) {
         if (registrationIsValid(currentActivity, enteredEmail, enteredPassword, enteredFirstName, enteredLastName, enteredPIN)) {
             ((AuthenticationActivity) currentActivity).setFragment(new LogInFragment());
-        } else {
-
         }
     }
 }

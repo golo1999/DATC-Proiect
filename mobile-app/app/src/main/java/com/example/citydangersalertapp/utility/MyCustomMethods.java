@@ -1,4 +1,4 @@
-package com.example.citydangersalertapp;
+package com.example.citydangersalertapp.utility;
 
 import android.app.Activity;
 import android.content.Context;

@@ -51,7 +51,7 @@
                 android:layout_marginEnd="@dimen/fab_margin"
                 android:layout_marginBottom="@dimen/fab_margin"
                 android:backgroundTint="?attr/colorPrimary"
-                android:onClick="@{() -> viewModel.onAddDangerButtonClick(activity)}"
+                android:onClick="@{() -> viewModel.addDangerHandler(activity)}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:srcCompat="@drawable/ic_add" />

@@ -1,16 +1,19 @@
 package com.example.citydangersalertapp.feature;
 
 import android.app.Activity;
+import android.content.Intent;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModel;
 
 import com.example.citydangersalertapp.HomeActivity;
-import com.example.citydangersalertapp.feature.adddanger.AddDangerFragment;
+import com.example.citydangersalertapp.feature.addreport.AddReportFragment;
+import com.example.citydangersalertapp.feature.authentication.AuthenticationActivity;
+import com.example.citydangersalertapp.feature.myreports.MyReportsFragment;
 
 public class HomeViewModel extends ViewModel {
-    private final AddDangerFragment addDangerFragmentInstance = new AddDangerFragment();
+    private final AddReportFragment addReportFragmentInstance = new AddReportFragment();
     private final MyReportsFragment myReportsFragmentInstance = new MyReportsFragment();
     private final NearbyDangersMapFragment nearbyDangersMapFragmentInstance = new NearbyDangersMapFragment();
     private final ProfileFragment profileFragmentInstance = new ProfileFragment();
@@ -18,8 +21,8 @@ public class HomeViewModel extends ViewModel {
     private Fragment lastFragment = currentFragment;
     private long backPressedTime;
 
-    public AddDangerFragment getAddDangerFragmentInstance() {
-        return addDangerFragmentInstance;
+    public AddReportFragment getAddReportFragmentInstance() {
+        return addReportFragmentInstance;
     }
 
     public MyReportsFragment getMyReportsFragmentInstance() {
@@ -63,9 +66,15 @@ public class HomeViewModel extends ViewModel {
 
     }
 
-    public void onAddDangerButtonClick(@NonNull Activity parentActivity) {
-        if (!(getCurrentFragment() instanceof AddDangerFragment)) {
-            ((HomeActivity) parentActivity).setFragment(addDangerFragmentInstance);
+    public void addDangerHandler(@NonNull Activity parentActivity) {
+        if (!(getCurrentFragment() instanceof AddReportFragment)) {
+            ((HomeActivity) parentActivity).setFragment(addReportFragmentInstance);
         }
+    }
+
+    public void logOutHandler(@NonNull Activity parentActivity) {
+        parentActivity.startActivity(new Intent(parentActivity, AuthenticationActivity.class));
+        parentActivity.finishAffinity();
+//        parentActivity.overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
     }
 }
