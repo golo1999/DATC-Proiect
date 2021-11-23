@@ -3,6 +3,8 @@ package com.example.citydangersalertapp.feature;
 import android.app.Activity;
 import android.content.Intent;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -17,6 +19,11 @@ import com.example.citydangersalertapp.feature.addreport.AddReportFragment;
 import com.example.citydangersalertapp.feature.authentication.AuthenticationActivity;
 import com.example.citydangersalertapp.feature.myreports.MyReportsFragment;
 import com.example.citydangersalertapp.feature.nearbydangersmap.NearbyDangersMapFragment;
+import com.example.citydangersalertapp.model.UserPersonalInformation;
+import com.example.citydangersalertapp.utility.MyCustomVariables;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
 
 public class HomeViewModel extends ViewModel {
     private final AddReportFragment addReportFragmentInstance = new AddReportFragment();
@@ -79,6 +86,7 @@ public class HomeViewModel extends ViewModel {
     }
 
     public void logOutHandler(@NonNull Activity parentActivity) {
+        MyCustomVariables.getFirebaseAuth().signOut();
         parentActivity.startActivity(new Intent(parentActivity, AuthenticationActivity.class));
         parentActivity.finishAffinity();
 //        parentActivity.overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
@@ -113,5 +121,42 @@ public class HomeViewModel extends ViewModel {
         binding.drawer.closeDrawer(GravityCompat.START);
 
         return true;
+    }
+
+    public void setDrawerProfile(HomeActivityBinding binding) {
+        final View drawerHeader = binding.navigationView.getHeaderView(0);
+        final TextView drawerName = drawerHeader.findViewById(R.id.name);
+        final TextView drawerEmail = drawerHeader.findViewById(R.id.email);
+        final TextView drawerLevel = drawerHeader.findViewById(R.id.level);
+        final String currentUserId = MyCustomVariables.getFirebaseAuth().getUid();
+
+        if (currentUserId != null) {
+            MyCustomVariables.getDatabaseReference()
+                    .child("usersList")
+                    .child(currentUserId)
+                    .child("personalInformation")
+                    .addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            if (snapshot.exists()) {
+                                final UserPersonalInformation personalInformation =
+                                        snapshot.getValue(UserPersonalInformation.class);
+
+                                if (personalInformation != null) {
+                                    final String currentUserLevel = "Level " + personalInformation.getLevel();
+
+                                    drawerName.setText(personalInformation.getFirstName());
+                                    drawerEmail.setText(personalInformation.getEmail());
+                                    drawerLevel.setText(currentUserLevel);
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
+        }
     }
 }

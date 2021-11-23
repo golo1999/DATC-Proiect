@@ -5,6 +5,7 @@ public class UserPersonalInformation {
     private String email;
     private String firstName;
     private String lastName;
+    private int level = 1;
     private String pin;
     private String photoURL;
 
@@ -70,6 +71,14 @@ public class UserPersonalInformation {
         this.lastName = lastName;
     }
 
+    public int getLevel() {
+        return level;
+    }
+
+    public void setLevel(int level) {
+        this.level = level;
+    }
+
     public String getPin() {
         return pin;
     }
@@ -93,6 +102,7 @@ public class UserPersonalInformation {
                 ", email='" + email + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
+                ", level=" + level +
                 ", pin='" + pin + '\'' +
                 ", photoURL='" + photoURL + '\'' +
                 '}';

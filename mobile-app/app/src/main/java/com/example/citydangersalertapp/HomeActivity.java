@@ -15,19 +15,21 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.citydangersalertapp.databinding.HomeActivityBinding;
+import com.example.citydangersalertapp.databinding.NavigationDrawerHeaderBinding;
 import com.example.citydangersalertapp.feature.HomeViewModel;
 import com.example.citydangersalertapp.feature.addreport.AddReportFragment;
 import com.google.android.material.navigation.NavigationView;
 
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
-    private HomeActivityBinding binding;
+    private HomeActivityBinding homeActivityBinding;
+    private NavigationDrawerHeaderBinding drawerHeaderBinding;
     private HomeViewModel viewModel;
     private Toast backToast;
 
     @Override
     public void onBackPressed() {
-        if (binding != null && binding.drawer.isDrawerOpen(GravityCompat.START)) {
-            binding.drawer.closeDrawer(GravityCompat.START);
+        if (homeActivityBinding != null && homeActivityBinding.drawer.isDrawerOpen(GravityCompat.START)) {
+            homeActivityBinding.drawer.closeDrawer(GravityCompat.START);
         }
         // if the current Fragment is AddDanger
         else if (viewModel.getCurrentFragment() instanceof AddReportFragment) {
@@ -61,20 +63,23 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        return viewModel.selectNavigationItemHandler(this, item, binding);
+        return viewModel.selectNavigationItemHandler(this, item, homeActivityBinding);
     }
 
     @Override
     protected void onStart() {
         super.onStart();
         setFragment(viewModel.getCurrentFragment());
+//        viewModel.setDrawerUserProfile(homeActivityBinding.navigationView, drawerHeaderBinding);
+
+        setDrawerUserProfile();
     }
 
     private void setDrawer() {
-        final ActionBarDrawerToggle drawerToggle = new ActionBarDrawerToggle(this, binding.drawer, binding.toolbar,
+        final ActionBarDrawerToggle drawerToggle = new ActionBarDrawerToggle(this, homeActivityBinding.drawer, homeActivityBinding.toolbar,
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
 
-        binding.drawer.addDrawerListener(drawerToggle);
+        homeActivityBinding.drawer.addDrawerListener(drawerToggle);
         drawerToggle.syncState();
         drawerToggle.getDrawerArrowDrawable().setColor(Color.WHITE);
     }
@@ -84,28 +89,33 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(binding.fragmentContainer.getId(), newFragment)
+                .replace(homeActivityBinding.fragmentContainer.getId(), newFragment)
                 .commit();
 
         // hiding the button if the new fragment is an instance of AddReportFragment
-        binding.addReportButton.setVisibility(newFragment instanceof AddReportFragment ? View.GONE : View.VISIBLE);
+        homeActivityBinding.addReportButton.setVisibility(newFragment instanceof AddReportFragment ? View.GONE : View.VISIBLE);
     }
 
     private void setLayoutVariables() {
-        binding.setActivity(this);
-        binding.setViewModel(viewModel);
+        homeActivityBinding.setActivity(this);
+        homeActivityBinding.setViewModel(viewModel);
     }
 
     private void setNavigationViewItemListener() {
-        binding.navigationView.setNavigationItemSelectedListener(this);
+        homeActivityBinding.navigationView.setNavigationItemSelectedListener(this);
     }
 
     private void setToolbar() {
-        setSupportActionBar(binding.toolbar);
+        setSupportActionBar(homeActivityBinding.toolbar);
     }
 
     private void setActivityVariables() {
-        binding = DataBindingUtil.setContentView(this, R.layout.home_activity);
+        homeActivityBinding = DataBindingUtil.setContentView(this, R.layout.home_activity);
+        drawerHeaderBinding = DataBindingUtil.inflate(getLayoutInflater(), R.layout.navigation_drawer_header, homeActivityBinding.drawer, false);
         viewModel = new ViewModelProvider(this).get(HomeViewModel.class);
+    }
+
+    private void setDrawerUserProfile() {
+        viewModel.setDrawerProfile(homeActivityBinding);
     }
 }
