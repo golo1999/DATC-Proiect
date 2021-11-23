@@ -6,8 +6,11 @@ import androidx.annotation.NonNull;
 import androidx.databinding.ObservableField;
 import androidx.lifecycle.ViewModel;
 
-import com.example.citydangersalertapp.utility.MyCustomMethods;
 import com.example.citydangersalertapp.model.Report;
+import com.example.citydangersalertapp.utility.MyCustomMethods;
+import com.example.citydangersalertapp.utility.MyCustomVariables;
+
+import java.time.LocalDateTime;
 
 public class AddReportViewModel extends ViewModel {
     private final ObservableField<String> reportNote = new ObservableField<>();
@@ -21,8 +24,19 @@ public class AddReportViewModel extends ViewModel {
     }
 
     public void saveReportHandler(@NonNull Activity parentActivity) {
+        final String currentUserId = MyCustomVariables.getFirebaseAuth().getUid();
+        final String reportNote = String.valueOf(getReportNote().get()).trim().isEmpty() ? null : getReportNote().get();
+        final Report newReport = new Report(currentUserId, reportNote, LocalDateTime.now(), 0);
+
         MyCustomMethods.closeTheKeyboard(parentActivity);
 
-        final Report newReport;
+        if (currentUserId != null) {
+            MyCustomVariables.getDatabaseReference()
+                    .child("usersList")
+                    .child(currentUserId)
+                    .child("personalReports")
+                    .child(newReport.getReportId())
+                    .setValue(newReport);
+        }
     }
 }

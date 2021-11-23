@@ -37,12 +37,21 @@ public class MyReportsFragment extends Fragment {
         return binding.getRoot();
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+    }
+
     private void setFragmentVariables(LayoutInflater inflater,
                                       ViewGroup container) {
         binding = DataBindingUtil.inflate(inflater, R.layout.my_reports_fragment, container, false);
     }
 
     private void setLayoutVariables() {
+
+    }
+
+    private void setReportsList() {
 
     }
 }

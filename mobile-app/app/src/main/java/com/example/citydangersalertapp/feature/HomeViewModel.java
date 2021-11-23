@@ -30,6 +30,7 @@ public class HomeViewModel extends ViewModel {
     private final MyReportsFragment myReportsFragmentInstance = new MyReportsFragment();
     private final NearbyDangersMapFragment nearbyDangersMapFragmentInstance = new NearbyDangersMapFragment();
     private final ProfileFragment profileFragmentInstance = new ProfileFragment();
+    private final SettingsFragment settingsFragmentInstance = new SettingsFragment();
     private Fragment currentFragment = myReportsFragmentInstance;
     private Fragment lastFragment = currentFragment;
     private long backPressedTime;
@@ -48,6 +49,10 @@ public class HomeViewModel extends ViewModel {
 
     public ProfileFragment getProfileFragmentInstance() {
         return profileFragmentInstance;
+    }
+
+    public SettingsFragment getSettingsFragmentInstance() {
+        return settingsFragmentInstance;
     }
 
     public Fragment getCurrentFragment() {
@@ -113,7 +118,8 @@ public class HomeViewModel extends ViewModel {
             Toast.makeText(parentActivity, "set new fragment", Toast.LENGTH_SHORT).show();
         } else if (item.getItemId() == R.id.drawer_menu_settings &&
                 !(currentFragment instanceof SettingsFragment)) {
-
+            parentActivity.setFragment(settingsFragmentInstance);
+            Toast.makeText(parentActivity, "set new fragment", Toast.LENGTH_SHORT).show();
         } else if (item.getItemId() == R.id.drawer_menu_log_out) {
             logOutHandler(parentActivity);
         }

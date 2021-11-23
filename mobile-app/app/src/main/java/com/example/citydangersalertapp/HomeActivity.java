@@ -17,7 +17,11 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.citydangersalertapp.databinding.HomeActivityBinding;
 import com.example.citydangersalertapp.databinding.NavigationDrawerHeaderBinding;
 import com.example.citydangersalertapp.feature.HomeViewModel;
+import com.example.citydangersalertapp.feature.ProfileFragment;
+import com.example.citydangersalertapp.feature.SettingsFragment;
 import com.example.citydangersalertapp.feature.addreport.AddReportFragment;
+import com.example.citydangersalertapp.feature.myreports.MyReportsFragment;
+import com.example.citydangersalertapp.feature.nearbydangersmap.NearbyDangersMapFragment;
 import com.google.android.material.navigation.NavigationView;
 
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -55,6 +59,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setActivityVariables();
+        setToolbarTitle();
         setLayoutVariables();
         setToolbar();
         setDrawer();
@@ -70,9 +75,26 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     protected void onStart() {
         super.onStart();
         setFragment(viewModel.getCurrentFragment());
-//        viewModel.setDrawerUserProfile(homeActivityBinding.navigationView, drawerHeaderBinding);
-
         setDrawerUserProfile();
+    }
+
+    private void setToolbarTitle() {
+        if (viewModel.getCurrentFragment() instanceof AddReportFragment &&
+                !String.valueOf(homeActivityBinding.toolbar.getTitle()).trim().equals("Add report")) {
+            homeActivityBinding.toolbar.setTitle("Add report");
+        } else if (viewModel.getCurrentFragment() instanceof MyReportsFragment &&
+                !String.valueOf(homeActivityBinding.toolbar.getTitle()).trim().equals("My reports")) {
+            homeActivityBinding.toolbar.setTitle("My reports");
+        } else if (viewModel.getCurrentFragment() instanceof NearbyDangersMapFragment &&
+                !String.valueOf(homeActivityBinding.toolbar.getTitle()).trim().equals("Nearby dangers")) {
+            homeActivityBinding.toolbar.setTitle("Nearby dangers");
+        } else if (viewModel.getCurrentFragment() instanceof ProfileFragment &&
+                !String.valueOf(homeActivityBinding.toolbar.getTitle()).trim().equals("Profile")) {
+            homeActivityBinding.toolbar.setTitle("Profile");
+        } else if (viewModel.getCurrentFragment() instanceof SettingsFragment &&
+                !String.valueOf(homeActivityBinding.toolbar.getTitle()).trim().equals("Settings")) {
+            homeActivityBinding.toolbar.setTitle("Settings");
+        }
     }
 
     private void setDrawer() {
@@ -94,6 +116,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
         // hiding the button if the new fragment is an instance of AddReportFragment
         homeActivityBinding.addReportButton.setVisibility(newFragment instanceof AddReportFragment ? View.GONE : View.VISIBLE);
+        setToolbarTitle();
     }
 
     private void setLayoutVariables() {
