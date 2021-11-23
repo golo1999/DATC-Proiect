@@ -7,7 +7,7 @@ import androidx.databinding.ObservableField;
 import androidx.lifecycle.ViewModel;
 
 import com.example.citydangersalertapp.utility.MyCustomMethods;
-import com.example.citydangersalertapp.utility.Report;
+import com.example.citydangersalertapp.model.Report;
 
 public class AddReportViewModel extends ViewModel {
     private final ObservableField<String> reportNote = new ObservableField<>();

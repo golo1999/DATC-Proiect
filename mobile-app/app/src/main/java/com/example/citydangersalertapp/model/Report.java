@@ -1,4 +1,4 @@
-package com.example.citydangersalertapp.utility;
+package com.example.citydangersalertapp.model;
 
 import androidx.annotation.Nullable;
 

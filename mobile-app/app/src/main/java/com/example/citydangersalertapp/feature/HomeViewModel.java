@@ -2,12 +2,17 @@ package com.example.citydangersalertapp.feature;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.view.MenuItem;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.view.GravityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModel;
 
 import com.example.citydangersalertapp.HomeActivity;
+import com.example.citydangersalertapp.R;
+import com.example.citydangersalertapp.databinding.HomeActivityBinding;
 import com.example.citydangersalertapp.feature.addreport.AddReportFragment;
 import com.example.citydangersalertapp.feature.authentication.AuthenticationActivity;
 import com.example.citydangersalertapp.feature.myreports.MyReportsFragment;
@@ -77,5 +82,36 @@ public class HomeViewModel extends ViewModel {
         parentActivity.startActivity(new Intent(parentActivity, AuthenticationActivity.class));
         parentActivity.finishAffinity();
 //        parentActivity.overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+    }
+
+    public boolean selectNavigationItemHandler(@NonNull HomeActivity parentActivity,
+                                               @NonNull MenuItem item,
+                                               HomeActivityBinding binding) {
+        if (item.getItemId() == R.id.drawer_menu_my_reports &&
+                !(currentFragment instanceof MyReportsFragment)) {
+            // viewModel.setCurrentFragment(viewModel.getMyReportsFragmentInstance());
+
+            parentActivity.setFragment(myReportsFragmentInstance);
+            Toast.makeText(parentActivity, "set new fragment", Toast.LENGTH_SHORT).show();
+        } else if (item.getItemId() == R.id.drawer_menu_nearby_dangers &&
+                !(currentFragment instanceof NearbyDangersMapFragment)) {
+            // viewModel.setCurrentFragment(viewModel.getNearbyDangersMapFragmentInstance());
+            parentActivity.setFragment(nearbyDangersMapFragmentInstance);
+            Toast.makeText(parentActivity, "set new fragment", Toast.LENGTH_SHORT).show();
+        } else if (item.getItemId() == R.id.drawer_menu_profile &&
+                !(currentFragment instanceof ProfileFragment)) {
+            // viewModel.setCurrentFragment(viewModel.getProfileFragmentInstance());
+            parentActivity.setFragment(profileFragmentInstance);
+            Toast.makeText(parentActivity, "set new fragment", Toast.LENGTH_SHORT).show();
+        } else if (item.getItemId() == R.id.drawer_menu_settings &&
+                !(currentFragment instanceof SettingsFragment)) {
+
+        } else if (item.getItemId() == R.id.drawer_menu_log_out) {
+            logOutHandler(parentActivity);
+        }
+
+        binding.drawer.closeDrawer(GravityCompat.START);
+
+        return true;
     }
 }

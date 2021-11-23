@@ -16,11 +16,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.citydangersalertapp.databinding.HomeActivityBinding;
 import com.example.citydangersalertapp.feature.HomeViewModel;
-import com.example.citydangersalertapp.feature.ProfileFragment;
-import com.example.citydangersalertapp.feature.SettingsFragment;
 import com.example.citydangersalertapp.feature.addreport.AddReportFragment;
-import com.example.citydangersalertapp.feature.myreports.MyReportsFragment;
-import com.example.citydangersalertapp.feature.nearbydangersmap.NearbyDangersMapFragment;
 import com.google.android.material.navigation.NavigationView;
 
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -65,32 +61,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == R.id.drawer_menu_my_reports &&
-                !(viewModel.getCurrentFragment() instanceof MyReportsFragment)) {
-            // viewModel.setCurrentFragment(viewModel.getMyReportsFragmentInstance());
-            setFragment(viewModel.getMyReportsFragmentInstance());
-            Toast.makeText(this, "set new fragment", Toast.LENGTH_SHORT).show();
-        } else if (item.getItemId() == R.id.drawer_menu_nearby_dangers &&
-                !(viewModel.getCurrentFragment() instanceof NearbyDangersMapFragment)) {
-            // viewModel.setCurrentFragment(viewModel.getNearbyDangersMapFragmentInstance());
-            setFragment(viewModel.getNearbyDangersMapFragmentInstance());
-            Toast.makeText(this, "set new fragment", Toast.LENGTH_SHORT).show();
-        } else if (item.getItemId() == R.id.drawer_menu_profile &&
-                !(viewModel.getCurrentFragment() instanceof ProfileFragment)) {
-            // viewModel.setCurrentFragment(viewModel.getProfileFragmentInstance());
-            setFragment(viewModel.getProfileFragmentInstance());
-            Toast.makeText(this, "set new fragment", Toast.LENGTH_SHORT).show();
-        } else if (item.getItemId() == R.id.drawer_menu_settings &&
-                !(viewModel.getCurrentFragment() instanceof SettingsFragment)) {
-
-        } else if (item.getItemId() == R.id.drawer_menu_log_out) {
-            viewModel.logOutHandler(this);
-        }
-
-//        setFragment(viewModel.getCurrentFragment());
-        binding.drawer.closeDrawer(GravityCompat.START);
-
-        return true;
+        return viewModel.selectNavigationItemHandler(this, item, binding);
     }
 
     @Override

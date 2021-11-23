@@ -39,10 +39,10 @@ public class LogInViewModel extends ViewModel {
         if (loginIsValid(currentActivity, enteredEmail, enteredPassword)) {
             MyCustomVariables.getFirebaseAuth()
                     .signInWithEmailAndPassword(enteredEmail, enteredPassword)
-                    .addOnCompleteListener((final Task<AuthResult> task) -> {
+                    .addOnCompleteListener((final Task<AuthResult> signInTask) -> {
                         MyCustomMethods.closeTheKeyboard(currentActivity);
                         // verifying if user's email is verified if the credentials match
-                        if (task.isSuccessful()) {
+                        if (signInTask.isSuccessful()) {
                             if (MyCustomVariables.getFirebaseAuth().getCurrentUser() != null) {
                                 if (MyCustomVariables.getFirebaseAuth().getCurrentUser().isEmailVerified()) {
                                     currentActivity.finish();
@@ -56,12 +56,8 @@ public class LogInViewModel extends ViewModel {
                         }
                         // removing the entered password & showing message if the credentials don't match
                         else {
-//                            MyCustomMethods.showShortMessage(currentActivity, "Incorrect username or password");
-//
-//                            resetUserPassword();
-
-                            currentActivity.finish();
-                            currentActivity.startActivity(new Intent(currentActivity, HomeActivity.class));
+                            MyCustomMethods.showShortMessage(currentActivity, "Incorrect username or password");
+                            resetUserPassword();
                         }
                     });
         }

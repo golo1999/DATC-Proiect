@@ -1,6 +1,7 @@
 package com.example.citydangersalertapp.feature.authentication.login;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,10 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.citydangersalertapp.R;
 import com.example.citydangersalertapp.databinding.LogInFragmentBinding;
 import com.example.citydangersalertapp.feature.authentication.AuthenticationActivity;
+import com.example.citydangersalertapp.utility.MyCustomVariables;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
 
 public class LogInFragment extends Fragment {
     private LogInFragmentBinding binding;

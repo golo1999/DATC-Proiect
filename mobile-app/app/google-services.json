@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "709617444597",
-    "project_id": "citydangersalert-b80d8",
-    "storage_bucket": "citydangersalert-b80d8.appspot.com"
+    "project_number": "635555782754",
+    "project_id": "citydangersalert-c9666",
+    "storage_bucket": "citydangersalert-c9666.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:709617444597:android:db5cab89d591c451bb87bc",
+        "mobilesdk_app_id": "1:635555782754:android:fed1dbfeed54ed9e8d313b",
         "android_client_info": {
           "package_name": "com.example.citydangersalertapp"
         }
       },
       "oauth_client": [
         {
-          "client_id": "709617444597-ifbv4a5md7c3u4d67smnccodmkrqofim.apps.googleusercontent.com",
+          "client_id": "635555782754-ccfpn4tfb9kfbhg3ptiholesvecig421.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCdLg-c_esHh91zxSKIHbjMihzD0gLrmrE"
+          "current_key": "AIzaSyCwCHBfkXNQnw7yCJWJWGYxWB61272EwNo"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "709617444597-ifbv4a5md7c3u4d67smnccodmkrqofim.apps.googleusercontent.com",
+              "client_id": "635555782754-ccfpn4tfb9kfbhg3ptiholesvecig421.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
