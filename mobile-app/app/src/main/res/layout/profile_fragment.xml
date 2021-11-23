@@ -9,16 +9,120 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:paddingVertical="20sp"
+        tools:background="?attr/colorSecondary"
         tools:context=".feature.ProfileFragment">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Profile"
+        <ScrollView
+            android:layout_width="0sp"
+            android:layout_height="0sp"
+            android:fillViewport="true"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:orientation="vertical">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/photo"
+                        android:layout_width="0sp"
+                        android:layout_height="0sp"
+                        android:layout_marginBottom="20sp"
+                        app:civ_border_width="10sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintDimensionRatio="1:1"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintWidth_percent=".4"
+                        tools:src="@color/cardview_dark_background" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <EditText
+                    android:id="@+id/firstNameField"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="20sp"
+                    android:background="@drawable/ic_view_blue_border"
+                    android:hint="First name"
+                    android:inputType="textPersonName"
+                    android:padding="18sp"
+                    android:textColor="?attr/colorPrimary"
+                    android:textColorHint="?attr/colorPrimary"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    tools:text="First name" />
+
+                <EditText
+                    android:id="@+id/lastNameField"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="20sp"
+                    android:layout_marginTop="20sp"
+                    android:background="@drawable/ic_view_blue_border"
+                    android:hint="Last name"
+                    android:inputType="textPersonName"
+                    android:padding="18sp"
+                    android:textColor="?attr/colorPrimary"
+                    android:textColorHint="?attr/colorPrimary"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    tools:text="Last name" />
+
+                <EditText
+                    android:id="@+id/pinField"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="20sp"
+                    android:layout_marginTop="20sp"
+                    android:background="@drawable/ic_view_blue_border"
+                    android:hint="PIN"
+                    android:inputType="phone"
+                    android:padding="18sp"
+                    android:textColor="?attr/colorPrimary"
+                    android:textColorHint="?attr/colorPrimary"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    tools:text="PIN" />
+
+                <TextView
+                    android:id="@+id/birthDateText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="20sp"
+                    android:drawablePadding="10sp"
+                    android:textColor="?attr/colorPrimary"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    tools:text="Birth date" />
+
+                <Button
+                    android:id="@+id/updateProfileButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="20sp"
+                    android:background="@drawable/ic_view_blue_border"
+                    android:padding="18sp"
+                    android:stateListAnimator="@null"
+                    android:text="Update profile"
+                    android:textColor="?attr/colorPrimary"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+        </ScrollView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
