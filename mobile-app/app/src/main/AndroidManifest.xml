@@ -9,21 +9,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.CityDangersAlertApp.NoActionBar">
+
         <activity
             android:name=".HomeActivity"
             android:exported="false"
             android:label="" />
-        <activity
-            android:name=".feature.authentication.AuthenticationActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
         <activity
-            android:name=".MainActivity"
+            android:name=".feature.splashscreen.SplashScreenActivity"
             android:exported="true"
             android:label="">
             <intent-filter>
@@ -32,6 +25,17 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".feature.authentication.AuthenticationActivity"
+            android:exported="true"
+            android:label="" />
+
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:label="" />
+
     </application>
 
 </manifest>
