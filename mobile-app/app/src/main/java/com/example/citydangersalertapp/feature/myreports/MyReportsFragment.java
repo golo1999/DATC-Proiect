@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.example.citydangersalertapp.R;
 import com.example.citydangersalertapp.databinding.MyReportsFragmentBinding;
 import com.example.citydangersalertapp.model.Report;
-import com.example.citydangersalertapp.utility.MyCustomMethods;
 import com.example.citydangersalertapp.utility.MyCustomVariables;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -79,15 +78,30 @@ public class MyReportsFragment extends Fragment {
                     .addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            if (snapshot.exists() && snapshot.hasChild("personalReports")) {
+                            final boolean personalReportsNodeExists =
+                                    snapshot.exists() && snapshot.hasChild("personalReports");
+
+                            if (personalReportsNodeExists) {
+                                if (!reportsList.isEmpty()) {
+                                    final int currentNumberOfReports = recyclerViewAdapter.getItemCount();
+
+                                    reportsList.clear();
+                                    recyclerViewAdapter.notifyItemRangeRemoved(0, currentNumberOfReports);
+                                }
+
                                 for (final DataSnapshot personalReportsIterator : snapshot.child("personalReports").getChildren()) {
                                     final Report personalReport = personalReportsIterator.getValue(Report.class);
 
                                     if (personalReport != null) {
-                                        MyCustomMethods.showShortMessage(requireContext(), personalReport.toString());
+                                        reportsList.add(personalReport);
                                     }
                                 }
+
+                                recyclerViewAdapter.notifyItemRangeChanged(0, reportsList.size());
                             }
+
+                            binding.noReportsFoundText.setVisibility(personalReportsNodeExists ? View.GONE : View.VISIBLE);
+                            binding.recyclerView.setVisibility(personalReportsNodeExists ? View.VISIBLE : View.GONE);
                         }
 
                         @Override

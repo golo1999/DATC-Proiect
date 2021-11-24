@@ -12,8 +12,7 @@ public class Report {
     private String note;
     @Nullable
     private String photoURL;
-    private MyCustomTime customTime;
-    private LocalDateTime dateTime;
+    private MyCustomTime dateTime;
     private int category;
 
     public Report() {
@@ -23,7 +22,7 @@ public class Report {
     public Report(String userId,
                   @Nullable String note,
                   @Nullable String photoURL,
-                  LocalDateTime dateTime,
+                  MyCustomTime dateTime,
                   int category) {
         this.reportId = String.valueOf(UUID.randomUUID());
         this.userId = userId;
@@ -35,7 +34,7 @@ public class Report {
 
     public Report(String userId,
                   @Nullable String note,
-                  LocalDateTime dateTime,
+                  MyCustomTime dateTime,
                   int category) {
         this.reportId = String.valueOf(UUID.randomUUID());
         this.userId = userId;
@@ -79,11 +78,11 @@ public class Report {
         this.photoURL = photoURL;
     }
 
-    public LocalDateTime getDateTime() {
+    public MyCustomTime getDateTime() {
         return dateTime;
     }
 
-    public void setDateTime(LocalDateTime dateTime) {
+    public void setDateTime(MyCustomTime dateTime) {
         this.dateTime = dateTime;
     }
 

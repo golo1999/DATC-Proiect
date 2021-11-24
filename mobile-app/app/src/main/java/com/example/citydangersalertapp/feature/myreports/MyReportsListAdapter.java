@@ -53,7 +53,7 @@ public class MyReportsListAdapter extends RecyclerView.Adapter<MyReportsListAdap
                                  int position) {
         report = reportsList.get(position);
 
-        holder.reportCategory.setText(report.getCategory());
+        holder.reportCategory.setText(String.valueOf(report.getCategory()));
         holder.reportNote.setText(report.getNote() != null ? report.getNote() : "");
         holder.reportDate.setText("Today");
     }
