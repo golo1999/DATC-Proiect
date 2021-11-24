@@ -1,4 +1,5 @@
 import { Fragment, useState } from "react";
+import { Redirect, Route, Switch } from "react-router-dom";
 
 import Home from "./components/Home";
 import Login from "./components/Authentication/Login";
@@ -15,8 +16,34 @@ const App = () => {
   return (
     <Fragment>
       <TopBar />
-      {!isLoggedIn && <Login />}
-      {isLoggedIn && <Home />}
+      <Switch>
+        <Route exact path="/">
+          {!isLoggedIn && <Redirect to="/login" />}
+          <Home />
+        </Route>
+        <Route exact path="/login">
+          {isLoggedIn && <Redirect to="/" />}
+          <Login />
+        </Route>
+        <Route exact path="/register">
+          {isLoggedIn && <Redirect to="/" />}
+          <Register />
+        </Route>
+        <Route path="*">
+          <Redirect to="/" />
+        </Route>
+
+        {/* {!hasAccount && !isLoggedIn && (
+          <Route exact path="/register">
+            <Register />
+          </Route>
+        )}
+        {hasAccount && !isLoggedIn && (
+          <Route exact path="login">
+            <Login />
+          </Route>
+        )} */}
+      </Switch>
     </Fragment>
   );
 };

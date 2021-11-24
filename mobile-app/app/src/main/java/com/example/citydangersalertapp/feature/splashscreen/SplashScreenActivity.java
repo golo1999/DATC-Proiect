@@ -20,13 +20,11 @@ public class SplashScreenActivity extends AppCompatActivity {
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setVariables();
-//        viewModel.startSplashScreenHandler(launcher);
         startSplashScreen();
     }
 
     private void setVariables() {
         binding = DataBindingUtil.setContentView(this, R.layout.splash_screen_activity);
-//        viewModel = new ViewModelProvider(this).get(SplashScreenViewModel.class);
     }
 
     private void startSplashScreen() {
@@ -34,6 +32,7 @@ public class SplashScreenActivity extends AppCompatActivity {
     }
 
     public class LogoLauncher extends Thread {
+        private final boolean userIsAuthenticated = MyCustomVariables.getFirebaseAuth().getCurrentUser() != null;
 
         public void run() {
             try {
@@ -41,51 +40,6 @@ public class SplashScreenActivity extends AppCompatActivity {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             } finally {
-                final boolean userIsAuthenticated = MyCustomVariables.getFirebaseAuth().getCurrentUser() != null;
-
-//                if (MyCustomVariables.getFirebaseAuth().getCurrentUser() != null &&
-//                        MyCustomVariables.getFirebaseAuth().getUid() != null) {
-//                    MyCustomVariables.getDatabaseReference()
-//                            .child(MyCustomVariables.getFirebaseAuth().getUid())
-//                            .addListenerForSingleValueEvent(new ValueEventListener() {
-//                                @Override
-//                                public void onDataChange(final @NonNull DataSnapshot snapshot) {
-//                                    if (snapshot.exists() &&
-//                                            snapshot.hasChild("ApplicationSettings") &&
-//                                            snapshot.hasChild("PersonalInformation")) {
-//                                        final ApplicationSettings applicationSettings = snapshot
-//                                                .child("ApplicationSettings")
-//                                                .getValue(ApplicationSettings.class);
-//                                        final PersonalInformation personalInformation = snapshot
-//                                                .child("PersonalInformation")
-//                                                .getValue(PersonalInformation.class);
-//
-//                                        if (applicationSettings != null &&
-//                                                personalInformation != null) {
-//                                            final UserDetails details =
-//                                                    new UserDetails(applicationSettings, personalInformation);
-//
-//                                            if (!userDetailsAlreadyExistInSharedPreferences(details)) {
-//                                                saveUserDetailsToSharedPreferences(details);
-//                                            }
-//
-//                                            if (retrieveUserDetailsFromSharedPreferences() != null) {
-//                                                final UserDetails userDetails =
-//                                                        retrieveUserDetailsFromSharedPreferences();
-//
-//                                                MyCustomVariables.setUserDetails(userDetails);
-//                                            }
-//                                        }
-//                                    }
-//                                }
-//
-//                                @Override
-//                                public void onCancelled(final @NonNull DatabaseError error) {
-//
-//                                }
-//                            });
-//                }
-
                 MyCustomMethods.goToActivityWithoutTransition(SplashScreenActivity.this,
                         userIsAuthenticated ? HomeActivity.class : AuthenticationActivity.class);
             }

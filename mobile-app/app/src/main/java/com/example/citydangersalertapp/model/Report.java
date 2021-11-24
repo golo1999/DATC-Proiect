@@ -12,8 +12,13 @@ public class Report {
     private String note;
     @Nullable
     private String photoURL;
+    private MyCustomTime customTime;
     private LocalDateTime dateTime;
     private int category;
+
+    public Report() {
+        // Required empty public constructor
+    }
 
     public Report(String userId,
                   @Nullable String note,
@@ -38,7 +43,6 @@ public class Report {
         this.dateTime = dateTime;
         this.category = category;
     }
-
 
 
     public String getReportId() {
