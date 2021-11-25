@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.citydangersalertapp.R;
 import com.example.citydangersalertapp.model.Report;
+import com.example.citydangersalertapp.utility.MyCustomMethods;
 
 import java.util.ArrayList;
 
@@ -55,7 +56,7 @@ public class MyReportsListAdapter extends RecyclerView.Adapter<MyReportsListAdap
 
         holder.reportCategory.setText(String.valueOf(report.getCategory()));
         holder.reportNote.setText(report.getNote() != null ? report.getNote() : "");
-        holder.reportDate.setText("Today");
+        holder.reportDate.setText(report.getDateTime().toString());
     }
 
     @Override
@@ -93,6 +94,7 @@ public class MyReportsListAdapter extends RecyclerView.Adapter<MyReportsListAdap
             this.fragmentManager = fragmentManager;
 
             setVariables(itemView);
+            setOnClickListeners();
         }
 
         private void setVariables(final View v) {
@@ -102,6 +104,44 @@ public class MyReportsListAdapter extends RecyclerView.Adapter<MyReportsListAdap
             reportEdit = v.findViewById(R.id.editReport);
             reportDelete = v.findViewById(R.id.deleteReport);
             mainLayout = v.findViewById(R.id.mainLayout);
+        }
+
+        private void setOnClickListeners() {
+            reportEdit.setOnClickListener(view -> {
+                MyCustomMethods.showShortMessage(context, "edit report");
+
+//                if (getBindingAdapterPosition() > -1) {
+//                    // retrieving the selected transaction from the list
+//                    selectedTransaction = transactionsList.get(getBindingAdapterPosition());
+//
+//                    if (selectedTransaction != null) {
+//                        viewModel.setSelectedTransaction(selectedTransaction);
+//                        viewModel.setSelectedTransactionListPosition(getBindingAdapterPosition());
+//
+//                        if (viewModel.getEditTransactionsRecyclerViewAdapter() == null) {
+//                            final EditTransactionsRecyclerViewAdapter adapter =
+//                                    (EditTransactionsRecyclerViewAdapter) recyclerView.getAdapter();
+//
+//                            viewModel.setEditTransactionsRecyclerViewAdapter(adapter);
+//                        }
+//
+//                        ((EditTransactionsActivity) context).setEditSpecificTransactionFragment();
+//                    }
+//                }
+            });
+
+            reportDelete.setOnClickListener(view -> {
+                MyCustomMethods.showShortMessage(context, "delete report");
+
+//                final EditTransactionsRecyclerViewAdapter adapter =
+//                        (EditTransactionsRecyclerViewAdapter) recyclerView.getAdapter();
+//
+//                final int positionInList = getBindingAdapterPosition();
+//
+//                if (adapter != null && positionInList > -1) {
+//                    showTransactionDeleteDialog(transactionsList, adapter, positionInList);
+//                }
+            });
         }
     }
 }

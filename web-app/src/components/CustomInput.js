@@ -8,6 +8,7 @@ const CustomInput = (props) => {
         className={classes.input}
         id={props.id}
         placeholder={props.placeholder}
+        ref={props.reference}
         type={props.type}
       />
       {props.type === "checkbox" && <label htmlFor="check">Remember me</label>}

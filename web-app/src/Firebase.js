@@ -1,4 +1,5 @@
 import firebase from "firebase/compat/app";
+import "firebase/compat/auth";
 import "firebase/compat/database";
 
 const {
@@ -21,7 +22,12 @@ const config = {
   databaseURL: DATABASE_URL,
 };
 
-firebase.initializeApp(config);
+const app = firebase.initializeApp(config);
 
-export const auth = firebase.auth;
-export const db = firebase.database();
+export const auth = app.auth();
+
+export const db = app.database();
+
+export const provider = new firebase.auth.EmailAuthProvider();
+
+export default app;
