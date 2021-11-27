@@ -1,10 +1,13 @@
+import { set } from "firebase/database";
 import React, { useRef } from "react";
 import { useHistory } from "react-router";
 import {
   getAuth,
   createUserWithEmailAndPassword,
   sendSignInLinkToEmail,
+  signOut,
 } from "firebase/auth";
+import { db } from "../../Firebase";
 
 import CustomInput from "../CustomInput";
 import CustomButton from "../CustomButton";
@@ -23,15 +26,21 @@ const Register = () => {
 
   const lastNameRef = useRef();
 
+  const createPersonalInformationPath = (admin, personalInformation) => {
+    if (admin != null && personalInformation != null) {
+      const adminsListRef = db.ref(
+        "adminsList/" + personalInformation.id + "/personalInformation"
+      );
+
+      set(adminsListRef, personalInformation);
+    }
+  };
+
   const emailIsValid = (email) => {
     const expression =
       /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
     return expression.test(String(email).trim().toLowerCase());
-  };
-
-  const passwordIsValid = (password) => {
-    return password.length >= 8;
   };
 
   const nameIsValid = (name) => {
@@ -44,18 +53,19 @@ const Register = () => {
     return expression.test(String(name).trim());
   };
 
+  const passwordIsValid = (password) => {
+    return password.length >= 8;
+  };
+
+  const redirectToLoginPageHandler = () => {
+    history.push("/login");
+  };
+
   const registrationIsValid = (email, password, firstName, lastName) => {
     console.log(emailIsValid(email));
     console.log(passwordIsValid(password));
     console.log(nameIsValid(firstName));
     console.log(nameIsValid(lastName));
-
-    // console.log(
-    //   emailIsValid(email) &&
-    //     passwordIsValid(password) &&
-    //     nameIsValid(firstName) &&
-    //     nameIsValid(lastName)
-    // );
 
     return (
       emailIsValid(email) &&
@@ -63,10 +73,6 @@ const Register = () => {
       nameIsValid(firstName) &&
       nameIsValid(lastName)
     );
-  };
-
-  const redirectToLoginPageHandler = () => {
-    history.push("/login");
   };
 
   const registerHandler = (event) => {
@@ -88,13 +94,30 @@ const Register = () => {
       const auth = getAuth();
 
       createUserWithEmailAndPassword(auth, enteredEmail, enteredPassword)
-        .then((userCredential) => {
-          // Signed in
-          const user = userCredential.user;
+        .then((adminCredential) => {
+          // Signed up
+          const admin = adminCredential.user;
 
-          console.log(user.email);
+          const personalInformation = {
+            admin: true,
+            email: enteredEmail,
+            firstName: enteredFirstName,
+            id: admin.uid,
+            lastName: enteredLastName,
+          };
 
-          history.push("/login");
+          createPersonalInformationPath(admin, personalInformation);
+
+          signOut(auth)
+            .then(() => {
+              history.push("/login");
+            })
+            .catch((error) => {
+              const errorCode = error.code;
+              const errorMessage = error.message;
+
+              console.log(errorCode + " " + errorMessage);
+            });
         })
         .catch((error) => {
           const errorCode = error.code;

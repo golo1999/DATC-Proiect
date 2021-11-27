@@ -8,7 +8,7 @@ import androidx.databinding.ObservableField;
 import androidx.lifecycle.ViewModel;
 
 import com.example.citydangersalertapp.feature.authentication.AuthenticationActivity;
-import com.example.citydangersalertapp.feature.authentication.login.LogInFragment;
+import com.example.citydangersalertapp.feature.authentication.login.*;
 import com.example.citydangersalertapp.model.UserPersonalInformation;
 import com.example.citydangersalertapp.utility.MyCustomMethods;
 import com.example.citydangersalertapp.utility.MyCustomVariables;

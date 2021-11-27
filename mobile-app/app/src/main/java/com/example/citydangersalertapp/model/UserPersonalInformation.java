@@ -2,6 +2,7 @@ package com.example.citydangersalertapp.model;
 
 public class UserPersonalInformation {
     private String id;
+    private final boolean admin = false;
     private String email;
     private String firstName;
     private String lastName;
@@ -45,6 +46,10 @@ public class UserPersonalInformation {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public boolean isAdmin() {
+        return admin;
     }
 
     public String getEmail() {
@@ -99,6 +104,7 @@ public class UserPersonalInformation {
     public String toString() {
         return "UserPersonalInformation{" +
                 "id='" + id + '\'' +
+                ", admin=" + admin +
                 ", email='" + email + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
