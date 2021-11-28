@@ -6,6 +6,7 @@ import {
   createUserWithEmailAndPassword,
   sendSignInLinkToEmail,
   signOut,
+  sendEmailVerification,
 } from "firebase/auth";
 import { db } from "../../Firebase";
 
@@ -26,8 +27,8 @@ const Register = () => {
 
   const lastNameRef = useRef();
 
-  const createPersonalInformationPath = (admin, personalInformation) => {
-    if (admin != null && personalInformation != null) {
+  const createPersonalInformationPath = (personalInformation) => {
+    if (personalInformation != null) {
       const adminsListRef = db.ref(
         "adminsList/" + personalInformation.id + "/personalInformation"
       );
@@ -98,26 +99,45 @@ const Register = () => {
           // Signed up
           const admin = adminCredential.user;
 
-          const personalInformation = {
-            admin: true,
-            email: enteredEmail,
-            firstName: enteredFirstName,
-            id: admin.uid,
-            lastName: enteredLastName,
-          };
+          if (admin != null) {
+            const actionCodeSettings = {
+              url: "https://citydangersalert-c9666-default-rtdb.firebaseio.com/",
+            };
 
-          createPersonalInformationPath(admin, personalInformation);
+            sendEmailVerification(admin)
+              .then(() => {
+                // Email sent
 
-          signOut(auth)
-            .then(() => {
-              history.push("/login");
-            })
-            .catch((error) => {
-              const errorCode = error.code;
-              const errorMessage = error.message;
+                console.log("Email verification sent");
 
-              console.log(errorCode + " " + errorMessage);
-            });
+                const personalInformation = {
+                  admin: true,
+                  email: enteredEmail,
+                  firstName: enteredFirstName,
+                  id: admin.uid,
+                  lastName: enteredLastName,
+                };
+
+                createPersonalInformationPath(personalInformation);
+
+                signOut(auth)
+                  .then(() => {
+                    history.push("/login");
+                  })
+                  .catch((error) => {
+                    const errorCode = error.code;
+                    const errorMessage = error.message;
+
+                    console.log(errorCode + " " + errorMessage);
+                  });
+              })
+              .catch((error) => {
+                const errorCode = error.code;
+                const errorMessage = error.message;
+
+                console.log(errorCode + " " + errorMessage);
+              });
+          }
         })
         .catch((error) => {
           const errorCode = error.code;

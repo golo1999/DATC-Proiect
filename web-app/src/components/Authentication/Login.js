@@ -52,9 +52,13 @@ const Login = () => {
       .then((userCredential) => {
         const user = userCredential.user;
 
-        console.log("logged in user email: " + user.email);
+        if (user.emailVerified) {
+          console.log("logged in user email: " + user.email);
 
-        history.push("/");
+          history.push("/");
+        } else {
+          console.log("Please verify your email");
+        }
       })
       .catch((error) => {
         const errorCode = error.code;
