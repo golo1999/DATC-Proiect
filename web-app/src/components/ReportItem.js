@@ -1,11 +1,18 @@
-import React from "react";
+import { set } from "firebase/database";
+import React, { useState } from "react";
 
-import { Card } from "react-bootstrap";
+import { Button, Card, Modal } from "react-bootstrap";
 import { FaAngleRight, FaCheck } from "react-icons/fa";
+
+import { db } from "../Firebase";
 
 import classes from "./ReportItem.module.css";
 
 const ReportItem = (props) => {
+  const [modalIsVisible, setModalIsVisible] = useState(false);
+
+  const [modalMessage, setModalMessage] = useState("");
+
   const report = props.report;
 
   const reportDateTime = report.dateTime;
@@ -32,15 +39,76 @@ const ReportItem = (props) => {
       : reportDateTime.second);
 
   const checkReportHandler = () => {
-    alert("check report clicked");
+    showModalHandler();
   };
 
   const checkReportDetailsHandler = () => {
     alert("check report details clicked " + report.reportId);
   };
 
+  const closeModalHandler = () => {
+    setModalMessage("");
+    setModalIsVisible(false);
+  };
+
+  const modifyReportStatusHandler = () => {
+    const userReportRef = db.ref(
+      "usersList/" + report.userId + "/personalReports/" + report.reportId
+    );
+
+    const dateTime = {
+      day: reportDateTime.day,
+      dayName: reportDateTime.dayName,
+      hour: reportDateTime.hour,
+      minute: reportDateTime.minute,
+      month: reportDateTime.month,
+      monthName: reportDateTime.monthName,
+      second: reportDateTime.second,
+      year: reportDateTime.year,
+    };
+
+    const editedReport = {
+      category: report.category,
+      checkedStatus: !report.checkedStatus,
+      dateTime,
+      note: report.note ? report.note : null,
+      reportId: report.reportId,
+      userId: report.userId,
+    };
+
+    set(userReportRef, editedReport);
+
+    closeModalHandler();
+  };
+
+  const showModalHandler = () => {
+    const action = report.checkedStatus ? "unsolved" : "solved";
+
+    setModalMessage(
+      "Are you sure you want to mark the report as " + action + "?"
+    );
+    setModalIsVisible(true);
+  };
+
   return (
     <li>
+      <Modal
+        className={classes.modal}
+        show={modalIsVisible}
+        onHide={closeModalHandler}
+      >
+        <Modal.Header className={classes["modal-header"]} closeButton>
+          <Modal.Title>{modalMessage}</Modal.Title>
+        </Modal.Header>
+        <Modal.Footer className={classes["modal-footer"]}>
+          <Button variant="secondary" onClick={closeModalHandler}>
+            Close
+          </Button>
+          <Button variant="primary" onClick={modifyReportStatusHandler}>
+            Save
+          </Button>
+        </Modal.Footer>
+      </Modal>
       <Card className={classes.card}>
         <Card.Body className={classes["card-body"]}>
           <div className={classes["report-category-container"]}>
