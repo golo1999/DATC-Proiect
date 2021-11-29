@@ -7,6 +7,8 @@ const AllUsers = (props) => {
   const [usersList, setUsersList] = useState([]);
 
   const fetchAllUsers = async () => {
+    const array = [];
+
     const db = getDatabase();
 
     const usersListRef = ref(db, "usersList");
@@ -16,13 +18,25 @@ const AllUsers = (props) => {
 
       const usersList = Object.values(data);
 
-      console.log(usersList);
+      usersList.forEach((user) => {
+        array.push(user);
+      });
     });
+
+    return array;
   };
 
   useEffect(() => {
-    fetchAllUsers();
+    const array = fetchAllUsers();
+
+    array.then((result) => {
+      setUsersList(result);
+    });
+
+    return array;
   }, []);
+
+  console.log(usersList);
 
   return <div>All users</div>;
 };

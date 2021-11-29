@@ -1,0 +1,8 @@
+.container {
+}
+
+ul {
+  box-sizing: border-box;
+  margin: 0 !important;
+  padding: 1vmax 0 !important;
+}

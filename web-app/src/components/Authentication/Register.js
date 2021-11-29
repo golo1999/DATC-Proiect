@@ -100,10 +100,6 @@ const Register = () => {
           const admin = adminCredential.user;
 
           if (admin != null) {
-            const actionCodeSettings = {
-              url: "https://citydangersalert-c9666-default-rtdb.firebaseio.com/",
-            };
-
             sendEmailVerification(admin)
               .then(() => {
                 // Email sent

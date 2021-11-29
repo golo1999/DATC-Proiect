@@ -1,0 +1,45 @@
+.container {
+  display: flex;
+}
+
+.card {
+  background: #00203f !important;
+}
+
+.card-body {
+  display: flex;
+}
+
+.report-category-container {
+  flex: 1;
+}
+
+.report-date-time-container {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.icons-container {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.report-status-icon {
+}
+
+.report-status-icon-unchecked {
+  color: red;
+}
+
+li {
+  background: #00203f;
+  border-radius: 15px;
+  color: #adefd1;
+  list-style-type: none;
+  margin: 2vmax !important;
+  max-width: 80vw;
+}

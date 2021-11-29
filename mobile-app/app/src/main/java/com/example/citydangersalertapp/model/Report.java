@@ -2,7 +2,6 @@ package com.example.citydangersalertapp.model;
 
 import androidx.annotation.Nullable;
 
-import java.time.LocalDateTime;
 import java.util.UUID;
 
 public class Report {
@@ -11,6 +10,7 @@ public class Report {
     @Nullable
     private String note;
     @Nullable
+    private boolean checkStatus = false;
     private String photoURL;
     private MyCustomTime dateTime;
     private int category;
@@ -94,12 +94,14 @@ public class Report {
         this.category = category;
     }
 
+
     @Override
     public String toString() {
         return "Report{" +
                 "reportId='" + reportId + '\'' +
                 ", userId='" + userId + '\'' +
                 ", note='" + note + '\'' +
+                ", checkStatus=" + checkStatus +
                 ", photoURL='" + photoURL + '\'' +
                 ", dateTime=" + dateTime +
                 ", category=" + category +
