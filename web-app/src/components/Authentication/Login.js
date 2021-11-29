@@ -1,6 +1,8 @@
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { useHistory } from "react-router";
+
+import { Alert } from "react-bootstrap";
 
 import CustomButton from "../CustomButton";
 import CustomInput from "../CustomInput";
@@ -17,29 +19,20 @@ const Login = () => {
 
   const passwordRef = useRef();
 
-  // let user = null;
+  const [errorIsVisible, setErrorIsVisible] = useState(false);
 
-  //
+  const [errorMessage, setErrorMessage] = useState("");
 
-  // console.log("before");
+  const emailIsValid = (email) => {
+    const expression =
+      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
-  // console.log(user != null ? user.uid : "no user is authenticated");
+    return expression.test(String(email).trim().toLowerCase());
+  };
 
-  // // console.log(auth.currentUser ? auth.currentUser.email : "no user");
-
-  // onAuthStateChanged(auth, (user) => {
-  //   if (user != null) {
-  //     console.log("user has been set");
-  //   } else console.log("user hasn't been set");
-
-  //   // console.log(user != null ? user.uid : "no user is authenticated");
-  // });
-
-  // console.log(user != null ? user.uid : "no user is authenticated");
-
-  // console.log("after");
-
-  //
+  const passwordIsValid = (password) => {
+    return password.length >= 8;
+  };
 
   const loginHandler = (event) => {
     event.preventDefault();
@@ -57,14 +50,34 @@ const Login = () => {
 
           history.push("/");
         } else {
-          console.log("Please verify your email");
+          setErrorIsVisible(true);
+          setErrorMessage("Please verify your email");
         }
       })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
+      .catch(() => {
+        let errMsg = "";
 
-        console.log(errorCode + " " + errorMessage);
+        if (enteredEmail.length === 0 && enteredPassword.length === 0) {
+          errMsg = "Email and password should not be empty";
+        } else if (enteredEmail.length === 0) {
+          errMsg = "Email should not be empty";
+        } else if (enteredPassword.length === 0) {
+          errMsg = "Password should not be empty";
+        } else if (
+          !emailIsValid(enteredEmail) &&
+          !passwordIsValid(enteredPassword)
+        ) {
+          errMsg = "Email and password are not valid";
+        } else if (!emailIsValid(enteredEmail)) {
+          errMsg = "Email is not valid";
+        } else if (!passwordIsValid(enteredPassword)) {
+          errMsg = "Password should have at least 8 characters";
+        } else {
+          errMsg = "Incorrect username or password";
+        }
+
+        setErrorIsVisible(true);
+        setErrorMessage(errMsg);
       });
   };
 
@@ -74,6 +87,15 @@ const Login = () => {
 
   return (
     <form className={classes.form}>
+      {errorIsVisible && (
+        <Alert
+          variant="danger"
+          onClose={() => setErrorIsVisible(false)}
+          dismissible
+        >
+          <Alert.Heading>{errorMessage}</Alert.Heading>
+        </Alert>
+      )}
       <CustomInput
         id="email"
         placeholder="Email"
