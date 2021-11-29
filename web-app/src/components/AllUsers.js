@@ -1,6 +1,8 @@
 import { getDatabase, ref, onValue } from "firebase/database";
 import { useEffect, useState } from "react";
 
+import UserItem from "./UserItem";
+
 import classes from "./AllUsers.module.css";
 
 const AllUsers = (props) => {
@@ -38,7 +40,15 @@ const AllUsers = (props) => {
 
   console.log(usersList);
 
-  return <div>All users</div>;
+  return (
+    <div className={classes.container}>
+      <ul>
+        {usersList.map((user, index) => (
+          <UserItem key={`user` + index} user={user} />
+        ))}
+      </ul>
+    </div>
+  );
 };
 
 export default AllUsers;

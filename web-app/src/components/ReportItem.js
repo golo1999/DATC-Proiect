@@ -10,8 +10,6 @@ const ReportItem = (props) => {
 
   const reportDateTime = report.dateTime;
 
-  console.log(reportDateTime);
-
   const reportParsedDateTime =
     (reportDateTime.day < 10 ? "0" + reportDateTime.day : reportDateTime.day) +
     "/" +
