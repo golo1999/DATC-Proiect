@@ -34,4 +34,5 @@ li {
   color: #adefd1;
   list-style-type: none;
   margin: 2vmax !important;
+  max-width: 65vw;
 }

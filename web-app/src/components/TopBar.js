@@ -50,20 +50,8 @@ const TopBar = (props) => {
             <Nav.Link onClick={redirectToUsersPageHandler}>Users</Nav.Link>
           </Nav>
           <Nav>
-            <NavDropdown
-              title="Profile"
-              id="collasible-nav-dropdown"
-              menuVariant="dark"
-            >
-              <NavDropdown.Item onClick={redirectToProfilePageHandler}>
-                Profile
-              </NavDropdown.Item>
-              <NavDropdown.Item href="#action/3.2">Settings</NavDropdown.Item>
-              <NavDropdown.Divider />
-              <NavDropdown.Item onClick={logoutHandler}>
-                Log out
-              </NavDropdown.Item>
-            </NavDropdown>
+          <Nav.Link onClick={redirectToProfilePageHandler}>Profile</Nav.Link>
+          <Nav.Link onClick={logoutHandler}>Log out</Nav.Link>
           </Nav>
         </Navbar.Collapse>
       </Container>
