@@ -141,9 +141,13 @@ const TopBar = (props) => {
               <Nav.Link
                 active={reportsLinkIsActive}
                 className={
-                  reportsLinkIsActive
+                  navbarIsExpanded && reportsLinkIsActive
                     ? classes["nav-link-active"]
-                    : classes["nav-link"]
+                    : navbarIsExpanded && !reportsLinkIsActive
+                    ? classes["nav-link"]
+                    : !navbarIsExpanded && reportsLinkIsActive
+                    ? classes["nav-link-active-centered"]
+                    : classes["nav-link-centered"]
                 }
                 onClick={redirectToReportsPageHandler}
               >
@@ -152,9 +156,13 @@ const TopBar = (props) => {
               <Nav.Link
                 active={usersLinkIsActive}
                 className={
-                  usersLinkIsActive
+                  navbarIsExpanded && usersLinkIsActive
                     ? classes["nav-link-active"]
-                    : classes["nav-link"]
+                    : navbarIsExpanded && !usersLinkIsActive
+                    ? classes["nav-link"]
+                    : !navbarIsExpanded && usersLinkIsActive
+                    ? classes["nav-link-active-centered"]
+                    : classes["nav-link-centered"]
                 }
                 onClick={redirectToUsersPageHandler}
               >
@@ -166,9 +174,13 @@ const TopBar = (props) => {
               <Nav.Link
                 active={profileLinkIsActive}
                 className={
-                  profileLinkIsActive
+                  navbarIsExpanded && profileLinkIsActive
                     ? classes["nav-link-active"]
-                    : classes["nav-link"]
+                    : navbarIsExpanded && !profileLinkIsActive
+                    ? classes["nav-link"]
+                    : !navbarIsExpanded && profileLinkIsActive
+                    ? classes["nav-link-active-centered"]
+                    : classes["nav-link-centered"]
                 }
                 onClick={redirectToProfilePageHandler}
               >
@@ -177,7 +189,14 @@ const TopBar = (props) => {
                 )}
                 {navbarIsExpanded && <Profile />}
               </Nav.Link>
-              <Nav.Link className={classes["nav-link"]} onClick={logoutHandler}>
+              <Nav.Link
+                className={
+                  navbarIsExpanded
+                    ? classes["nav-link"]
+                    : classes["nav-link-centered"]
+                }
+                onClick={logoutHandler}
+              >
                 Log out
               </Nav.Link>
             </Nav>
