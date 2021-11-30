@@ -9,11 +9,13 @@ import { db } from "../Firebase";
 import classes from "./ReportItem.module.css";
 
 const ReportItem = (props) => {
+  const report = props.report;
+
   const [modalIsVisible, setModalIsVisible] = useState(false);
 
   const [modalMessage, setModalMessage] = useState("");
 
-  const report = props.report;
+  const [isChecked, setIsChecked] = useState(report.checkedStatus);
 
   const reportDateTime = report.dateTime;
 
@@ -69,7 +71,7 @@ const ReportItem = (props) => {
 
     const editedReport = {
       category: report.category,
-      checkedStatus: !report.checkedStatus,
+      checkedStatus: !isChecked,
       dateTime,
       note: report.note ? report.note : null,
       reportId: report.reportId,
@@ -77,12 +79,13 @@ const ReportItem = (props) => {
     };
 
     set(userReportRef, editedReport);
+    setIsChecked((previousValue) => !previousValue);
 
     closeModalHandler();
   };
 
   const showModalHandler = () => {
-    const action = report.checkedStatus ? "unsolved" : "solved";
+    const action = isChecked ? "unsolved" : "solved";
 
     setModalMessage(
       "Are you sure you want to mark the report as " + action + "?"
@@ -104,7 +107,7 @@ const ReportItem = (props) => {
           <Button variant="secondary" onClick={closeModalHandler}>
             Close
           </Button>
-          <Button variant="primary" onClick={modifyReportStatusHandler}>
+          <Button variant="dark" onClick={modifyReportStatusHandler}>
             Save
           </Button>
         </Modal.Footer>
@@ -120,13 +123,16 @@ const ReportItem = (props) => {
           <div className={classes["icons-container"]}>
             <FaCheck
               className={
-                report.checkedStatus
+                isChecked
                   ? classes["report-status-icon"]
                   : classes["report-status-icon-unchecked"]
               }
               onClick={checkReportHandler}
             />
-            <FaAngleRight onClick={checkReportDetailsHandler} />
+            <FaAngleRight
+              className={classes["report-details-icon"]}
+              onClick={checkReportDetailsHandler}
+            />
           </div>
         </Card.Body>
       </Card>

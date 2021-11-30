@@ -4,7 +4,6 @@ import { useHistory } from "react-router";
 import {
   getAuth,
   createUserWithEmailAndPassword,
-  sendSignInLinkToEmail,
   signOut,
   sendEmailVerification,
 } from "firebase/auth";
@@ -63,11 +62,6 @@ const Register = () => {
   };
 
   const registrationIsValid = (email, password, firstName, lastName) => {
-    console.log(emailIsValid(email));
-    console.log(passwordIsValid(password));
-    console.log(nameIsValid(firstName));
-    console.log(nameIsValid(lastName));
-
     return (
       emailIsValid(email) &&
       passwordIsValid(password) &&

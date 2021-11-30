@@ -25,6 +25,9 @@
 
 .report-category-container {
   flex: 1;
+  font-size: x-large;
+  display: flex;
+  align-items: center;
 }
 
 .report-date-time-container {
@@ -32,6 +35,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  font-size: x-large;
 }
 
 .icons-container {
@@ -41,11 +45,21 @@
   justify-content: flex-end;
 }
 
+.report-status-icon,
+.report-status-icon-unchecked {
+  font-size: xx-large;
+  margin: 0 0.5vmax;
+}
+
 .report-status-icon {
 }
 
 .report-status-icon-unchecked {
   color: tomato;
+}
+
+.report-details-icon {
+  font-size: xx-large;
 }
 
 li {

@@ -1,5 +1,6 @@
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { useRef, useState } from "react";
+import { useDispatch } from "react-redux";
 import { useHistory } from "react-router";
 
 import { Alert } from "react-bootstrap";
@@ -9,9 +10,12 @@ import CustomInput from "../CustomInput";
 import CustomText from "../CustomText";
 
 import classes from "./Login.module.css";
+import { authActions } from "../../store/auth-slice";
 
 const Login = () => {
   const auth = getAuth();
+
+  const dispatch = useDispatch();
 
   const history = useHistory();
 
@@ -43,10 +47,19 @@ const Login = () => {
 
     signInWithEmailAndPassword(auth, enteredEmail, enteredPassword)
       .then((userCredential) => {
-        const user = userCredential.user;
+        const admin = userCredential.user;
 
-        if (user.emailVerified) {
-          console.log("logged in user email: " + user.email);
+        if (admin.emailVerified) {
+          dispatch(
+            authActions.authenticateAdmin({
+              authenticatedAdmin: {
+                email: admin.email,
+                firstName: "Alex",
+                lastName: "Gologan",
+                uid: admin.uid,
+              },
+            })
+          );
 
           history.push("/");
         } else {

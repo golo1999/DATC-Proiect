@@ -1,13 +1,22 @@
-// just for testing: it's not used
-
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialAuthState = {};
+const initialAuthState = { admin: null, isAuthenticated: false };
 
 const authSlice = createSlice({
   name: "auth",
   initialState: initialAuthState,
-  reducers: {},
+  reducers: {
+    authenticateAdmin: (state, action) => {
+      const newAuthenticatedAdmin = action.payload.authenticatedAdmin;
+
+      state.isAuthenticated = true;
+      state.admin = newAuthenticatedAdmin;
+    },
+    signOutAdmin: (state) => {
+      state.isAuthenticated = false;
+      state.admin = null;
+    },
+  },
 });
 
 export const authActions = authSlice.actions;

@@ -1,24 +1,17 @@
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-import { Fragment, useEffect, useState } from "react";
+import { getDatabase, ref, onValue } from "firebase/database";
+import { Fragment, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect, Route, Switch } from "react-router-dom";
 
-import { getAllReports } from "./lib/api";
-import { auth, provider } from "./Firebase";
-import {
-  setActiveUser,
-  setUserLogoutState,
-  selectUserName,
-  selectUserEmail,
-} from "./store/user-slice";
+import { authActions } from "./store/auth-slice";
 
 import AllReports from "./components/AllReports";
 import AllUsers from "./components/AllUsers";
-import Home from "./components/Home";
 import Login from "./components/Authentication/Login";
+import Profile from "./components/Profile";
 import Register from "./components/Authentication/Register";
 import TopBar from "./components/TopBar";
-import UserProfile from "./components/UserProfile";
 
 import "./App.css";
 
@@ -27,66 +20,65 @@ const App = () => {
 
   const dispatch = useDispatch();
 
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-
   useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
-      if (user != null) {
-        setIsLoggedIn((previousValue) => !previousValue);
+    onAuthStateChanged(auth, (admin) => {
+      if (admin != null) {
+        const db = getDatabase();
+
+        const personalInformationRef = ref(
+          db,
+          "adminsList/" + admin.uid + "/personalInformation"
+        );
+
+        onValue(personalInformationRef, (snapshot) => {
+          const personalInformation = snapshot.val();
+
+          dispatch(
+            authActions.authenticateAdmin({
+              authenticatedAdmin: {
+                email: admin.email,
+                firstName: personalInformation.firstName,
+                id: admin.uid,
+                lastName: personalInformation.lastName,
+              },
+            })
+          );
+        });
       }
-
-      // console.log(user != null ? user.uid : "no user is authenticated");
     });
-  }, []);
+  }, [auth, dispatch]);
 
-  const signInHandler = (email, password) => {
-    // auth
-    //   .signInWithEmailAndPassword(email, password)
-    //   .then((result) => {
-    //     dispatch(setActiveUser({ userName: "gigel", userEmail: email }));
-    //   })
-    //   .catch((err) => {});
-  };
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
 
-  const signOutHandler = () => {
-    auth
-      .signOut()
-      .then(() => {
-        dispatch(setUserLogoutState());
-      })
-      .catch((err) => {
-        alert(err.message);
-      });
-  };
+  console.log(isAuthenticated);
 
   return (
     <Fragment>
       <TopBar />
       <Switch>
         <Route exact path="/">
-          {!isLoggedIn && <Redirect to="/login" />}
-          {/* <Home /> */}
-          {isLoggedIn && <Redirect to="/reports" />}
+          {isAuthenticated && <Redirect to="/reports" />}
+          {!isAuthenticated && <Redirect to="/login" />}
         </Route>
         <Route exact path="/login">
-          {isLoggedIn && <Redirect to="/" />}
-          {!isLoggedIn && <Login />}
+          {isAuthenticated && <Redirect to="/" />}
+          {!isAuthenticated && <Login />}
         </Route>
         <Route exact path="/register">
-          {isLoggedIn && <Redirect to="/" />}
-          {!isLoggedIn && <Register />}
+          {isAuthenticated && <Redirect to="/" />}
+          {!isAuthenticated && <Register />}
         </Route>
         <Route exact path="/reports">
-          {!isLoggedIn && <Redirect to="/login" />}
-          {isLoggedIn && <AllReports />}
+          {!isAuthenticated && <Redirect to="/login" />}
+          {isAuthenticated && <AllReports />}
         </Route>
         <Route exact path="/users">
-          {!isLoggedIn && <Redirect to="/login" />}
-          {isLoggedIn && <AllUsers />}
+          {!isAuthenticated && <Redirect to="/login" />}
+          {isAuthenticated && <AllUsers />}
         </Route>
         <Route exact path="/profile">
-          {!isLoggedIn && <Redirect to="/login" />}
-          {isLoggedIn && <UserProfile />}
+          {!isAuthenticated && <Redirect to="/login" />}
+          {isAuthenticated && <Profile />}
         </Route>
         <Route exact path="/logout">
           <Redirect to="/" />
