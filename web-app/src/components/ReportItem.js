@@ -1,15 +1,28 @@
-import { set } from "firebase/database";
+import { getDatabase, ref, set } from "firebase/database";
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { useHistory } from "react-router";
+
+import { reportActions } from "../store/report-slice";
 
 import { Button, Card, Modal } from "react-bootstrap";
 import { FaAngleRight, FaCheck } from "react-icons/fa";
 
-import { db } from "../Firebase";
-
 import classes from "./ReportItem.module.css";
 
 const ReportItem = (props) => {
+  const db = getDatabase();
+
+  const dispatch = useDispatch();
+
+  const history = useHistory();
+
   const report = props.report;
+
+  const reportDetailsRef = ref(
+    db,
+    "usersList/" + report.userId + "/personalReports/" + report.reportId
+  );
 
   const [modalIsVisible, setModalIsVisible] = useState(false);
 
@@ -45,7 +58,9 @@ const ReportItem = (props) => {
   };
 
   const checkReportDetailsHandler = () => {
-    alert("check report details clicked " + report.reportId);
+    dispatch(reportActions.setSelectedReport({ selectedReport: report }));
+
+    history.push("/reports/" + report.reportId);
   };
 
   const closeModalHandler = () => {
@@ -54,10 +69,6 @@ const ReportItem = (props) => {
   };
 
   const modifyReportStatusHandler = () => {
-    const userReportRef = db.ref(
-      "usersList/" + report.userId + "/personalReports/" + report.reportId
-    );
-
     const dateTime = {
       day: reportDateTime.day,
       dayName: reportDateTime.dayName,
@@ -78,7 +89,7 @@ const ReportItem = (props) => {
       userId: report.userId,
     };
 
-    set(userReportRef, editedReport);
+    set(reportDetailsRef, editedReport);
     setIsChecked((previousValue) => !previousValue);
 
     closeModalHandler();

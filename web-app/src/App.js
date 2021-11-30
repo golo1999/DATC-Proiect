@@ -15,6 +15,8 @@ import Register from "./components/Authentication/Register";
 import TopBar from "./components/TopBar";
 
 import "./App.css";
+import UserProfile from "./components/UserProfile";
+import ReportDetails from "./components/ReportDetails";
 
 const App = () => {
   const auth = getAuth();
@@ -75,9 +77,17 @@ const App = () => {
           {!isAuthenticated && <Redirect to="/login" />}
           {isAuthenticated && <AllReports />}
         </Route>
+        <Route path="/reports/:reportId">
+          {!isAuthenticated && <Redirect to="/login" />}
+          {isAuthenticated && <ReportDetails />}
+        </Route>
         <Route exact path="/users">
           {!isAuthenticated && <Redirect to="/login" />}
           {isAuthenticated && <AllUsers />}
+        </Route>
+        <Route path="/users/:userId">
+          {!isAuthenticated && <Redirect to="/login" />}
+          {isAuthenticated && <UserProfile />}
         </Route>
         <Route exact path="/profile">
           {!isAuthenticated && <Redirect to="/login" />}

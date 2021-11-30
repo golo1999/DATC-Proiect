@@ -1,4 +1,8 @@
 import React from "react";
+import { useDispatch } from "react-redux";
+import { useHistory } from "react-router";
+
+import { userActions } from "../store/user-slice";
 
 import { Card } from "react-bootstrap";
 import { FaAngleRight } from "react-icons/fa";
@@ -6,12 +10,18 @@ import { FaAngleRight } from "react-icons/fa";
 import classes from "./UserItem.module.css";
 
 const UserItem = (props) => {
+  const dispatch = useDispatch();
+
+  const history = useHistory();
+
   const user = props.user;
 
   const userPersonalInformation = user.personalInformation;
 
   const checkUserDetailsHandler = () => {
-    alert("check user details clicked " + userPersonalInformation.id);
+    dispatch(userActions.setSelectedUser({ selectedUser: user }));
+
+    history.push("/users/" + userPersonalInformation.id);
   };
 
   return (
