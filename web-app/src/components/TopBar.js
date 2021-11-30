@@ -3,7 +3,9 @@ import { useState } from "react";
 import { Container, Nav, Navbar } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router";
+import { useLocation } from "react-router-dom";
 import { authActions } from "../store/auth-slice";
+import Profile from "./Profile";
 
 import ProfileIcon from "./ProfileIcon";
 
@@ -11,6 +13,12 @@ import classes from "./TopBar.module.css";
 
 const TopBar = (props) => {
   const dispatch = useDispatch();
+
+  const [reportsLinkIsActive, setReportsLinkIsActive] = useState(true);
+
+  const [usersLinkIsActive, setUsersLinkIsActive] = useState(false);
+
+  const [profileLinkIsActive, setProfileLinkIsActive] = useState(false);
 
   const [navbarIsExpanded, setNavbarIsExpanded] = useState(false);
 
@@ -21,6 +29,50 @@ const TopBar = (props) => {
   const auth = getAuth();
 
   const history = useHistory();
+
+  const location = useLocation();
+
+  const currentPathHandler = () => {
+    if (location.pathname === "/reports") {
+      if (!reportsLinkIsActive) {
+        setReportsLinkIsActive((prevState) => !prevState);
+      }
+
+      if (usersLinkIsActive) {
+        setUsersLinkIsActive((prevState) => !prevState);
+      }
+
+      if (profileLinkIsActive) {
+        setProfileLinkIsActive((prevState) => !prevState);
+      }
+    } else if (location.pathname === "/users") {
+      if (reportsLinkIsActive) {
+        setReportsLinkIsActive((prevState) => !prevState);
+      }
+
+      if (!usersLinkIsActive) {
+        setUsersLinkIsActive((prevState) => !prevState);
+      }
+
+      if (profileLinkIsActive) {
+        setProfileLinkIsActive((prevState) => !prevState);
+      }
+    } else if (location.pathname === "/profile") {
+      if (reportsLinkIsActive) {
+        setReportsLinkIsActive((prevState) => !prevState);
+      }
+
+      if (usersLinkIsActive) {
+        setUsersLinkIsActive((prevState) => !prevState);
+      }
+
+      if (!profileLinkIsActive) {
+        setProfileLinkIsActive((prevState) => !prevState);
+      }
+    }
+  };
+
+  currentPathHandler();
 
   const logoutHandler = () => {
     signOut(auth)
@@ -86,17 +138,48 @@ const TopBar = (props) => {
         {isAuthenticated && (
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav className="me-auto">
-              <Nav.Link onClick={redirectToReportsPageHandler}>
+              <Nav.Link
+                active={reportsLinkIsActive}
+                className={
+                  reportsLinkIsActive
+                    ? classes["nav-link-active"]
+                    : classes["nav-link"]
+                }
+                onClick={redirectToReportsPageHandler}
+              >
                 Reports
               </Nav.Link>
-              <Nav.Link onClick={redirectToUsersPageHandler}>Users</Nav.Link>
+              <Nav.Link
+                active={usersLinkIsActive}
+                className={
+                  usersLinkIsActive
+                    ? classes["nav-link-active"]
+                    : classes["nav-link"]
+                }
+                onClick={redirectToUsersPageHandler}
+              >
+                Users
+              </Nav.Link>
             </Nav>
 
             <Nav>
-              <Nav.Link onClick={redirectToProfilePageHandler}>
-                <ProfileIcon admin={authenticatedAdmin} />
+              <Nav.Link
+                active={profileLinkIsActive}
+                className={
+                  profileLinkIsActive
+                    ? classes["nav-link-active"]
+                    : classes["nav-link"]
+                }
+                onClick={redirectToProfilePageHandler}
+              >
+                {!navbarIsExpanded && (
+                  <ProfileIcon admin={authenticatedAdmin} />
+                )}
+                {navbarIsExpanded && <Profile />}
               </Nav.Link>
-              <Nav.Link onClick={logoutHandler}>Log out</Nav.Link>
+              <Nav.Link className={classes["nav-link"]} onClick={logoutHandler}>
+                Log out
+              </Nav.Link>
             </Nav>
           </Navbar.Collapse>
         )}

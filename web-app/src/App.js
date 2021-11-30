@@ -2,6 +2,7 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { getDatabase, ref, onValue } from "firebase/database";
 import { Fragment, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router";
 import { Redirect, Route, Switch } from "react-router-dom";
 
 import { authActions } from "./store/auth-slice";
@@ -19,6 +20,8 @@ const App = () => {
   const auth = getAuth();
 
   const dispatch = useDispatch();
+
+  const history = useHistory();
 
   useEffect(() => {
     onAuthStateChanged(auth, (admin) => {

@@ -28,6 +28,7 @@
   font-size: x-large;
   display: flex;
   align-items: center;
+  text-align: center;
 }
 
 .report-date-time-container {
@@ -36,6 +37,8 @@
   justify-content: center;
   align-items: center;
   font-size: x-large;
+  text-align: center;
+  margin: 0 1vmax;
 }
 
 .icons-container {

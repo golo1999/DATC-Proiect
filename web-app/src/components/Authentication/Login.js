@@ -1,4 +1,5 @@
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { getDatabase, ref, onValue } from "firebase/database";
 import { useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router";
@@ -55,16 +56,27 @@ const Login = () => {
           const admin = userCredential.user;
 
           if (admin.emailVerified) {
-            dispatch(
-              authActions.authenticateAdmin({
-                authenticatedAdmin: {
-                  email: admin.email,
-                  firstName: "Alex",
-                  lastName: "Gologan",
-                  uid: admin.uid,
-                },
-              })
+            const db = getDatabase();
+
+            const personalInformationRef = ref(
+              db,
+              "adminsList/" + admin.uid + "/personalInformation"
             );
+
+            onValue(personalInformationRef, (snapshot) => {
+              const personalInformation = snapshot.val();
+
+              dispatch(
+                authActions.authenticateAdmin({
+                  authenticatedAdmin: {
+                    email: admin.email,
+                    firstName: personalInformation.firstName,
+                    id: admin.uid,
+                    lastName: personalInformation.lastName,
+                  },
+                })
+              );
+            });
 
             history.push("/");
           } else {
