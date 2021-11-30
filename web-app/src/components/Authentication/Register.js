@@ -1,5 +1,5 @@
 import { set } from "firebase/database";
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { useHistory } from "react-router";
 import {
   getAuth,
@@ -8,6 +8,8 @@ import {
   sendEmailVerification,
 } from "firebase/auth";
 import { db } from "../../Firebase";
+
+import { Alert } from "react-bootstrap";
 
 import CustomInput from "../CustomInput";
 import CustomButton from "../CustomButton";
@@ -25,6 +27,10 @@ const Register = () => {
   const firstNameRef = useRef();
 
   const lastNameRef = useRef();
+
+  const [errorIsVisible, setErrorIsVisible] = useState(false);
+
+  const [errorMessage, setErrorMessage] = useState("");
 
   const createPersonalInformationPath = (personalInformation) => {
     if (personalInformation != null) {
@@ -97,7 +103,6 @@ const Register = () => {
             sendEmailVerification(admin)
               .then(() => {
                 // Email sent
-
                 console.log("Email verification sent");
 
                 const personalInformation = {
@@ -114,32 +119,64 @@ const Register = () => {
                   .then(() => {
                     history.push("/login");
                   })
-                  .catch((error) => {
-                    const errorCode = error.code;
-                    const errorMessage = error.message;
-
-                    console.log(errorCode + " " + errorMessage);
+                  .catch(() => {
+                    setErrorIsVisible(true);
+                    setErrorMessage("Sign out failed");
                   });
               })
-              .catch((error) => {
-                const errorCode = error.code;
-                const errorMessage = error.message;
-
-                console.log(errorCode + " " + errorMessage);
+              .catch(() => {
+                setErrorIsVisible(true);
+                setErrorMessage("Sending email verification failed");
               });
           }
         })
-        .catch((error) => {
-          const errorCode = error.code;
-          const errorMessage = error.message;
-
-          console.log(errorCode + " " + errorMessage);
+        .catch(() => {
+          setErrorIsVisible(true);
+          setErrorMessage("Registration failed");
         });
+    } else {
+      let errMsg = "";
+
+      if (
+        enteredEmail.length === 0 ||
+        enteredPassword.length === 0 ||
+        enteredFirstName.length === 0 ||
+        enteredLastName.length === 0
+      ) {
+        errMsg = "Please complete all the inputs";
+      } else if (
+        !emailIsValid(enteredEmail) &&
+        !passwordIsValid(enteredPassword) &&
+        !nameIsValid(enteredFirstName) &&
+        !nameIsValid(enteredLastName)
+      ) {
+        errMsg = "No input is valid";
+      } else if (!emailIsValid(enteredEmail)) {
+        errMsg = "Email is not valid";
+      } else if (!passwordIsValid(enteredPassword)) {
+        errMsg = "Password should have at least 8 characters";
+      } else if (!nameIsValid(enteredFirstName)) {
+        errMsg = "First name is not valid";
+      } else if (!nameIsValid(enteredLastName)) {
+        errMsg = "Last name is not valid";
+      }
+
+      setErrorIsVisible(true);
+      setErrorMessage(errMsg);
     }
   };
 
   return (
     <form className={classes.form}>
+      {errorIsVisible && (
+        <Alert
+          variant="danger"
+          onClose={() => setErrorIsVisible(false)}
+          dismissible
+        >
+          <Alert.Heading>{errorMessage}</Alert.Heading>
+        </Alert>
+      )}
       <CustomInput
         id="email"
         placeholder="Email"

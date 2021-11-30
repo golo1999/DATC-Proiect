@@ -38,6 +38,10 @@ const Login = () => {
     return password.length >= 8;
   };
 
+  const loginIsValid = (email, password) => {
+    return emailIsValid(email) && passwordIsValid(password);
+  };
+
   const loginHandler = (event) => {
     event.preventDefault();
 
@@ -45,53 +49,56 @@ const Login = () => {
 
     const enteredPassword = passwordRef.current.value;
 
-    signInWithEmailAndPassword(auth, enteredEmail, enteredPassword)
-      .then((userCredential) => {
-        const admin = userCredential.user;
+    if (loginIsValid(enteredEmail, enteredPassword)) {
+      signInWithEmailAndPassword(auth, enteredEmail, enteredPassword)
+        .then((userCredential) => {
+          const admin = userCredential.user;
 
-        if (admin.emailVerified) {
-          dispatch(
-            authActions.authenticateAdmin({
-              authenticatedAdmin: {
-                email: admin.email,
-                firstName: "Alex",
-                lastName: "Gologan",
-                uid: admin.uid,
-              },
-            })
-          );
+          if (admin.emailVerified) {
+            dispatch(
+              authActions.authenticateAdmin({
+                authenticatedAdmin: {
+                  email: admin.email,
+                  firstName: "Alex",
+                  lastName: "Gologan",
+                  uid: admin.uid,
+                },
+              })
+            );
 
-          history.push("/");
-        } else {
+            history.push("/");
+          } else {
+            setErrorIsVisible(true);
+            setErrorMessage("Please verify your email");
+          }
+        })
+        .catch(() => {
           setErrorIsVisible(true);
-          setErrorMessage("Please verify your email");
-        }
-      })
-      .catch(() => {
-        let errMsg = "";
+          setErrorMessage("Incorrect username or password");
+        });
+    } else {
+      let errMsg = "";
 
-        if (enteredEmail.length === 0 && enteredPassword.length === 0) {
-          errMsg = "Email and password should not be empty";
-        } else if (enteredEmail.length === 0) {
-          errMsg = "Email should not be empty";
-        } else if (enteredPassword.length === 0) {
-          errMsg = "Password should not be empty";
-        } else if (
-          !emailIsValid(enteredEmail) &&
-          !passwordIsValid(enteredPassword)
-        ) {
-          errMsg = "Email and password are not valid";
-        } else if (!emailIsValid(enteredEmail)) {
-          errMsg = "Email is not valid";
-        } else if (!passwordIsValid(enteredPassword)) {
-          errMsg = "Password should have at least 8 characters";
-        } else {
-          errMsg = "Incorrect username or password";
-        }
+      if (enteredEmail.length === 0 && enteredPassword.length === 0) {
+        errMsg = "Email and password should not be empty";
+      } else if (enteredEmail.length === 0) {
+        errMsg = "Email should not be empty";
+      } else if (enteredPassword.length === 0) {
+        errMsg = "Password should not be empty";
+      } else if (
+        !emailIsValid(enteredEmail) &&
+        !passwordIsValid(enteredPassword)
+      ) {
+        errMsg = "Email and password are not valid";
+      } else if (!emailIsValid(enteredEmail)) {
+        errMsg = "Email is not valid";
+      } else if (!passwordIsValid(enteredPassword)) {
+        errMsg = "Password should have at least 8 characters";
+      }
 
-        setErrorIsVisible(true);
-        setErrorMessage(errMsg);
-      });
+      setErrorIsVisible(true);
+      setErrorMessage(errMsg);
+    }
   };
 
   const redirectToRegisterPageHandler = () => {
