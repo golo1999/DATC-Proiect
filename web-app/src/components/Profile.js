@@ -5,8 +5,9 @@ import {
   updateEmail,
   updatePassword,
 } from "firebase/auth";
+import { getDatabase, ref, set } from "firebase/database";
 import React, { useRef, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import {
   Alert,
@@ -19,10 +20,16 @@ import {
   Row,
 } from "react-bootstrap";
 
+import { authActions } from "../store/auth-slice";
+
 import classes from "./Profile.module.css";
 
 const Profile = (props) => {
   const auth = getAuth();
+
+  const db = getDatabase();
+
+  const dispatch = useDispatch();
 
   const newEmailAddressRef = useRef();
 
@@ -53,6 +60,13 @@ const Profile = (props) => {
 
   const adminPersonalInformation = useSelector((state) => state.auth.admin);
 
+  const emailIsValid = (email) => {
+    const expression =
+      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+    return expression.test(String(email).trim().toLowerCase());
+  };
+
   const closeModalHandler = () => {
     setModalMessage("");
     setModalIsVisible(false);
@@ -68,7 +82,66 @@ const Profile = (props) => {
 
   const confirmationHandler = () => {
     if (confirmationModalAction === 0) {
-      console.log("email confirmed: " + newEmailAddressRef.current.value);
+      const enteredEmail = newEmailAddressRef.current.value;
+
+      const enteredPassword = passwordRef.current.value;
+
+      if (emailIsValid(enteredEmail)) {
+        const credential = EmailAuthProvider.credential(
+          adminPersonalInformation.email,
+          enteredPassword
+        );
+
+        reauthenticateWithCredential(currentAdmin, credential)
+          .then(() => {
+            // User re-authenticated
+            updateEmail(currentAdmin, enteredEmail)
+              .then(() => {
+                // Email updated!
+                const adminPersonalInformationRef = ref(
+                  db,
+                  "adminsList/" + currentAdmin.uid + "/personalInformation"
+                );
+
+                const updatedAdmin = {
+                  admin: true,
+                  email: enteredEmail,
+                  firstName: adminPersonalInformation.firstName,
+                  id: adminPersonalInformation.id,
+                  lastName: adminPersonalInformation.lastName,
+                };
+
+                set(adminPersonalInformationRef, updatedAdmin)
+                  .then(() => {
+                    alert("Email has been updated");
+                    dispatch(
+                      authActions.authenticateAdmin({
+                        authenticatedAdmin: {
+                          email: updatedAdmin.email,
+                          firstName: updatedAdmin.firstName,
+                          id: updatedAdmin.id,
+                          lastName: updatedAdmin.lastName,
+                        },
+                      })
+                    );
+                    closeConfirmationModalHandler();
+                  })
+                  .catch((error) => {
+                    console.log(error.message);
+                  });
+              })
+              .catch((error) => {
+                // An error occurred
+                console.log(error.message);
+              });
+          })
+          .catch((error) => {
+            console.log(error.message);
+          });
+      } else {
+        setErrorMessage("Email is not valid!");
+        setErrorIsVisible(true);
+      }
     } else if (confirmationModalAction === 1) {
       const oldPassword = oldPasswordRef.current.value;
 
@@ -97,7 +170,7 @@ const Profile = (props) => {
             updatePassword(currentAdmin, enteredPassword)
               .then(() => {
                 // Update successful
-                alert("Password changed");
+                alert("Password has been updated");
                 closeConfirmationModalHandler();
               })
               .catch((error) => {
@@ -241,12 +314,21 @@ const Profile = (props) => {
         <Modal.Body>
           {confirmationModalAction === 0 && (
             <Form>
-              <Form.Group className="mb-3" controlId="formBasicEmail">
+              <Form.Group className="mb-3" controlId="formBasicNewEmail">
                 <Form.Label>New email address</Form.Label>
                 <Form.Control
                   type="email"
                   placeholder="Email"
                   ref={newEmailAddressRef}
+                />
+              </Form.Group>
+              <Form.Group className="mb-3" controlId="formBasicPassword">
+                <Form.Label>Password</Form.Label>
+                <Form.Label></Form.Label>
+                <Form.Control
+                  type="password"
+                  placeholder="Password"
+                  ref={passwordRef}
                 />
               </Form.Group>
             </Form>

@@ -7,7 +7,6 @@ import { useHistory } from "react-router";
 import { useLocation } from "react-router-dom";
 import { authActions } from "../store/auth-slice";
 
-import Profile from "./Profile";
 import ProfileIcon from "./ProfileIcon";
 
 import classes from "./TopBar.module.css";
