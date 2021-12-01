@@ -12,7 +12,7 @@ import ProfileIcon from "./ProfileIcon";
 
 import classes from "./TopBar.module.css";
 
-const TopBar = (props) => {
+const TopBar = () => {
   const dispatch = useDispatch();
 
   const [reportsLinkIsActive, setReportsLinkIsActive] = useState(true);
@@ -68,6 +68,18 @@ const TopBar = (props) => {
       }
 
       if (!profileLinkIsActive) {
+        setProfileLinkIsActive((prevState) => !prevState);
+      }
+    } else {
+      if (reportsLinkIsActive) {
+        setReportsLinkIsActive((prevState) => !prevState);
+      }
+
+      if (usersLinkIsActive) {
+        setUsersLinkIsActive((prevState) => !prevState);
+      }
+
+      if (profileLinkIsActive) {
         setProfileLinkIsActive((prevState) => !prevState);
       }
     }
@@ -198,7 +210,10 @@ const TopBar = (props) => {
                 }
                 onClick={logoutHandler}
               >
-                <FaSignOutAlt className={classes["sign-out-icon"]} />
+                {!navbarIsExpanded && (
+                  <FaSignOutAlt className={classes["sign-out-icon"]} />
+                )}
+                {navbarIsExpanded && "Sign out"}
               </Nav.Link>
             </Nav>
           </Navbar.Collapse>
