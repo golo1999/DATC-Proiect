@@ -37,3 +37,13 @@
   justify-content: center !important;
   align-items: center !important;
 }
+
+.sign-out-icon {
+  font-size: xx-large !important;
+  transition: 0.6s ease;
+}
+
+.sign-out-icon:hover {
+  color: gold !important;
+  transition: 0.6s ease;
+}

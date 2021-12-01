@@ -1,12 +1,13 @@
 import { getAuth, signOut } from "firebase/auth";
 import { useState } from "react";
 import { Container, Nav, Navbar } from "react-bootstrap";
+import { FaSignOutAlt } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router";
 import { useLocation } from "react-router-dom";
 import { authActions } from "../store/auth-slice";
-import Profile from "./Profile";
 
+import Profile from "./Profile";
 import ProfileIcon from "./ProfileIcon";
 
 import classes from "./TopBar.module.css";
@@ -197,7 +198,7 @@ const TopBar = (props) => {
                 }
                 onClick={logoutHandler}
               >
-                Log out
+                <FaSignOutAlt className={classes["sign-out-icon"]} />
               </Nav.Link>
             </Nav>
           </Navbar.Collapse>

@@ -9,4 +9,10 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  transition: 0.6s ease;
+}
+
+.container:hover {
+  background: gold;
+  transition: 0.6s ease;
 }

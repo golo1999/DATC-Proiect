@@ -10,7 +10,9 @@ const ProfileIcon = (props) => {
 
   const adminFirstName = authenticatedAdmin.firstName;
 
-  return <div className={classes.container}>{adminFirstName.substr(0, 1)}</div>;
+  const firstLetter = adminFirstName.substr(0, 1);
+
+  return <div className={classes.container}>{firstLetter}</div>;
 };
 
 export default ProfileIcon;
