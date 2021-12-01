@@ -97,7 +97,9 @@ const TopBar = () => {
           setNavbarIsExpanded((prevState) => !prevState);
         }
 
-        history.push("/logout");
+        if (location.pathname !== "/logout") {
+          history.push("/logout");
+        }
       })
       .catch((error) => {
         // An error occurred
@@ -109,7 +111,9 @@ const TopBar = () => {
       toggleNavbarHandler();
     }
 
-    history.push("/reports");
+    if (location.pathname !== "/reports") {
+      history.push("/reports");
+    }
   };
 
   const redirectToProfilePageHandler = () => {
@@ -117,7 +121,9 @@ const TopBar = () => {
       toggleNavbarHandler();
     }
 
-    history.push("/profile");
+    if (location.pathname !== "/profile") {
+      history.push("/profile");
+    }
   };
 
   const redirectToUsersPageHandler = () => {
@@ -125,7 +131,9 @@ const TopBar = () => {
       toggleNavbarHandler();
     }
 
-    history.push("/users");
+    if (location.pathname !== "/users") {
+      history.push("/users");
+    }
   };
 
   const toggleNavbarHandler = () => {
@@ -200,7 +208,7 @@ const TopBar = () => {
                 {!navbarIsExpanded && (
                   <ProfileIcon admin={authenticatedAdmin} />
                 )}
-                {navbarIsExpanded && <Profile />}
+                {navbarIsExpanded && "Profile"}
               </Nav.Link>
               <Nav.Link
                 className={

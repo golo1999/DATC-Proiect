@@ -1,15 +1,16 @@
 .container {
-  background: #adefd1;
-  color: #00203f;
-  font-weight: bold;
-  font-size: x-large;
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  display: flex;
-  justify-content: center;
   align-items: center;
+  background: #adefd1;
+  border-radius: 50%;
+  color: #00203f;
+  display: flex;
+  font-size: x-large;
+  font-weight: bold;
+  height: 40px;
+  justify-content: center;
   transition: 0.6s ease;
+  user-select: none;
+  width: 40px;
 }
 
 .container:hover {

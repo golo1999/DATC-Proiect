@@ -21,6 +21,8 @@ import ReportDetails from "./components/ReportDetails";
 const App = () => {
   const auth = getAuth();
 
+  const db = getDatabase();
+
   const dispatch = useDispatch();
 
   const history = useHistory();
@@ -28,8 +30,6 @@ const App = () => {
   useEffect(() => {
     onAuthStateChanged(auth, (admin) => {
       if (admin != null) {
-        const db = getDatabase();
-
         const personalInformationRef = ref(
           db,
           "adminsList/" + admin.uid + "/personalInformation"
@@ -51,7 +51,7 @@ const App = () => {
         });
       }
     });
-  }, [auth, dispatch]);
+  }, [auth, db, dispatch]);
 
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
 

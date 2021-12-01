@@ -1,0 +1,47 @@
+.container {
+  padding: 1vmax !important;
+}
+
+.top-row,
+.bottom-row {
+  margin: 2vmax 0 !important;
+}
+
+.column {
+  padding: 0 !important;
+}
+
+.top-row-card {
+}
+
+.top-row-card,
+.bottom-row-card {
+  background: #00203f !important;
+  color: #adefd1 !important;
+  padding: 0.5vmax;
+  user-select: none;
+}
+
+.top-row-card-title {
+  font-size: xx-large !important;
+  font-weight: bold !important;
+}
+
+.input-label {
+  color: #adefd1 !important;
+}
+
+.button-row {
+  margin: 1vmax 0 !important;
+}
+
+.button {
+  padding: 0.5vmax 0 !important;
+  border: 0 !important;
+}
+
+@media screen and (max-width: 1000px) {
+  .container {
+    padding: 5vmax !important;
+  }
+}

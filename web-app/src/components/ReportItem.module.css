@@ -21,8 +21,16 @@
 }
 
 .card:hover {
-  background: #295ABB !important;
+  background: #295abb !important;
   transition: 0.6s ease;
+}
+
+.card:hover .report-category-container {
+  color: gold !important;
+}
+
+.card:hover .report-date-time-container {
+  color: gold !important;
 }
 
 .card-body {
@@ -30,30 +38,31 @@
 }
 
 .report-category-container {
-  flex: 1;
-  font-size: x-large;
-  display: flex;
-  align-items: center;
-  text-align: center;
-  user-select: none;
 }
 
 .report-date-time-container {
-  flex: 1;
-  display: flex;
   justify-content: center;
-  align-items: center;
-  font-size: x-large;
-  text-align: center;
   margin: 0 1vmax;
-  user-select: none;
+  transition: 0.6s ease;
 }
 
 .icons-container {
+  justify-content: flex-end;
+}
+
+.report-category-container,
+.report-date-time-container {
+  font-size: x-large;
+  text-align: center;
+  user-select: none;
+}
+
+.report-category-container,
+.report-date-time-container,
+.icons-container {
+  align-items: center;
   display: flex;
   flex: 1;
-  align-items: center;
-  justify-content: flex-end;
 }
 
 .report-status-icon,
@@ -63,14 +72,16 @@
 }
 
 .report-status-icon {
+  color: gold;
 }
 
 .report-status-icon-unchecked {
-  color: tomato;
+  color: crimson;
 }
 
 .report-details-icon {
   font-size: xx-large;
+  color: gold;
 }
 
 li {

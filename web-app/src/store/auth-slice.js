@@ -9,12 +9,12 @@ const authSlice = createSlice({
     authenticateAdmin: (state, action) => {
       const newAuthenticatedAdmin = action.payload.authenticatedAdmin;
 
-      state.isAuthenticated = true;
       state.admin = newAuthenticatedAdmin;
+      state.isAuthenticated = true;
     },
     signOutAdmin: (state) => {
-      state.isAuthenticated = false;
       state.admin = null;
+      state.isAuthenticated = false;
     },
   },
 });

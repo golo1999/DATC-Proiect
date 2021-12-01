@@ -32,10 +32,13 @@ const UserItem = (props) => {
             {userPersonalInformation.firstName}
           </div>
           <div className={classes["user-level-container"]}>
-            {userPersonalInformation.level}
+            {`Level ` + userPersonalInformation.level}
           </div>
           <div className={classes["icons-container"]}>
-            <FaAngleRight onClick={checkUserDetailsHandler} />
+            <FaAngleRight
+              className={classes["user-details-icon"]}
+              onClick={checkUserDetailsHandler}
+            />
           </div>
         </Card.Body>
       </Card>

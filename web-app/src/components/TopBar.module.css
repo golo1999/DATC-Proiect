@@ -1,10 +1,10 @@
 .navbar {
   background: #00203f !important;
   color: red;
+  user-select: none !important;
 }
 
 .logo {
-  user-select: none;
   color: #adefd1 !important;
   font-size: x-large !important;
   transition: 0.6s ease !important;
