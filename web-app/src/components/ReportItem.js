@@ -129,7 +129,13 @@ const ReportItem = (props) => {
       <Card className={classes.card}>
         <Card.Body className={classes["card-body"]}>
           <div className={classes["report-category-container"]}>
-            {`Category ` + report.category}
+            {report.category === 0
+              ? "Danger"
+              : report.category === 1
+              ? "Garbage"
+              : report.category === 2
+              ? "Pothole"
+              : "Vandalism"}
           </div>
           <div className={classes["report-date-time-container"]}>
             {reportParsedDateTime}

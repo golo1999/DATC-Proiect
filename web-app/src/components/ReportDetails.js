@@ -80,7 +80,15 @@ const ReportDetails = (props) => {
                         <b>Category</b>
                       </p>
                     </Col>
-                    <Col>{selectedReport.category}</Col>
+                    <Col>
+                      {selectedReport.category === 0
+                        ? "Danger"
+                        : selectedReport.category === 1
+                        ? "Garbage"
+                        : selectedReport.category === 2
+                        ? "Pothole"
+                        : "Vandalism"}
+                    </Col>
                   </Row>
                   <Row>
                     <Col>
