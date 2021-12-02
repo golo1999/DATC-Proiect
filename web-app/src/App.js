@@ -1,6 +1,6 @@
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { getDatabase, ref, onValue } from "firebase/database";
-import { Fragment, useEffect } from "react";
+import { Fragment, useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router";
 import { Redirect, Route, Switch } from "react-router-dom";
@@ -29,7 +29,7 @@ const App = () => {
 
   const history = useHistory();
 
-  const fetchAuthenticatedAdmin = async () => {
+  const fetchAuthenticatedAdmin = useCallback(async () => {
     onAuthStateChanged(auth, (admin) => {
       if (admin) {
         const personalInformationRef = ref(
@@ -53,9 +53,9 @@ const App = () => {
         });
       }
     });
-  };
+  }, [auth, db, dispatch]);
 
-  const fetchReportsList = async () => {
+  const fetchReportsList = useCallback(async () => {
     onAuthStateChanged(auth, (admin) => {
       if (admin) {
         const usersListRef = ref(db, "usersList");
@@ -79,9 +79,9 @@ const App = () => {
         });
       }
     });
-  };
+  }, [auth, db, dispatch]);
 
-  const fetchUsersList = async () => {
+  const fetchUsersList = useCallback(async () => {
     onAuthStateChanged(auth, (admin) => {
       if (admin) {
         const usersListRef = ref(db, "usersList");
@@ -97,13 +97,13 @@ const App = () => {
         });
       }
     });
-  };
+  }, [auth, db, dispatch]);
 
   useEffect(() => {
     fetchAuthenticatedAdmin();
     fetchReportsList();
     fetchUsersList();
-  }, [dispatch]);
+  }, [dispatch, fetchAuthenticatedAdmin, fetchReportsList, fetchUsersList]);
 
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
 
