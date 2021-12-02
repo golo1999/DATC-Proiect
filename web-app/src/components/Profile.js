@@ -9,6 +9,7 @@ import {
 import { getDatabase, ref, set } from "firebase/database";
 import React, { useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router";
 
 import {
   Alert,
@@ -31,6 +32,8 @@ const Profile = (props) => {
   const db = getDatabase();
 
   const dispatch = useDispatch();
+
+  const history = useHistory();
 
   const newEmailAddressRef = useRef();
 
@@ -116,6 +119,13 @@ const Profile = (props) => {
     }
   };
 
+  const resetErrorHandler = () => {
+    if (errorIsVisible && errorMessage !== "") {
+      setErrorIsVisible(false);
+      setErrorMessage("");
+    }
+  };
+
   const setFail = (message) => {
     closeAlertHandler();
 
@@ -136,7 +146,9 @@ const Profile = (props) => {
 
       const enteredPassword = passwordRef.current.value;
 
-      if (emailIsValid(enteredEmail)) {
+      resetErrorHandler();
+
+      if (emailIsValid(enteredEmail) && enteredPassword.length >= 8) {
         const credential = EmailAuthProvider.credential(
           adminPersonalInformation.email,
           enteredPassword
@@ -184,9 +196,17 @@ const Profile = (props) => {
           .catch((error) => {
             console.log(error.message);
           });
-      } else {
-        setErrorMessage("Email is not valid!");
+      } else if (!emailIsValid(enteredEmail) && enteredPassword.length < 8) {
+        setErrorMessage(
+          "The email is not valid & the password should have at least 8 characters!"
+        );
         setErrorIsVisible(true);
+      } else if (!emailIsValid(enteredEmail)) {
+        setErrorIsVisible(true);
+        setErrorMessage("The email is not valid!");
+      } else {
+        setErrorIsVisible(true);
+        setErrorMessage("The password should have at least 8 characters!");
       }
     } else if (confirmationModalAction === 1) {
       const oldPassword = oldPasswordRef.current.value;
@@ -195,16 +215,14 @@ const Profile = (props) => {
 
       const confirmedPassword = passwordConfirmationRef.current.value;
 
+      resetErrorHandler();
+
       if (
         enteredPassword === confirmedPassword &&
+        oldPassword.length >= 8 &&
         enteredPassword.length >= 8 &&
         confirmedPassword.length >= 8
       ) {
-        if (errorIsVisible && errorMessage !== "") {
-          setErrorMessage("");
-          setErrorIsVisible(false);
-        }
-
         const credential = EmailAuthProvider.credential(
           adminPersonalInformation.email,
           oldPassword
@@ -221,11 +239,54 @@ const Profile = (props) => {
               })
               .catch((error) => {
                 // An error ocurred
-                if (!errorIsVisible && errorMessage === "") {
-                  setErrorMessage("Updating password failed");
-                  setErrorIsVisible(true);
-                }
+                setErrorIsVisible(true);
+                setErrorMessage("Updating password failed");
 
+                console.log(error.message);
+              });
+          })
+          .catch((error) => {
+            // An error ocurred
+            setErrorIsVisible(true);
+            setErrorMessage(
+              "Invalid password/your account does not have a password."
+            );
+            console.log(error.message);
+          });
+      } else if (
+        oldPassword.length < 8 ||
+        enteredPassword.length < 8 ||
+        confirmedPassword.length < 8
+      ) {
+        setErrorIsVisible(true);
+        setErrorMessage("The passwords should have at least 8 characters!");
+      } else {
+        setErrorIsVisible(true);
+        setErrorMessage("The new passwords don't match!");
+      }
+    } else if (confirmationModalAction === 2) {
+      const enteredPassword = passwordRef.current.value;
+
+      resetErrorHandler();
+
+      if (enteredPassword.length >= 8) {
+        const credential = EmailAuthProvider.credential(
+          adminPersonalInformation.email,
+          enteredPassword
+        );
+
+        reauthenticateWithCredential(currentAdmin, enteredPassword)
+          .then(() => {
+            // User re-authenticated
+            deleteUser(currentAdmin)
+              .then(() => {
+                // User deleted
+                dispatch(authActions.signOutAdmin());
+
+                history.push("/logout");
+              })
+              .catch((error) => {
+                // An error ocurred
                 console.log(error.message);
               });
           })
@@ -233,15 +294,10 @@ const Profile = (props) => {
             // An error ocurred
             console.log(error.message);
           });
-      } else if (enteredPassword.length < 8 || confirmedPassword.length < 8) {
-        setErrorMessage("Password is too short!");
-        setErrorIsVisible(true);
       } else {
-        setErrorMessage("Passwords don't match!");
         setErrorIsVisible(true);
+        setErrorMessage("The password should have at least 8 characters!");
       }
-    } else if (confirmationModalAction === 2) {
-      console.log("delete confirmed");
     }
   };
 
@@ -255,22 +311,22 @@ const Profile = (props) => {
         setModalAction(0);
       }
 
-      setModalMessage("Are you sure you want to change your email address?");
       setModalIsVisible(true);
+      setModalMessage("Are you sure you want to change your email address?");
     } else if (clickedButtonId === "changePasswordButton") {
       if (modalAction !== 1) {
         setModalAction(1);
       }
 
-      setModalMessage("Are you sure you want to change your password?");
       setModalIsVisible(true);
+      setModalMessage("Are you sure you want to change your password?");
     } else if (clickedButtonId === "deleteAccountButton") {
       if (modalAction !== 2) {
         setModalAction(2);
       }
 
-      setModalMessage("Are you sure you want to delete your account?");
       setModalIsVisible(true);
+      setModalMessage("Are you sure you want to delete your account?");
     }
   };
 
@@ -322,6 +378,8 @@ const Profile = (props) => {
 
     const enteredLastName = lastNameRef.current.value.trim();
 
+    closeAlertHandler();
+
     if (
       enteredFirstName.length !== 0 &&
       enteredLastName.length !== 0 &&
@@ -361,6 +419,8 @@ const Profile = (props) => {
       enteredLastName === adminPersonalInformation.lastName
     ) {
       setFail("The names are the same");
+    } else {
+      setFail("Changing names failed");
     }
   };
 
@@ -485,18 +545,6 @@ const Profile = (props) => {
         </Modal.Footer>
       </Modal>
       <Container className={classes.container}>
-        {/* <Row className={classes["top-row"]}>
-          <Col className={classes.column}>
-            <Card className={classes["top-row-card"]}>
-              <Card.Body>
-                <Card.Title className={classes["top-row-card-title"]}>
-                  Profile management
-                </Card.Title>
-                <Card.Text>Here you can edit your settings</Card.Text>
-              </Card.Body>
-            </Card>
-          </Col>
-        </Row> */}
         <Row className={classes["bottom-row"]}>
           <Col className={classes.column}>
             <Card className={classes["bottom-row-card"]}>

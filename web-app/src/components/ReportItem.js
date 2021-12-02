@@ -1,6 +1,6 @@
 import { getDatabase, ref, set } from "firebase/database";
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router";
 
 import { reportActions } from "../store/report-slice";
@@ -11,6 +11,8 @@ import { FaAngleRight, FaCheck } from "react-icons/fa";
 import classes from "./ReportItem.module.css";
 
 const ReportItem = (props) => {
+  const adminPersonalInformation = useSelector((state) => state.auth.admin);
+
   const db = getDatabase();
 
   const dispatch = useDispatch();
@@ -82,6 +84,7 @@ const ReportItem = (props) => {
 
     const editedReport = {
       category: report.category,
+      checkedBy: !isChecked ? adminPersonalInformation.id : null,
       checkedStatus: !isChecked,
       dateTime,
       note: report.note ? report.note : null,

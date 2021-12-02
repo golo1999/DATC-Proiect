@@ -36,6 +36,37 @@ const AllReports = (props) => {
     return array;
   };
 
+  // const sortReportsByDateDescending = (reportsList) => {
+  //   return reportsList.sort((firstReport, secondReport) => {
+  //     const firstReportDate = firstReport.dateTime;
+
+  //     const secondReportDate = secondReport.dateTime;
+
+  //     const firstReportParsedDate = new Date(
+  //       firstReportDate.year,
+  //       firstReportDate.month - 1,
+  //       firstReportDate.day,
+  //       firstReportDate.hour,
+  //       firstReportDate.minute,
+  //       firstReportDate.second
+  //     );
+
+  //     const secondReportParsedDate = new Date(
+  //       secondReportDate.year,
+  //       secondReportDate.month - 1,
+  //       secondReportDate.day,
+  //       secondReportDate.hour,
+  //       secondReportDate.minute,
+  //       secondReportDate.second
+  //     );
+
+  //     console.log("firstReportDateParsed", firstReportParsedDate);
+  //     console.log("secondReportDateParsed", secondReportParsedDate);
+  //     console.log("<", +secondReportParsedDate < +firstReportParsedDate);
+  //     return +secondReportParsedDate > +firstReportParsedDate;
+  //   });
+  // };
+
   useEffect(() => {
     const array = fetchAllReports();
 
@@ -48,6 +79,10 @@ const AllReports = (props) => {
   }, []);
 
   console.log(reportsList);
+
+  // console.log("Reports sorted descending by date");
+
+  // console.log(sortReportsByDateDescending(reportsList));
 
   return (
     <div className={classes.container}>
