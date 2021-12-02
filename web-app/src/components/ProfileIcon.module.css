@@ -6,11 +6,11 @@
   display: flex;
   font-size: x-large;
   font-weight: bold;
-  height: 40px;
+  height: 35px;
   justify-content: center;
   transition: 0.6s ease;
   user-select: none;
-  width: 40px;
+  width: 35px;
 }
 
 .container:hover {

@@ -1,5 +1,5 @@
-import { getDatabase, ref, onValue } from "firebase/database";
 import { useEffect, useState } from "react";
+import { Container, Spinner } from "react-bootstrap";
 
 import ReportItem from "./ReportItem";
 
@@ -8,33 +8,11 @@ import classes from "./AllReports.module.css";
 const AllReports = (props) => {
   const [isLoading, setIsLoading] = useState(true);
 
-  const [reportsList, setReportsList] = useState([]);
+  const reportsList = props.reports;
 
-  const fetchAllReports = async () => {
-    const array = [];
-
-    const db = getDatabase();
-
-    const usersListRef = ref(db, "usersList");
-
-    onValue(usersListRef, (snapshot) => {
-      const data = snapshot.val();
-
-      const usersList = Object.values(data);
-
-      usersList.forEach((userDetails) => {
-        const userData = userDetails;
-
-        const userPersonalReportsList = Object.values(userData.personalReports);
-
-        userPersonalReportsList.forEach((report) => {
-          array.push(report);
-        });
-      });
-    });
-
-    return array;
-  };
+  useEffect(() => {
+    setIsLoading((previousValue) => !previousValue);
+  }, []);
 
   // const sortReportsByDateDescending = (reportsList) => {
   //   return reportsList.sort((firstReport, secondReport) => {
@@ -67,18 +45,16 @@ const AllReports = (props) => {
   //   });
   // };
 
-  useEffect(() => {
-    const array = fetchAllReports();
+  // useEffect(() => {
+  //   const array = fetchAllReports();
 
-    array.then((result) => {
-      setIsLoading(false);
-      setReportsList(result);
-    });
+  //   array.then((result) => {
+  //     setIsLoading(false);
+  //     setReportsList(result);
+  //   });
 
-    return array;
-  }, []);
-
-  console.log(reportsList);
+  //   return array;
+  // }, []);
 
   // console.log("Reports sorted descending by date");
 
@@ -87,9 +63,22 @@ const AllReports = (props) => {
   return (
     <div className={classes.container}>
       <ul>
-        {reportsList.map((report, index) => (
-          <ReportItem key={`report` + index} report={report} />
-        ))}
+        {isLoading && (
+          <Container className={classes["spinner-container"]}>
+            <Spinner
+              className={classes.spinner}
+              animation="border"
+              role="status"
+            >
+              <span className="visually-hidden">Loading...</span>
+            </Spinner>
+          </Container>
+        )}
+        {!isLoading &&
+          reportsList.length > 0 &&
+          reportsList.map((report, index) => (
+            <ReportItem key={`report` + index} report={report} />
+          ))}
       </ul>
     </div>
   );

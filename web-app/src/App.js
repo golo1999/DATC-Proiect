@@ -6,6 +6,7 @@ import { useHistory } from "react-router";
 import { Redirect, Route, Switch } from "react-router-dom";
 
 import { authActions } from "./store/auth-slice";
+import { reportsListActions } from "./store/reports-list-slice";
 
 import AllReports from "./components/AllReports";
 import AllUsers from "./components/AllUsers";
@@ -27,9 +28,9 @@ const App = () => {
 
   const history = useHistory();
 
-  useEffect(() => {
+  const fetchAuthenticatedAdmin = async () => {
     onAuthStateChanged(auth, (admin) => {
-      if (admin != null) {
+      if (admin) {
         const personalInformationRef = ref(
           db,
           "adminsList/" + admin.uid + "/personalInformation"
@@ -51,11 +52,42 @@ const App = () => {
         });
       }
     });
+  };
+
+  const fetchReportsList = async () => {
+    onAuthStateChanged(auth, (admin) => {
+      if (admin) {
+        const usersListRef = ref(db, "usersList");
+
+        onValue(usersListRef, (snapshot) => {
+          const data = snapshot.val();
+
+          const usersList = Object.values(data);
+
+          usersList.forEach((userDetails) => {
+            const userData = userDetails;
+
+            const userPersonalReportsList = Object.values(
+              userData.personalReports
+            );
+
+            userPersonalReportsList.forEach((report) => {
+              dispatch(reportsListActions.addReport({ report }));
+            });
+          });
+        });
+      }
+    });
+  };
+
+  useEffect(() => {
+    fetchAuthenticatedAdmin();
+    fetchReportsList();
   }, [auth, db, dispatch]);
 
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
 
-  console.log(isAuthenticated);
+  const reportsList = useSelector((state) => state.reportsList.reportsList);
 
   return (
     <Fragment>
@@ -75,7 +107,7 @@ const App = () => {
         </Route>
         <Route exact path="/reports">
           {!isAuthenticated && <Redirect to="/login" />}
-          {isAuthenticated && <AllReports />}
+          {isAuthenticated && <AllReports reports={reportsList} />}
         </Route>
         <Route path="/reports/:reportId">
           {!isAuthenticated && <Redirect to="/login" />}
