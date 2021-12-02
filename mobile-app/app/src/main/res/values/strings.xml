@@ -32,7 +32,7 @@
     <string-array name="danger_categories_spinner_items">
         <item>Danger</item>
         <item>Garbage</item>
-        <item>Pit</item>
+        <item>Pothole</item>
         <item>Vandalism</item>
     </string-array>
 </resources>
