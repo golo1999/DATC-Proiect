@@ -1,19 +1,31 @@
 package com.example.citydangersalertapp.model;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import java.util.UUID;
 
 public class Report {
     private String reportId;
+
     private String userId;
+
     @Nullable
     private String note;
+
+    private boolean checkStatus;
+
     @Nullable
-    private boolean checkStatus = false;
+    private String checkedBy;
+
+    @Nullable
     private String photoURL;
+
     private MyCustomTime dateTime;
+
     private int category;
+
+    private UserLocation location;
 
     public Report() {
         // Required empty public constructor
@@ -23,13 +35,47 @@ public class Report {
                   @Nullable String note,
                   @Nullable String photoURL,
                   MyCustomTime dateTime,
-                  int category) {
+                  int category,
+                  UserLocation location) {
         this.reportId = String.valueOf(UUID.randomUUID());
         this.userId = userId;
         this.note = note;
         this.photoURL = photoURL;
         this.dateTime = dateTime;
         this.category = category;
+        this.location = location;
+    }
+
+    public Report(String reportId,
+                  String userId,
+                  @Nullable String note,
+                  boolean checkStatus,
+                  @Nullable String photoURL,
+                  MyCustomTime dateTime,
+                  int category) {
+        this.reportId = reportId;
+        this.userId = userId;
+        this.note = note;
+        this.checkStatus = checkStatus;
+        this.photoURL = photoURL;
+        this.dateTime = dateTime;
+        this.category = category;
+    }
+
+    public Report(String reportId,
+                  String userId,
+                  @Nullable String note,
+                  boolean checkStatus,
+                  MyCustomTime dateTime,
+                  int category,
+                  UserLocation location) {
+        this.reportId = reportId;
+        this.userId = userId;
+        this.note = note;
+        this.checkStatus = checkStatus;
+        this.dateTime = dateTime;
+        this.category = category;
+        this.location = location;
     }
 
     public Report(String userId,
@@ -42,7 +88,6 @@ public class Report {
         this.dateTime = dateTime;
         this.category = category;
     }
-
 
     public String getReportId() {
         return reportId;
@@ -67,6 +112,23 @@ public class Report {
 
     public void setNote(@Nullable String note) {
         this.note = note;
+    }
+
+    public boolean isCheckStatus() {
+        return checkStatus;
+    }
+
+    public void setCheckStatus(boolean checkStatus) {
+        this.checkStatus = checkStatus;
+    }
+
+    @Nullable
+    public String getCheckedBy() {
+        return checkedBy;
+    }
+
+    public void setCheckedBy(@Nullable String checkedBy) {
+        this.checkedBy = checkedBy;
     }
 
     @Nullable
@@ -94,7 +156,15 @@ public class Report {
         this.category = category;
     }
 
+    public UserLocation getLocation() {
+        return location;
+    }
 
+    public void setLocation(UserLocation location) {
+        this.location = location;
+    }
+
+    @NonNull
     @Override
     public String toString() {
         return "Report{" +
@@ -105,6 +175,7 @@ public class Report {
                 ", photoURL='" + photoURL + '\'' +
                 ", dateTime=" + dateTime +
                 ", category=" + category +
+                ", location=" + location +
                 '}';
     }
 }

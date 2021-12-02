@@ -7,6 +7,7 @@ import com.google.firebase.database.FirebaseDatabase;
 public class MyCustomVariables {
     private static final DatabaseReference DATABASE_REFERENCE = FirebaseDatabase.getInstance().getReference();
     private static final FirebaseAuth FIREBASE_AUTH = FirebaseAuth.getInstance();
+    private static final String baseURL = "http://ip-api.com/";
 
     public static DatabaseReference getDatabaseReference() {
         return DATABASE_REFERENCE;
@@ -14,5 +15,9 @@ public class MyCustomVariables {
 
     public static FirebaseAuth getFirebaseAuth() {
         return FIREBASE_AUTH;
+    }
+
+    public static String getBaseURL() {
+        return baseURL;
     }
 }

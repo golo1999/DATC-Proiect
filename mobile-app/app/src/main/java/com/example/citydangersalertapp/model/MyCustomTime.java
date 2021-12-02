@@ -1,5 +1,7 @@
 package com.example.citydangersalertapp.model;
 
+import androidx.annotation.NonNull;
+
 import java.time.LocalDateTime;
 
 public class MyCustomTime {
@@ -121,5 +123,20 @@ public class MyCustomTime {
 
     public void setSecond(int second) {
         this.second = second;
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return "MyCustomTime{" +
+                "year=" + year +
+                ", month=" + month +
+                ", monthName='" + monthName + '\'' +
+                ", day=" + day +
+                ", dayName='" + dayName + '\'' +
+                ", hour=" + hour +
+                ", minute=" + minute +
+                ", second=" + second +
+                '}';
     }
 }
