@@ -1,5 +1,6 @@
 import {
   getAuth,
+  deleteUser,
   EmailAuthProvider,
   reauthenticateWithCredential,
   updateEmail,
@@ -39,6 +40,10 @@ const Profile = (props) => {
 
   const passwordConfirmationRef = useRef();
 
+  const firstNameRef = useRef();
+
+  const lastNameRef = useRef();
+
   const currentAdmin = auth.currentUser;
 
   const [modalAction, setModalAction] = useState(-1);
@@ -58,7 +63,20 @@ const Profile = (props) => {
 
   const [errorMessage, setErrorMessage] = useState("");
 
+  const [successIsVisible, setSuccessIsVisible] = useState(false);
+
+  const [successMessage, setSuccessMessage] = useState("");
+
+  const [failIsVisible, setFailIsVisible] = useState(false);
+
+  const [failMessage, setFailMessage] = useState("");
+
   const adminPersonalInformation = useSelector((state) => state.auth.admin);
+
+  const adminPersonalInformationRef = ref(
+    db,
+    "adminsList/" + currentAdmin.uid + "/personalInformation"
+  );
 
   const emailIsValid = (email) => {
     const expression =
@@ -68,16 +86,48 @@ const Profile = (props) => {
   };
 
   const closeModalHandler = () => {
-    setModalMessage("");
-    setModalIsVisible(false);
+    if (modalIsVisible && modalMessage !== "") {
+      setModalIsVisible(false);
+      setModalMessage("");
+    }
   };
 
   const closeConfirmationModalHandler = () => {
-    setErrorIsVisible(false);
-    setErrorMessage("");
+    if (errorIsVisible && errorMessage !== "") {
+      setErrorIsVisible(false);
+      setErrorMessage("");
+    }
 
-    setConfirmationModalMessage("");
-    setConfirmationModalIsVisible(false);
+    if (confirmationModalIsVisible && confirmationModalMessage !== "") {
+      setConfirmationModalIsVisible(false);
+      setConfirmationModalMessage("");
+    }
+  };
+
+  const closeAlertHandler = () => {
+    if (successIsVisible && successMessage !== "") {
+      setSuccessIsVisible(false);
+      setSuccessMessage("");
+    }
+
+    if (failIsVisible && failMessage !== "") {
+      setFailIsVisible(false);
+      setFailMessage("");
+    }
+  };
+
+  const setFail = (message) => {
+    closeAlertHandler();
+
+    setFailIsVisible(true);
+    setFailMessage(message);
+  };
+
+  const setSuccess = (message) => {
+    closeAlertHandler();
+
+    setSuccessIsVisible(true);
+    setSuccessMessage(message);
   };
 
   const confirmationHandler = () => {
@@ -98,11 +148,6 @@ const Profile = (props) => {
             updateEmail(currentAdmin, enteredEmail)
               .then(() => {
                 // Email updated!
-                const adminPersonalInformationRef = ref(
-                  db,
-                  "adminsList/" + currentAdmin.uid + "/personalInformation"
-                );
-
                 const updatedAdmin = {
                   admin: true,
                   email: enteredEmail,
@@ -113,7 +158,6 @@ const Profile = (props) => {
 
                 set(adminPersonalInformationRef, updatedAdmin)
                   .then(() => {
-                    alert("Email has been updated");
                     dispatch(
                       authActions.authenticateAdmin({
                         authenticatedAdmin: {
@@ -124,6 +168,8 @@ const Profile = (props) => {
                         },
                       })
                     );
+
+                    setSuccess("The email has been updated");
                     closeConfirmationModalHandler();
                   })
                   .catch((error) => {
@@ -170,7 +216,7 @@ const Profile = (props) => {
             updatePassword(currentAdmin, enteredPassword)
               .then(() => {
                 // Update successful
-                alert("Password has been updated");
+                setSuccess("The password has been updated");
                 closeConfirmationModalHandler();
               })
               .catch((error) => {
@@ -247,8 +293,6 @@ const Profile = (props) => {
     }
 
     openConfirmationModalHandler();
-
-    // updateEmail(currentAdmin);
   };
 
   const changePasswordHandler = () => {
@@ -271,8 +315,53 @@ const Profile = (props) => {
     openConfirmationModalHandler();
   };
 
-  const saveFirstAndLastNameHandler = (event) => {
+  const changeNamesHandler = (event) => {
     event.preventDefault();
+
+    const enteredFirstName = firstNameRef.current.value.trim();
+
+    const enteredLastName = lastNameRef.current.value.trim();
+
+    if (
+      enteredFirstName.length !== 0 &&
+      enteredLastName.length !== 0 &&
+      (enteredFirstName !== adminPersonalInformation.firstName ||
+        enteredLastName !== adminPersonalInformation.lastName)
+    ) {
+      const updatedAdminPersonalInformation = {
+        admin: true,
+        email: adminPersonalInformation.email,
+        firstName: enteredFirstName,
+        id: adminPersonalInformation.id,
+        lastName: enteredLastName,
+      };
+
+      set(adminPersonalInformationRef, updatedAdminPersonalInformation)
+        .then(() => {
+          dispatch(
+            authActions.authenticateAdmin({
+              authenticatedAdmin: {
+                email: updatedAdminPersonalInformation.email,
+                firstName: enteredFirstName,
+                id: updatedAdminPersonalInformation.id,
+                lastName: enteredLastName,
+              },
+            })
+          );
+
+          setSuccess("First and last name updated");
+        })
+        .catch((error) => {
+          console.log(error.message);
+        });
+    } else if (enteredFirstName.length === 0 || enteredLastName.length === 0) {
+      setFail("The names should not be empty");
+    } else if (
+      enteredFirstName === adminPersonalInformation.firstName &&
+      enteredLastName === adminPersonalInformation.lastName
+    ) {
+      setFail("The names are the same");
+    }
   };
 
   return (
@@ -368,7 +457,11 @@ const Profile = (props) => {
             <Form>
               <Form.Group className="mb-3" controlId="formBasicPassword">
                 <Form.Label></Form.Label>
-                <Form.Control type="password" placeholder="Password" />
+                <Form.Control
+                  type="password"
+                  placeholder="Password"
+                  ref={passwordRef}
+                />
               </Form.Group>
             </Form>
           )}
@@ -392,7 +485,7 @@ const Profile = (props) => {
         </Modal.Footer>
       </Modal>
       <Container className={classes.container}>
-        <Row className={classes["top-row"]}>
+        {/* <Row className={classes["top-row"]}>
           <Col className={classes.column}>
             <Card className={classes["top-row-card"]}>
               <Card.Body>
@@ -403,7 +496,7 @@ const Profile = (props) => {
               </Card.Body>
             </Card>
           </Col>
-        </Row>
+        </Row> */}
         <Row className={classes["bottom-row"]}>
           <Col className={classes.column}>
             <Card className={classes["bottom-row-card"]}>
@@ -426,6 +519,7 @@ const Profile = (props) => {
                   <Form.Control
                     type="text"
                     placeholder={adminPersonalInformation.firstName}
+                    ref={firstNameRef}
                   />
                 </Form.Group>
 
@@ -436,8 +530,21 @@ const Profile = (props) => {
                   <Form.Control
                     type="text"
                     placeholder={adminPersonalInformation.lastName}
+                    ref={lastNameRef}
                   />
                 </Form.Group>
+
+                {(successIsVisible || failIsVisible) && (
+                  <Alert
+                    variant={successIsVisible ? "success" : "danger"}
+                    onClose={closeAlertHandler}
+                    dismissible
+                  >
+                    <Alert.Heading>
+                      {successIsVisible ? successMessage : failMessage}
+                    </Alert.Heading>
+                  </Alert>
+                )}
 
                 <Row className={classes["button-row"]}>
                   <Button
@@ -475,11 +582,11 @@ const Profile = (props) => {
                 <Row className={classes["button-row"]}>
                   <Button
                     className={classes.button}
-                    onClick={saveFirstAndLastNameHandler}
+                    onClick={changeNamesHandler}
                     variant="success"
                     type="submit"
                   >
-                    Save first & last name
+                    Change names
                   </Button>
                 </Row>
               </Form>
