@@ -1,0 +1,21 @@
+.container {
+}
+
+.spinner-container {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}
+
+.spinner {
+  color: #00203f !important;
+  font-size: xx-large !important;
+  height: 100px !important;
+  width: 100px !important;
+}
+
+ul {
+  box-sizing: border-box !important;
+  margin: 0 !important;
+  padding: 1vmax 0 !important;
+}

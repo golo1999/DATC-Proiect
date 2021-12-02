@@ -7,6 +7,7 @@ import { Redirect, Route, Switch } from "react-router-dom";
 
 import { authActions } from "./store/auth-slice";
 import { reportsListActions } from "./store/reports-list-slice";
+import { usersListActions } from "./store/users-list-slice";
 
 import AllReports from "./components/AllReports";
 import AllUsers from "./components/AllUsers";
@@ -80,14 +81,35 @@ const App = () => {
     });
   };
 
+  const fetchUsersList = async () => {
+    onAuthStateChanged(auth, (admin) => {
+      if (admin) {
+        const usersListRef = ref(db, "usersList");
+
+        onValue(usersListRef, (snapshot) => {
+          const data = snapshot.val();
+
+          const usersList = Object.values(data);
+
+          usersList.forEach((user) => {
+            dispatch(usersListActions.addUser({ user }));
+          });
+        });
+      }
+    });
+  };
+
   useEffect(() => {
     fetchAuthenticatedAdmin();
     fetchReportsList();
-  }, [auth, db, dispatch]);
+    fetchUsersList();
+  }, [dispatch]);
 
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
 
   const reportsList = useSelector((state) => state.reportsList.reportsList);
+
+  const usersList = useSelector((state) => state.usersList.usersList);
 
   return (
     <Fragment>
@@ -115,7 +137,7 @@ const App = () => {
         </Route>
         <Route exact path="/users">
           {!isAuthenticated && <Redirect to="/login" />}
-          {isAuthenticated && <AllUsers />}
+          {isAuthenticated && <AllUsers users={usersList} />}
         </Route>
         <Route path="/users/:userId">
           {!isAuthenticated && <Redirect to="/login" />}

@@ -1,51 +1,38 @@
-import { getDatabase, ref, onValue } from "firebase/database";
 import { useEffect, useState } from "react";
+import { Container, Spinner } from "react-bootstrap";
 
 import UserItem from "./UserItem";
 
 import classes from "./AllUsers.module.css";
 
 const AllUsers = (props) => {
-  const [usersList, setUsersList] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const fetchAllUsers = async () => {
-    const array = [];
-
-    const db = getDatabase();
-
-    const usersListRef = ref(db, "usersList");
-
-    onValue(usersListRef, (snapshot) => {
-      const data = snapshot.val();
-
-      const usersList = Object.values(data);
-
-      usersList.forEach((user) => {
-        array.push(user);
-      });
-    });
-
-    return array;
-  };
+  const usersList = props.users;
 
   useEffect(() => {
-    const array = fetchAllUsers();
-
-    array.then((result) => {
-      setUsersList(result);
-    });
-
-    return array;
+    setIsLoading((previousValue) => !previousValue);
   }, []);
-
-  console.log(usersList);
 
   return (
     <div className={classes.container}>
       <ul>
-        {usersList.map((user, index) => (
-          <UserItem key={`user` + index} user={user} />
-        ))}
+        {isLoading && (
+          <Container className={classes["spinner-container"]}>
+            <Spinner
+              className={classes.spinner}
+              animation="border"
+              role="status"
+            >
+              <span className="visually-hidden">Loading...</span>
+            </Spinner>
+          </Container>
+        )}
+        {!isLoading &&
+          usersList.length > 0 &&
+          usersList.map((user, index) => (
+            <UserItem key={`user` + index} user={user} />
+          ))}
       </ul>
     </div>
   );
