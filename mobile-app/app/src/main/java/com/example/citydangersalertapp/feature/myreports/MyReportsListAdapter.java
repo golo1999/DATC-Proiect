@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.citydangersalertapp.R;
 import com.example.citydangersalertapp.model.Report;
+import com.example.citydangersalertapp.utility.DeleteReportCustomDialog;
 import com.example.citydangersalertapp.utility.MyCustomMethods;
 
 import java.util.ArrayList;
@@ -52,9 +53,11 @@ public class MyReportsListAdapter extends RecyclerView.Adapter<MyReportsListAdap
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder,
                                  int position) {
+        final String[] categoryNamesList = context.getResources().getStringArray(R.array.danger_category_names);
+
         report = reportsList.get(position);
 
-        holder.reportCategory.setText(String.valueOf(report.getCategory()));
+        holder.reportCategory.setText(categoryNamesList[report.getCategory()]);
         holder.reportNote.setText(report.getNote() != null ? report.getNote() : "");
         holder.reportDate.setText(report.getDateTime().toString());
     }
@@ -131,17 +134,24 @@ public class MyReportsListAdapter extends RecyclerView.Adapter<MyReportsListAdap
             });
 
             reportDelete.setOnClickListener(view -> {
-                MyCustomMethods.showShortMessage(context, "delete report");
+                final MyReportsListAdapter adapter =
+                        (MyReportsListAdapter) recyclerView.getAdapter();
 
-//                final EditTransactionsRecyclerViewAdapter adapter =
-//                        (EditTransactionsRecyclerViewAdapter) recyclerView.getAdapter();
-//
-//                final int positionInList = getBindingAdapterPosition();
-//
-//                if (adapter != null && positionInList > -1) {
-//                    showTransactionDeleteDialog(transactionsList, adapter, positionInList);
-//                }
+                final int positionInList = getBindingAdapterPosition();
+
+                if (adapter != null && positionInList > -1) {
+                    showTransactionDeleteDialog(reportsList, adapter, positionInList);
+                }
             });
+        }
+
+        private void showTransactionDeleteDialog(final ArrayList<Report> reportsList,
+                                                 final MyReportsListAdapter adapter,
+                                                 final int positionInList) {
+            DeleteReportCustomDialog deleteReportCustomDialog =
+                    new DeleteReportCustomDialog(reportsList, adapter, positionInList);
+
+            deleteReportCustomDialog.show(fragmentManager, "deleteDialogFragment");
         }
     }
 }

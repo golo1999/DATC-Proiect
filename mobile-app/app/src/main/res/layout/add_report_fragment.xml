@@ -68,7 +68,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="20sp"
-                    android:entries="@array/danger_categories_spinner_items"
+                    android:entries="@array/danger_category_names"
                     android:selectedItemPosition="@={viewModel.reportCategory}" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout

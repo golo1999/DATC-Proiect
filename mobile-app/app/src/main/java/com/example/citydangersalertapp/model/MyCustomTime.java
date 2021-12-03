@@ -128,15 +128,11 @@ public class MyCustomTime {
     @NonNull
     @Override
     public String toString() {
-        return "MyCustomTime{" +
-                "year=" + year +
-                ", month=" + month +
-                ", monthName='" + monthName + '\'' +
-                ", day=" + day +
-                ", dayName='" + dayName + '\'' +
-                ", hour=" + hour +
-                ", minute=" + minute +
-                ", second=" + second +
-                '}';
+        return (day < 10 ? "0" + day : day) + "/" +
+                (month < 10 ? "0" + month : month) + "/" +
+                year + " " +
+                (hour < 10 ? "0" + hour : hour) + ":" +
+                (minute < 10 ? "0" + minute : minute) + ":" +
+                (second < 10 ? "0" + second : second);
     }
 }

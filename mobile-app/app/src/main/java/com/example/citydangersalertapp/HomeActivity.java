@@ -11,6 +11,7 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -21,10 +22,19 @@ import com.example.citydangersalertapp.feature.ProfileFragment;
 import com.example.citydangersalertapp.feature.SettingsFragment;
 import com.example.citydangersalertapp.feature.addreport.AddReportFragment;
 import com.example.citydangersalertapp.feature.myreports.MyReportsFragment;
+import com.example.citydangersalertapp.feature.myreports.MyReportsListAdapter;
 import com.example.citydangersalertapp.feature.nearbydangersmap.NearbyDangersMapFragment;
+import com.example.citydangersalertapp.model.Report;
+import com.example.citydangersalertapp.utility.DeleteReportCustomDialog;
+import com.example.citydangersalertapp.utility.MyCustomVariables;
 import com.google.android.material.navigation.NavigationView;
 
-public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+import java.util.ArrayList;
+
+public class HomeActivity
+        extends AppCompatActivity
+        implements DeleteReportCustomDialog.DeleteDialogListener,
+        NavigationView.OnNavigationItemSelectedListener {
     private HomeActivityBinding homeActivityBinding;
     private NavigationDrawerHeaderBinding drawerHeaderBinding;
     private HomeViewModel viewModel;
@@ -64,6 +74,32 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         setToolbar();
         setDrawer();
         setNavigationViewItemListener();
+    }
+
+    @Override
+    public void onDialogPositiveClick(DialogFragment dialog,
+                                      ArrayList<Report> reportsList,
+                                      MyReportsListAdapter adapter,
+                                      int positionInList) {
+        final Report reportToDelete = reportsList.get(positionInList);
+        final String currentUserID = MyCustomVariables.getFirebaseAuth().getUid();
+
+        reportsList.remove(positionInList);
+        adapter.notifyItemRemoved(positionInList);
+
+        if (currentUserID != null) {
+            MyCustomVariables.getDatabaseReference()
+                    .child("usersList")
+                    .child(currentUserID)
+                    .child("personalReports")
+                    .child(reportToDelete.getReportId())
+                    .removeValue();
+        }
+    }
+
+    @Override
+    public void onDialogNegativeClick(DialogFragment dialog) {
+
     }
 
     @Override
