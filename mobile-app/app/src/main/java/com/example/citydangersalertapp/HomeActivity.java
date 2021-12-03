@@ -48,6 +48,8 @@ public class HomeActivity
         // if the current Fragment is AddDanger
         else if (viewModel.getCurrentFragment() instanceof AddReportFragment) {
             setFragment(viewModel.getLastFragment());
+        } else if (!(viewModel.getCurrentFragment() instanceof MyReportsFragment)) {
+            setFragment(viewModel.getMyReportsFragmentInstance());
         } else {
             if (viewModel.getBackPressedTime() + 2000 > System.currentTimeMillis()) {
                 backToast.cancel();
@@ -143,6 +145,7 @@ public class HomeActivity
     }
 
     public void setFragment(Fragment newFragment) {
+        viewModel.setLastFragment(viewModel.getCurrentFragment());
         viewModel.setCurrentFragment(newFragment);
 
         getSupportFragmentManager()

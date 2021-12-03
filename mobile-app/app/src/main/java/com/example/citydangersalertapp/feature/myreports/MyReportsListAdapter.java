@@ -58,7 +58,7 @@ public class MyReportsListAdapter extends RecyclerView.Adapter<MyReportsListAdap
         report = reportsList.get(position);
 
         holder.reportCategory.setText(categoryNamesList[report.getCategory()]);
-        holder.reportNote.setText(report.getNote() != null ? report.getNote() : "");
+        holder.reportNote.setText(report.getNote() != null ? report.getNote() : "No note found");
         holder.reportDate.setText(report.getDateTime().toString());
     }
 
@@ -113,11 +113,11 @@ public class MyReportsListAdapter extends RecyclerView.Adapter<MyReportsListAdap
             reportEdit.setOnClickListener(view -> {
                 MyCustomMethods.showShortMessage(context, "edit report");
 
-//                if (getBindingAdapterPosition() > -1) {
-//                    // retrieving the selected transaction from the list
-//                    selectedTransaction = transactionsList.get(getBindingAdapterPosition());
-//
-//                    if (selectedTransaction != null) {
+                if (getBindingAdapterPosition() > -1) {
+                    // retrieving the selected transaction from the list
+                    selectedReport = reportsList.get(getBindingAdapterPosition());
+
+                    if (selectedReport != null) {
 //                        viewModel.setSelectedTransaction(selectedTransaction);
 //                        viewModel.setSelectedTransactionListPosition(getBindingAdapterPosition());
 //
@@ -129,8 +129,8 @@ public class MyReportsListAdapter extends RecyclerView.Adapter<MyReportsListAdap
 //                        }
 //
 //                        ((EditTransactionsActivity) context).setEditSpecificTransactionFragment();
-//                    }
-//                }
+                    }
+                }
             });
 
             reportDelete.setOnClickListener(view -> {

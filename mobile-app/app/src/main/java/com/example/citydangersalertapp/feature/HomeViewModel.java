@@ -17,6 +17,7 @@ import com.example.citydangersalertapp.R;
 import com.example.citydangersalertapp.databinding.HomeActivityBinding;
 import com.example.citydangersalertapp.feature.addreport.AddReportFragment;
 import com.example.citydangersalertapp.feature.authentication.AuthenticationActivity;
+import com.example.citydangersalertapp.feature.editreport.EditReportFragment;
 import com.example.citydangersalertapp.feature.myreports.MyReportsFragment;
 import com.example.citydangersalertapp.feature.nearbydangersmap.NearbyDangersMapFragment;
 import com.example.citydangersalertapp.model.UserPersonalInformation;
@@ -27,6 +28,7 @@ import com.google.firebase.database.ValueEventListener;
 
 public class HomeViewModel extends ViewModel {
     private final AddReportFragment addReportFragmentInstance = new AddReportFragment();
+    private final EditReportFragment editReportFragmentInstance = new EditReportFragment();
     private final MyReportsFragment myReportsFragmentInstance = new MyReportsFragment();
     private final NearbyDangersMapFragment nearbyDangersMapFragmentInstance = new NearbyDangersMapFragment();
     private final ProfileFragment profileFragmentInstance = new ProfileFragment();
@@ -37,6 +39,10 @@ public class HomeViewModel extends ViewModel {
 
     public AddReportFragment getAddReportFragmentInstance() {
         return addReportFragmentInstance;
+    }
+
+    public EditReportFragment getEditReportFragmentInstance() {
+        return editReportFragmentInstance;
     }
 
     public MyReportsFragment getMyReportsFragmentInstance() {
@@ -84,9 +90,15 @@ public class HomeViewModel extends ViewModel {
 
     }
 
-    public void addDangerHandler(@NonNull Activity parentActivity) {
+    public void addReportHandler(@NonNull Activity parentActivity) {
         if (!(getCurrentFragment() instanceof AddReportFragment)) {
             ((HomeActivity) parentActivity).setFragment(addReportFragmentInstance);
+        }
+    }
+
+    public void editReportHandler(@NonNull Activity parentActivity) {
+        if (!(getCurrentFragment() instanceof EditReportFragment)) {
+            ((HomeActivity) parentActivity).setFragment(editReportFragmentInstance);
         }
     }
 
