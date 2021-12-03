@@ -7,7 +7,7 @@ import androidx.databinding.ObservableField;
 import androidx.databinding.ObservableInt;
 import androidx.lifecycle.ViewModel;
 
-import com.example.citydangersalertapp.model.MyCustomTime;
+import com.example.citydangersalertapp.model.MyCustomDateTime;
 import com.example.citydangersalertapp.model.Report;
 import com.example.citydangersalertapp.model.UserLocation;
 import com.example.citydangersalertapp.utility.JsonPlaceHolderAPI;
@@ -41,15 +41,15 @@ public class AddReportViewModel extends ViewModel {
         return reportCategory;
     }
 
-    public void cancelReportHandler() {
-
+    public void cancelReportHandler(@NonNull Activity parentActivity) {
+        parentActivity.onBackPressed();
     }
 
     public void saveReportHandler(@NonNull Activity parentActivity) {
         final Call<UserLocation> userLocationCall = api.getUserLocation();
         final String currentUserId = MyCustomVariables.getFirebaseAuth().getUid();
         final String reportNote = String.valueOf(getReportNote().get()).trim().isEmpty() ? null : getReportNote().get();
-        final MyCustomTime reportLocalDateTime = new MyCustomTime(LocalDateTime.now());
+        final MyCustomDateTime reportLocalDateTime = new MyCustomDateTime(LocalDateTime.now());
         final Report newReport = new Report(currentUserId, reportNote, reportLocalDateTime, reportCategory.get());
 
         MyCustomMethods.closeTheKeyboard(parentActivity);
@@ -75,14 +75,20 @@ public class AddReportViewModel extends ViewModel {
                             .child(currentUserId)
                             .child("personalReports")
                             .child(newReport.getReportId())
-                            .setValue(newReport);
+                            .setValue(newReport)
+                            .addOnSuccessListener(unused -> {
+                                MyCustomMethods.showShortMessage(parentActivity, "Report added successfully");
+                                parentActivity.onBackPressed();
+                            })
+                            .addOnFailureListener(e -> MyCustomMethods.showShortMessage(parentActivity,
+                                    "Couldn't add the report. Please try again"));
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<UserLocation> call,
                                   @NonNull Throwable t) {
-
+                MyCustomMethods.showShortMessage(parentActivity, "Couldn't add location to the report");
             }
         });
     }

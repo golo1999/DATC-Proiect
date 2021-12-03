@@ -61,7 +61,8 @@ public class MyReportsFragment extends Fragment {
         binding = DataBindingUtil.inflate(inflater, R.layout.my_reports_fragment, container, false);
         viewModel = new ViewModelProvider(requireActivity()).get(MyReportsViewModel.class);
         recyclerViewAdapter =
-                new MyReportsListAdapter(viewModel, reportsList, requireContext(), binding.recyclerView, requireActivity().getSupportFragmentManager());
+                new MyReportsListAdapter(viewModel, reportsList, requireContext(), binding.recyclerView,
+                        requireActivity().getSupportFragmentManager());
     }
 
     private void setLayoutVariables() {
@@ -89,7 +90,8 @@ public class MyReportsFragment extends Fragment {
                                     recyclerViewAdapter.notifyItemRangeRemoved(0, currentNumberOfReports);
                                 }
 
-                                for (final DataSnapshot personalReportsIterator : snapshot.child("personalReports").getChildren()) {
+                                for (final DataSnapshot personalReportsIterator :
+                                        snapshot.child("personalReports").getChildren()) {
                                     final Report personalReport = personalReportsIterator.getValue(Report.class);
 
                                     if (personalReport != null) {

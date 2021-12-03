@@ -11,6 +11,10 @@
             android:title="My reports" />
 
         <item
+            android:id="@+id/drawer_menu_add_report"
+            android:title="Add report" />
+
+        <item
             android:id="@+id/drawer_menu_nearby_dangers"
             android:title="Nearby dangers" />
 

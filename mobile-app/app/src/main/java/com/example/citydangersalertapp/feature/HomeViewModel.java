@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.view.GravityCompat;
@@ -112,26 +111,16 @@ public class HomeViewModel extends ViewModel {
     public boolean selectNavigationItemHandler(@NonNull HomeActivity parentActivity,
                                                @NonNull MenuItem item,
                                                HomeActivityBinding binding) {
-        if (item.getItemId() == R.id.drawer_menu_my_reports &&
-                !(currentFragment instanceof MyReportsFragment)) {
-            // viewModel.setCurrentFragment(viewModel.getMyReportsFragmentInstance());
-
+        if (item.getItemId() == R.id.drawer_menu_my_reports && !(currentFragment instanceof MyReportsFragment)) {
             parentActivity.setFragment(myReportsFragmentInstance);
-            Toast.makeText(parentActivity, "set new fragment", Toast.LENGTH_SHORT).show();
-        } else if (item.getItemId() == R.id.drawer_menu_nearby_dangers &&
-                !(currentFragment instanceof NearbyDangersMapFragment)) {
-            // viewModel.setCurrentFragment(viewModel.getNearbyDangersMapFragmentInstance());
+        } else if (item.getItemId() == R.id.drawer_menu_add_report && !(currentFragment instanceof AddReportFragment)) {
+            parentActivity.setFragment(addReportFragmentInstance);
+        } else if (item.getItemId() == R.id.drawer_menu_nearby_dangers && !(currentFragment instanceof NearbyDangersMapFragment)) {
             parentActivity.setFragment(nearbyDangersMapFragmentInstance);
-            Toast.makeText(parentActivity, "set new fragment", Toast.LENGTH_SHORT).show();
-        } else if (item.getItemId() == R.id.drawer_menu_profile &&
-                !(currentFragment instanceof ProfileFragment)) {
-            // viewModel.setCurrentFragment(viewModel.getProfileFragmentInstance());
+        } else if (item.getItemId() == R.id.drawer_menu_profile && !(currentFragment instanceof ProfileFragment)) {
             parentActivity.setFragment(profileFragmentInstance);
-            Toast.makeText(parentActivity, "set new fragment", Toast.LENGTH_SHORT).show();
-        } else if (item.getItemId() == R.id.drawer_menu_settings &&
-                !(currentFragment instanceof SettingsFragment)) {
+        } else if (item.getItemId() == R.id.drawer_menu_settings && !(currentFragment instanceof SettingsFragment)) {
             parentActivity.setFragment(settingsFragmentInstance);
-            Toast.makeText(parentActivity, "set new fragment", Toast.LENGTH_SHORT).show();
         } else if (item.getItemId() == R.id.drawer_menu_log_out) {
             logOutHandler(parentActivity);
         }

@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<layout>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data></data>
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -50,14 +49,34 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <EditText
-                    android:id="@+id/firstNameField"
+                    android:id="@+id/emailField"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="20sp"
                     android:background="@drawable/ic_view_blue_border"
+                    android:drawableStart="@drawable/ic_email"
+                    android:drawablePadding="10sp"
+                    android:enabled="false"
+                    android:hint="Email"
+                    android:inputType="textEmailAddress"
+                    android:padding="10sp"
+                    android:textColor="?attr/colorPrimary"
+                    android:textColorHint="?attr/colorPrimary"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    tools:text="Email" />
+
+                <EditText
+                    android:id="@+id/firstNameField"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="20sp"
+                    android:background="@drawable/ic_view_blue_border"
+                    android:drawableStart="@drawable/ic_user"
+                    android:drawablePadding="10sp"
                     android:hint="First name"
                     android:inputType="textPersonName"
-                    android:padding="18sp"
+                    android:padding="10sp"
                     android:textColor="?attr/colorPrimary"
                     android:textColorHint="?attr/colorPrimary"
                     android:textSize="18sp"
@@ -69,11 +88,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="20sp"
-                    android:layout_marginTop="20sp"
                     android:background="@drawable/ic_view_blue_border"
+                    android:drawableStart="@drawable/ic_user"
+                    android:drawablePadding="10sp"
                     android:hint="Last name"
                     android:inputType="textPersonName"
-                    android:padding="18sp"
+                    android:padding="10sp"
                     android:textColor="?attr/colorPrimary"
                     android:textColorHint="?attr/colorPrimary"
                     android:textSize="18sp"
@@ -87,9 +107,11 @@
                     android:layout_marginHorizontal="20sp"
                     android:layout_marginTop="20sp"
                     android:background="@drawable/ic_view_blue_border"
+                    android:drawableStart="@drawable/ic_pin"
+                    android:drawablePadding="10sp"
                     android:hint="PIN"
                     android:inputType="phone"
-                    android:padding="18sp"
+                    android:padding="10sp"
                     android:textColor="?attr/colorPrimary"
                     android:textColorHint="?attr/colorPrimary"
                     android:textSize="18sp"
@@ -102,9 +124,14 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="20sp"
                     android:drawablePadding="10sp"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:padding="10sp"
+                    android:text="Birth date"
                     android:textColor="?attr/colorPrimary"
                     android:textSize="18sp"
                     android:textStyle="bold"
+                    app:drawableStartCompat="@drawable/ic_birth_date"
                     tools:text="Birth date" />
 
                 <Button
@@ -113,7 +140,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="20sp"
                     android:background="@drawable/ic_view_blue_border"
-                    android:padding="18sp"
+                    android:padding="10sp"
                     android:stateListAnimator="@null"
                     android:text="Update profile"
                     android:textColor="?attr/colorPrimary"

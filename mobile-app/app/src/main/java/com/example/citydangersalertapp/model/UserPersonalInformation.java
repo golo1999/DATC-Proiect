@@ -1,8 +1,13 @@
 package com.example.citydangersalertapp.model;
 
+import androidx.annotation.NonNull;
+
+import java.time.LocalDate;
+
 public class UserPersonalInformation {
     private String id;
     private final boolean admin = false;
+    private MyCustomDate birthDate = new MyCustomDate(LocalDate.now());
     private String email;
     private String firstName;
     private String lastName;
@@ -50,6 +55,14 @@ public class UserPersonalInformation {
 
     public boolean isAdmin() {
         return admin;
+    }
+
+    public MyCustomDate getBirthDate() {
+        return birthDate;
+    }
+
+    public void setBirthDate(MyCustomDate birthDate) {
+        this.birthDate = birthDate;
     }
 
     public String getEmail() {
@@ -100,11 +113,13 @@ public class UserPersonalInformation {
         this.photoURL = photoURL;
     }
 
+    @NonNull
     @Override
     public String toString() {
         return "UserPersonalInformation{" +
                 "id='" + id + '\'' +
                 ", admin=" + admin +
+                ", birthDate=" + birthDate +
                 ", email='" + email + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +

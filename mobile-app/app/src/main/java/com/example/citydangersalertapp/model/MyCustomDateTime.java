@@ -4,7 +4,7 @@ import androidx.annotation.NonNull;
 
 import java.time.LocalDateTime;
 
-public class MyCustomTime {
+public class MyCustomDateTime {
     private int year;
     private int month;
     private String monthName;
@@ -14,18 +14,18 @@ public class MyCustomTime {
     private int minute;
     private int second;
 
-    public MyCustomTime() {
+    public MyCustomDateTime() {
         // Required empty public constructor
     }
 
-    public MyCustomTime(int year,
-                        int month,
-                        String monthName,
-                        int day,
-                        String dayName,
-                        int hour,
-                        int minute,
-                        int second) {
+    public MyCustomDateTime(int year,
+                            int month,
+                            String monthName,
+                            int day,
+                            String dayName,
+                            int hour,
+                            int minute,
+                            int second) {
         this.year = year;
         this.month = month;
         this.monthName = monthName;
@@ -36,12 +36,12 @@ public class MyCustomTime {
         this.second = second;
     }
 
-    public MyCustomTime(int year,
-                        int month,
-                        int day,
-                        int hour,
-                        int minute,
-                        int second) {
+    public MyCustomDateTime(int year,
+                            int month,
+                            int day,
+                            int hour,
+                            int minute,
+                            int second) {
         this.year = year;
         this.month = month;
         this.day = day;
@@ -50,7 +50,7 @@ public class MyCustomTime {
         this.second = second;
     }
 
-    public MyCustomTime(LocalDateTime localDateTime) {
+    public MyCustomDateTime(LocalDateTime localDateTime) {
         this.year = localDateTime.getYear();
         this.month = localDateTime.getMonthValue();
         this.monthName = String.valueOf(localDateTime.getMonth());

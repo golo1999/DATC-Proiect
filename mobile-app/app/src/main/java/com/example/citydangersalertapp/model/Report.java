@@ -7,24 +7,16 @@ import java.util.UUID;
 
 public class Report {
     private String reportId;
-
     private String userId;
-
     @Nullable
     private String note;
-
     private boolean checkStatus;
-
     @Nullable
     private String checkedBy;
-
     @Nullable
     private String photoURL;
-
-    private MyCustomTime dateTime;
-
+    private MyCustomDateTime dateTime;
     private int category;
-
     private UserLocation location;
 
     public Report() {
@@ -34,7 +26,7 @@ public class Report {
     public Report(String userId,
                   @Nullable String note,
                   @Nullable String photoURL,
-                  MyCustomTime dateTime,
+                  MyCustomDateTime dateTime,
                   int category,
                   UserLocation location) {
         this.reportId = String.valueOf(UUID.randomUUID());
@@ -51,7 +43,7 @@ public class Report {
                   @Nullable String note,
                   boolean checkStatus,
                   @Nullable String photoURL,
-                  MyCustomTime dateTime,
+                  MyCustomDateTime dateTime,
                   int category) {
         this.reportId = reportId;
         this.userId = userId;
@@ -66,7 +58,7 @@ public class Report {
                   String userId,
                   @Nullable String note,
                   boolean checkStatus,
-                  MyCustomTime dateTime,
+                  MyCustomDateTime dateTime,
                   int category,
                   UserLocation location) {
         this.reportId = reportId;
@@ -80,7 +72,7 @@ public class Report {
 
     public Report(String userId,
                   @Nullable String note,
-                  MyCustomTime dateTime,
+                  MyCustomDateTime dateTime,
                   int category) {
         this.reportId = String.valueOf(UUID.randomUUID());
         this.userId = userId;
@@ -140,11 +132,11 @@ public class Report {
         this.photoURL = photoURL;
     }
 
-    public MyCustomTime getDateTime() {
+    public MyCustomDateTime getDateTime() {
         return dateTime;
     }
 
-    public void setDateTime(MyCustomTime dateTime) {
+    public void setDateTime(MyCustomDateTime dateTime) {
         this.dateTime = dateTime;
     }
 
