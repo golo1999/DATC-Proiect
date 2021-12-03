@@ -15,25 +15,28 @@ const AllReports = (props) => {
   }, []);
 
   return (
-    <div className={classes.container}>
-      <ul>
-        {isLoading && (
-          <Container className={classes["spinner-container"]}>
-            <Spinner
-              className={classes.spinner}
-              animation="border"
-              role="status"
-            >
-              <span className="visually-hidden">Loading...</span>
-            </Spinner>
-          </Container>
-        )}
-        {!isLoading &&
-          reportsList.length > 0 &&
-          reportsList.map((report, index) => (
+    <div
+      className={
+        !isLoading && reportsList.length !== 0
+          ? classes.container
+          : classes["empty-container"]
+      }
+    >
+      {isLoading && (
+        <Container className={classes["spinner-container"]}>
+          <Spinner className={classes.spinner} animation="border" role="status">
+            <span className="visually-hidden">Loading...</span>
+          </Spinner>
+        </Container>
+      )}
+      {!isLoading && reportsList.length > 0 && (
+        <ul>
+          {reportsList.map((report, index) => (
             <ReportItem key={`report` + index} report={report} />
           ))}
-      </ul>
+        </ul>
+      )}
+      {!isLoading && reportsList.length === 0 && <h2>No reports found</h2>}
     </div>
   );
 };

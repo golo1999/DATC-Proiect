@@ -20,6 +20,15 @@ const reportsListSlice = createSlice({
 
       state.reportsList = newReportsList;
     },
+    updateReport: (state, action) => {
+      const updatedReport = action.payload.updatedReport;
+
+      const reportIndex = state.reportsList.findIndex(
+        (report) => report.reportId === updatedReport.reportId
+      );
+
+      state.reportsList[reportIndex] = updatedReport;
+    },
   },
 });
 

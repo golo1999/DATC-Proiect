@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router";
 
 import { reportActions } from "../store/report-slice";
+import { reportsListActions } from "../store/reports-list-slice";
 
 import { Button, Card, Modal } from "react-bootstrap";
 import { FaAngleRight, FaCheck } from "react-icons/fa";
@@ -61,7 +62,6 @@ const ReportItem = (props) => {
 
   const checkReportDetailsHandler = () => {
     dispatch(reportActions.setSelectedReport({ selectedReport: report }));
-
     history.push("/reports/" + report.reportId);
   };
 
@@ -94,7 +94,7 @@ const ReportItem = (props) => {
 
     set(reportDetailsRef, editedReport);
     setIsChecked((previousValue) => !previousValue);
-
+    dispatch(reportsListActions.updateReport({ updatedReport: editedReport }));
     closeModalHandler();
   };
 

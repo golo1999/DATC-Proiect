@@ -1,6 +1,12 @@
 .container {
 }
 
+.empty-container {
+  padding: 5vmax;
+  text-align: center;
+  margin: auto !important;
+}
+
 .spinner-container {
   align-items: center;
   display: flex;
