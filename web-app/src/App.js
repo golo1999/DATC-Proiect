@@ -14,11 +14,11 @@ import AllUsers from "./components/AllUsers";
 import Login from "./components/Authentication/Login";
 import Profile from "./components/Profile";
 import Register from "./components/Authentication/Register";
+import ReportDetails from "./components/ReportDetails";
 import TopBar from "./components/TopBar";
+import UserProfile from "./components/UserProfile";
 
 import "./App.css";
-import UserProfile from "./components/UserProfile";
-import ReportDetails from "./components/ReportDetails";
 
 const App = () => {
   const auth = getAuth();
@@ -40,64 +40,60 @@ const App = () => {
         onValue(personalInformationRef, (snapshot) => {
           const personalInformation = snapshot.val();
 
-          dispatch(
-            authActions.authenticateAdmin({
-              authenticatedAdmin: {
-                email: admin.email,
-                firstName: personalInformation.firstName,
-                id: admin.uid,
-                lastName: personalInformation.lastName,
-              },
-            })
-          );
+          if (personalInformation) {
+            dispatch(
+              authActions.authenticateAdmin({
+                authenticatedAdmin: {
+                  email: admin.email,
+                  firstName: personalInformation.firstName,
+                  id: admin.uid,
+                  lastName: personalInformation.lastName,
+                },
+              })
+            );
+          }
         });
       }
     });
   }, [auth, db, dispatch]);
 
   const fetchReportsList = useCallback(async () => {
-    onAuthStateChanged(auth, (admin) => {
-      if (admin) {
-        const usersListRef = ref(db, "usersList");
+    const usersListRef = ref(db, "usersList");
 
-        onValue(usersListRef, (snapshot) => {
-          const data = snapshot.val();
+    onValue(usersListRef, (snapshot) => {
+      const data = snapshot.val();
 
-          const usersList = Object.values(data);
+      const usersList = Object.values(data);
 
-          usersList.forEach((userDetails) => {
-            const userData = userDetails;
+      dispatch(reportsListActions.clearReportsList());
 
-            const userPersonalReportsList = Object.values(
-              userData.personalReports
-            );
+      usersList.forEach((userDetails) => {
+        const userData = userDetails;
 
-            userPersonalReportsList.forEach((report) => {
-              dispatch(reportsListActions.addReport({ report }));
-            });
-          });
+        const userPersonalReportsList = Object.values(userData.personalReports);
+
+        userPersonalReportsList.forEach((report) => {
+          dispatch(reportsListActions.addReport({ report }));
         });
-      }
+      });
     });
-  }, [auth, db, dispatch]);
+  }, [db, dispatch]);
 
   const fetchUsersList = useCallback(async () => {
-    onAuthStateChanged(auth, (admin) => {
-      if (admin) {
-        const usersListRef = ref(db, "usersList");
+    const usersListRef = ref(db, "usersList");
 
-        onValue(usersListRef, (snapshot) => {
-          const data = snapshot.val();
+    onValue(usersListRef, (snapshot) => {
+      const data = snapshot.val();
 
-          const usersList = Object.values(data);
+      const usersList = Object.values(data);
 
-          usersList.forEach((user) => {
-            dispatch(usersListActions.addUser({ user }));
-          });
-        });
-      }
+      dispatch(usersListActions.clearUsersList());
+
+      usersList.forEach((user) => {
+        dispatch(usersListActions.addUser({ user }));
+      });
     });
-  }, [auth, db, dispatch]);
+  }, [db, dispatch]);
 
   useEffect(() => {
     fetchAuthenticatedAdmin();

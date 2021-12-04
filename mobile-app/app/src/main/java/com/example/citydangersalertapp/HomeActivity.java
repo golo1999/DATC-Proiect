@@ -18,7 +18,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.citydangersalertapp.databinding.HomeActivityBinding;
 import com.example.citydangersalertapp.databinding.NavigationDrawerHeaderBinding;
 import com.example.citydangersalertapp.feature.HomeViewModel;
-import com.example.citydangersalertapp.feature.ProfileFragment;
+import com.example.citydangersalertapp.feature.editprofile.ProfileFragment;
 import com.example.citydangersalertapp.feature.SettingsFragment;
 import com.example.citydangersalertapp.feature.addreport.AddReportFragment;
 import com.example.citydangersalertapp.feature.myreports.MyReportsFragment;

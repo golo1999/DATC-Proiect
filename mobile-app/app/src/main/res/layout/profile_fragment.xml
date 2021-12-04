@@ -10,7 +10,7 @@
         android:layout_height="match_parent"
         android:paddingVertical="20sp"
         tools:background="?attr/colorSecondary"
-        tools:context=".feature.ProfileFragment">
+        tools:context=".feature.editprofile.ProfileFragment">
 
         <ScrollView
             android:layout_width="0sp"

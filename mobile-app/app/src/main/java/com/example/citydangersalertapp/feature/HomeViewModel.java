@@ -16,6 +16,7 @@ import com.example.citydangersalertapp.R;
 import com.example.citydangersalertapp.databinding.HomeActivityBinding;
 import com.example.citydangersalertapp.feature.addreport.AddReportFragment;
 import com.example.citydangersalertapp.feature.authentication.AuthenticationActivity;
+import com.example.citydangersalertapp.feature.editprofile.ProfileFragment;
 import com.example.citydangersalertapp.feature.editreport.EditReportFragment;
 import com.example.citydangersalertapp.feature.myreports.MyReportsFragment;
 import com.example.citydangersalertapp.feature.nearbydangersmap.NearbyDangersMapFragment;
