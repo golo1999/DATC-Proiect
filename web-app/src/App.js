@@ -12,6 +12,7 @@ import { usersListActions } from "./store/users-list-slice";
 import AllReports from "./components/AllReports";
 import AllUsers from "./components/AllUsers";
 import Login from "./components/Authentication/Login";
+import PageNotFound from "./components/PageNotFound";
 import Profile from "./components/Profile";
 import Register from "./components/Authentication/Register";
 import ReportDetails from "./components/ReportDetails";
@@ -123,9 +124,12 @@ const App = () => {
           {isAuthenticated && <Redirect to="/" />}
           {!isAuthenticated && <Register />}
         </Route>
-        <Route exact path="/reports">
-          {!isAuthenticated && <Redirect to="/login" />}
-          {isAuthenticated && <AllReports reports={reportsList} />}
+        <Route
+          exact
+          path="/reports"
+          component={() => <AllReports reports={reportsList} />}
+        >
+          {/* {!isAuthenticated && <Redirect to="/login" />} */}
         </Route>
         <Route path="/reports/:reportId">
           {!isAuthenticated && <Redirect to="/login" />}
@@ -146,8 +150,14 @@ const App = () => {
         <Route exact path="/logout">
           <Redirect to="/" />
         </Route>
+        <Route exact path="/page-not-found" component={PageNotFound} />
+        {/* <Route
+          exact
+          path="/page-not-found"
+          component={() => <PageNotFound errorCode="404" />}
+        ></Route> */}
         <Route path="*">
-          <Redirect to="/" />
+          <Redirect to="/page-not-found" />
         </Route>
       </Switch>
     </Fragment>

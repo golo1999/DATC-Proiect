@@ -40,7 +40,6 @@
                 android:id="@+id/fragmentContainer"
                 android:layout_width="match_parent"
                 android:layout_height="0sp"
-                android:paddingVertical="@dimen/fab_margin"
                 app:layout_constraintBottom_toTopOf="@id/addReportButton"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -51,12 +50,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom|end"
-                android:layout_marginEnd="@dimen/fab_margin"
-                android:layout_marginBottom="@dimen/fab_margin"
+                android:layout_margin="@dimen/fab_margin"
                 android:backgroundTint="?attr/colorPrimary"
                 android:onClick="@{() -> viewModel.addReportHandler(activity)}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/fragmentContainer"
                 app:srcCompat="@drawable/ic_add" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

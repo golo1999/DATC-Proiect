@@ -90,12 +90,12 @@
                         android:textSize="18sp"
                         android:textStyle="bold"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@id/saveButton"
+                        app:layout_constraintEnd_toStartOf="@id/addButton"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <Button
-                        android:id="@+id/saveButton"
+                        android:id="@+id/addButton"
                         android:layout_width="0sp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10sp"

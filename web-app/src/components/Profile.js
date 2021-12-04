@@ -275,7 +275,7 @@ const Profile = (props) => {
           enteredPassword
         );
 
-        reauthenticateWithCredential(currentAdmin, enteredPassword)
+        reauthenticateWithCredential(currentAdmin, credential)
           .then(() => {
             // User re-authenticated
             deleteUser(currentAdmin)

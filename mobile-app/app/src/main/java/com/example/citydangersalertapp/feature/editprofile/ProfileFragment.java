@@ -10,6 +10,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.citydangersalertapp.HomeActivity;
 import com.example.citydangersalertapp.R;
 import com.example.citydangersalertapp.databinding.ProfileFragmentBinding;
 
@@ -34,6 +35,7 @@ public class ProfileFragment extends Fragment {
                              ViewGroup container,
                              Bundle savedInstanceState) {
         setFragmentVariables(inflater, container);
+        setLayoutVariables();
 
         return binding.getRoot();
     }
@@ -42,5 +44,10 @@ public class ProfileFragment extends Fragment {
                                       ViewGroup container) {
         binding = DataBindingUtil.inflate(inflater, R.layout.profile_fragment, container, false);
         viewModel = new ViewModelProvider(requireActivity()).get(ProfileViewModel.class);
+    }
+
+    private void setLayoutVariables() {
+        binding.setActivity((HomeActivity) requireActivity());
+        binding.setViewModel(viewModel);
     }
 }
