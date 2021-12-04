@@ -1,6 +1,7 @@
 package com.example.citydangersalertapp.feature.authentication.register;
 
 import android.app.Activity;
+import android.util.Log;
 import android.util.Patterns;
 
 import androidx.annotation.NonNull;
@@ -104,6 +105,12 @@ public class RegisterViewModel extends ViewModel {
         } else {
             MyCustomMethods.showShortMessage(currentActivity, "Please complete all the inputs");
         }
+
+        Log.d("emailIsValid", String.valueOf(Patterns.EMAIL_ADDRESS.matcher(enteredEmail).matches()));
+        Log.d("passwordIsValid", String.valueOf(enteredPassword.length() >= 8));
+        Log.d("firstNameIsValid", String.valueOf(MyCustomMethods.nameIsValid(enteredFirstName)));
+        Log.d("lastNameIsValid", String.valueOf(MyCustomMethods.nameIsValid(enteredLastName)));
+        Log.d("pinIsValid", String.valueOf(MyCustomMethods.pinIsValid(enteredPIN)));
 
         return false;
     }

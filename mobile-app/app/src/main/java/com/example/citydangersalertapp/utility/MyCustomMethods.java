@@ -10,8 +10,11 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
+import com.example.citydangersalertapp.model.MyCustomDate;
+
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Arrays;
 
 public final class MyCustomMethods {
     private MyCustomMethods() {
@@ -27,6 +30,20 @@ public final class MyCustomMethods {
 
             manager.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
+    }
+
+    public static MyCustomDate getBirthDateFromPIN(String pin) {
+        if (pinIsValid(pin)) {
+            final int yearFromPIN = Integer.parseInt(pin.charAt(0) == '1' || pin.charAt(0) == '2' ?
+                    "19" + pin.substring(1, 3) : "20" + pin.substring(1, 3));
+            final int monthFromPIN = Integer.parseInt(pin.substring(3, 5));
+            final int dayFromPIN = Integer.parseInt(pin.substring(5, 7));
+            final LocalDate birthDateAsLocalDate = LocalDate.of(yearFromPIN, monthFromPIN, dayFromPIN);
+
+            return new MyCustomDate(birthDateAsLocalDate);
+        }
+
+        return null;
     }
 
 //    public static void finishActivityWithFadeTransition(final @NonNull Activity currentActivity) {
@@ -158,20 +175,30 @@ public final class MyCustomMethods {
         return true;
     }
 
-    public static boolean pinIsValid(String PIN) {
-        int currentIndex = -1;
-
-        if (PIN.length() != 13) {
+    public static boolean pinIsValid(String pin) {
+        if (pin.length() != 13) {
             return false;
-        } else for (final char digit : PIN.toCharArray()) {
-            ++currentIndex;
+        } else if (pin.charAt(0) != '1' && pin.charAt(0) != '2' && pin.charAt(0) != '5' && pin.charAt(0) != '6') {
+            return false;
+        } else {
+            final String year = pin.substring(1, 3);
+            final String month = pin.substring(3, 5);
+            final String day = pin.substring(5, 7);
+            final int parsedYear = Integer.parseInt(pin.charAt(0) == '1' || pin.charAt(0) == '2' ? "19" + year : "20" + year);
+            final int parsedMonth = Integer.parseInt(month);
+            final int parsedDay = Integer.parseInt(day);
 
-            if (currentIndex == 0 && digit != '1' && digit != '2' && digit != '5' && digit != '6') {
-                return false;
-            }
+            final boolean monthIsValid = Integer.parseInt(month) >= 1 && Integer.parseInt(month) <= 12;
+            final boolean dayIsValid31 = (Arrays.asList(1, 3, 5, 6, 7, 10, 12).contains(parsedMonth)) &&
+                    (parsedDay >= 1 && parsedDay <= 31);
+            final boolean dayIsValid30 = (Arrays.asList(4, 6, 9, 11).contains(parsedMonth)) &&
+                    (parsedDay >= 1 && parsedDay <= 30);
+            final boolean dayIsValidFebruary = (!yearIsLeap(parsedYear) && parsedDay >= 1 && parsedDay <= 28) ||
+                    (yearIsLeap(parsedYear) && parsedDay >= 1 && parsedDay <= 29);
+            final boolean dayIsValid = dayIsValid31 || dayIsValid30 || dayIsValidFebruary;
+
+            return monthIsValid && dayIsValid;
         }
-
-        return true;
     }
 
     public static void restartCurrentActivity(final Activity activity) {
@@ -186,6 +213,10 @@ public final class MyCustomMethods {
 
     public static void showLongMessage(final Context context, final String message) {
         Toast.makeText(context, message, Toast.LENGTH_LONG).show();
+    }
+
+    public static boolean yearIsLeap(int year) {
+        return ((year % 4 == 0) && (year % 100 != 0)) || (year % 400 == 0);
     }
 
 //    public static void signInWithFadeTransition(final @NonNull Activity currentActivity,

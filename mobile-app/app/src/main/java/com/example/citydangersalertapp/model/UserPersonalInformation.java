@@ -2,6 +2,8 @@ package com.example.citydangersalertapp.model;
 
 import androidx.annotation.NonNull;
 
+import com.example.citydangersalertapp.utility.MyCustomMethods;
+
 import java.time.LocalDate;
 
 public class UserPersonalInformation {
@@ -29,6 +31,10 @@ public class UserPersonalInformation {
         this.firstName = firstName;
         this.lastName = lastName;
         this.pin = pin;
+
+        if (MyCustomMethods.getBirthDateFromPIN(pin) != null) {
+            setBirthDate(MyCustomMethods.getBirthDateFromPIN(pin));
+        }
     }
 
     public UserPersonalInformation(String id,
@@ -45,6 +51,10 @@ public class UserPersonalInformation {
         this.lastName = lastName;
         this.level = level;
         this.pin = pin;
+
+        if (MyCustomMethods.getBirthDateFromPIN(pin) != null) {
+            setBirthDate(MyCustomMethods.getBirthDateFromPIN(pin));
+        }
     }
 
     public UserPersonalInformation(String id,
@@ -59,6 +69,10 @@ public class UserPersonalInformation {
         this.lastName = lastName;
         this.pin = pin;
         this.photoURL = photoURL;
+
+        if (MyCustomMethods.getBirthDateFromPIN(pin) != null) {
+            setBirthDate(MyCustomMethods.getBirthDateFromPIN(pin));
+        }
     }
 
     public String getId() {
