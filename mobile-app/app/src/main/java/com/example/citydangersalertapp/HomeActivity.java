@@ -1,9 +1,11 @@
 package com.example.citydangersalertapp;
 
+import android.app.DatePickerDialog;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.DatePicker;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -18,9 +20,9 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.citydangersalertapp.databinding.HomeActivityBinding;
 import com.example.citydangersalertapp.databinding.NavigationDrawerHeaderBinding;
 import com.example.citydangersalertapp.feature.HomeViewModel;
-import com.example.citydangersalertapp.feature.editprofile.ProfileFragment;
 import com.example.citydangersalertapp.feature.SettingsFragment;
 import com.example.citydangersalertapp.feature.addreport.AddReportFragment;
+import com.example.citydangersalertapp.feature.editprofile.ProfileFragment;
 import com.example.citydangersalertapp.feature.myreports.MyReportsFragment;
 import com.example.citydangersalertapp.feature.myreports.MyReportsListAdapter;
 import com.example.citydangersalertapp.feature.nearbydangersmap.NearbyDangersMapFragment;
@@ -29,12 +31,15 @@ import com.example.citydangersalertapp.utility.DeleteReportCustomDialog;
 import com.example.citydangersalertapp.utility.MyCustomVariables;
 import com.google.android.material.navigation.NavigationView;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class HomeActivity
         extends AppCompatActivity
-        implements DeleteReportCustomDialog.DeleteDialogListener,
-        NavigationView.OnNavigationItemSelectedListener {
+        implements DatePickerDialog.OnDateSetListener,
+        DeleteReportCustomDialog.DeleteDialogListener,
+        NavigationView.OnNavigationItemSelectedListener,
+        ProfileFragment.OnBirthDateReceivedCallback {
     private HomeActivityBinding homeActivityBinding;
     private NavigationDrawerHeaderBinding drawerHeaderBinding;
     private HomeViewModel viewModel;
@@ -64,6 +69,15 @@ public class HomeActivity
             }
 
             viewModel.setBackPressedTime(System.currentTimeMillis());
+        }
+    }
+
+    @Override
+    public void onBirthDateReceived(LocalDate newBirthDate) {
+        final Fragment currentDisplayedFragment = viewModel.getCurrentFragment();
+
+        if (currentDisplayedFragment instanceof ProfileFragment) {
+            ((ProfileFragment) currentDisplayedFragment).setBirthDateText(newBirthDate);
         }
     }
 
@@ -102,6 +116,16 @@ public class HomeActivity
     @Override
     public void onDialogNegativeClick(DialogFragment dialog) {
 
+    }
+
+    @Override
+    public void onDateSet(DatePicker view,
+                          int year,
+                          int month,
+                          int dayOfMonth) {
+        final LocalDate newBirthDate = LocalDate.of(year, month + 1, dayOfMonth);
+
+        onBirthDateReceived(newBirthDate);
     }
 
     @Override

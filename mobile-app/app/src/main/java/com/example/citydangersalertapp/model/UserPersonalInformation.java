@@ -32,6 +32,22 @@ public class UserPersonalInformation {
     }
 
     public UserPersonalInformation(String id,
+                                   MyCustomDate birthDate,
+                                   String email,
+                                   String firstName,
+                                   String lastName,
+                                   int level,
+                                   String pin) {
+        this.id = id;
+        this.birthDate = birthDate;
+        this.email = email;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.level = level;
+        this.pin = pin;
+    }
+
+    public UserPersonalInformation(String id,
                                    String email,
                                    String firstName,
                                    String lastName,

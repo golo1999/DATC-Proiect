@@ -145,6 +145,35 @@ public final class MyCustomMethods {
         currentActivity.finish();
     }
 
+    public static boolean nameIsValid(String name) {
+        if (name.length() < 2) {
+            return false;
+        } else for (final char character : name.toCharArray()) {
+            // if the character is not a letter
+            if (!Character.isLetter(character)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public static boolean pinIsValid(String PIN) {
+        int currentIndex = -1;
+
+        if (PIN.length() != 13) {
+            return false;
+        } else for (final char digit : PIN.toCharArray()) {
+            ++currentIndex;
+
+            if (currentIndex == 0 && digit != '1' && digit != '2' && digit != '5' && digit != '6') {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     public static void restartCurrentActivity(final Activity activity) {
         activity.startActivity(activity.getIntent());
         activity.finish();

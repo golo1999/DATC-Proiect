@@ -8,7 +8,7 @@ import androidx.databinding.ObservableField;
 import androidx.lifecycle.ViewModel;
 
 import com.example.citydangersalertapp.feature.authentication.AuthenticationActivity;
-import com.example.citydangersalertapp.feature.authentication.login.*;
+import com.example.citydangersalertapp.feature.authentication.login.LogInFragment;
 import com.example.citydangersalertapp.model.UserPersonalInformation;
 import com.example.citydangersalertapp.utility.MyCustomMethods;
 import com.example.citydangersalertapp.utility.MyCustomVariables;
@@ -70,35 +70,6 @@ public class RegisterViewModel extends ViewModel {
         ((AuthenticationActivity) currentActivity).setFragment(new LogInFragment());
     }
 
-    private boolean nameIsValid(String name) {
-        if (name.length() < 2) {
-            return false;
-        } else for (final char character : name.toCharArray()) {
-            // if the character is not a letter
-            if (!Character.isLetter(character)) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    private boolean pinIsValid(String PIN) {
-        int currentIndex = -1;
-
-        if (PIN.length() != 13) {
-            return false;
-        } else for (final char digit : PIN.toCharArray()) {
-            ++currentIndex;
-
-            if (currentIndex == 0 && digit != '1' && digit != '2' && digit != '5' && digit != '6') {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
     private boolean registrationIsValid(@NonNull Activity currentActivity,
                                         String enteredEmail,
                                         String enteredPassword,
@@ -108,9 +79,9 @@ public class RegisterViewModel extends ViewModel {
         // if all inputs are valid
         if (Patterns.EMAIL_ADDRESS.matcher(enteredEmail).matches() &&
                 enteredPassword.length() >= 8 &&
-                nameIsValid(enteredFirstName) &&
-                nameIsValid(enteredLastName) &&
-                pinIsValid(enteredPIN)
+                MyCustomMethods.nameIsValid(enteredFirstName) &&
+                MyCustomMethods.nameIsValid(enteredLastName) &&
+                MyCustomMethods.pinIsValid(enteredPIN)
         ) {
             return true;
         } else if (enteredEmail.isEmpty() &&

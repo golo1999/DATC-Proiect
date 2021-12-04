@@ -3,6 +3,7 @@ package com.example.citydangersalertapp.model;
 import androidx.annotation.NonNull;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 public class MyCustomDate {
     private int year;
@@ -81,6 +82,19 @@ public class MyCustomDate {
 
     public void setDayName(String dayName) {
         this.dayName = dayName;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        MyCustomDate that = (MyCustomDate) o;
+        return year == that.year && month == that.month && day == that.day && monthName.equals(that.monthName) && dayName.equals(that.dayName);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(year, month, monthName, day, dayName);
     }
 
     @NonNull
