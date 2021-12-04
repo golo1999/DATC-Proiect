@@ -1,8 +1,10 @@
 import { getDatabase, ref, onValue } from "firebase/database";
-import React from "react";
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
 
 import { Card, Col, Container, Row } from "react-bootstrap";
+
+import Map from "./CustomMap";
 
 import classes from "./ReportDetails.module.css";
 
@@ -29,6 +31,8 @@ const ReportDetails = (props) => {
 
   const selectedReportLocation = selectedReport.location;
 
+  const [mapIsVisible, setMapIsVisible] = useState(true);
+
   const selectedReportParsedDateTime =
     (selectedReportDateTime.day < 10
       ? "0" + selectedReportDateTime.day
@@ -52,9 +56,9 @@ const ReportDetails = (props) => {
       ? "0" + selectedReportDateTime.second
       : selectedReportDateTime.second);
 
-  console.log(selectedReport);
-
-  console.log(selectedReportLocation);
+  const toggleMapHandler = () => {
+    setMapIsVisible((prevValue) => !prevValue);
+  };
 
   return (
     <div className={classes["main-container"]}>
@@ -145,6 +149,25 @@ const ReportDetails = (props) => {
               </Row>
             </Col>
           </Row>
+          {selectedReportLocation && (
+            <Row>
+              <Container>
+                <Row>
+                  <h5
+                    className={classes["map-toggler"]}
+                    onClick={toggleMapHandler}
+                  >
+                    {mapIsVisible ? "Hide map" : "Show map"}
+                  </h5>
+                </Row>
+                {mapIsVisible && (
+                  <Row className={classes.map}>
+                    <Map />
+                  </Row>
+                )}
+              </Container>
+            </Row>
+          )}
         </Container>
       </Card>
     </div>
