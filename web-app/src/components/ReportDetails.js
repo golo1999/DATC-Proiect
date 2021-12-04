@@ -27,6 +27,8 @@ const ReportDetails = (props) => {
 
   const selectedReportDateTime = selectedReport.dateTime;
 
+  const selectedReportLocation = selectedReport.location;
+
   const selectedReportParsedDateTime =
     (selectedReportDateTime.day < 10
       ? "0" + selectedReportDateTime.day
@@ -51,6 +53,8 @@ const ReportDetails = (props) => {
       : selectedReportDateTime.second);
 
   console.log(selectedReport);
+
+  console.log(selectedReportLocation);
 
   return (
     <div className={classes["main-container"]}>
@@ -109,7 +113,7 @@ const ReportDetails = (props) => {
                   <Row>
                     <Col>
                       <p>
-                        <b>User name</b>
+                        <b>Principal</b>
                       </p>
                     </Col>
                     <Col>
@@ -118,6 +122,22 @@ const ReportDetails = (props) => {
                         ? retrievedPersonalInformation.firstName +
                           " " +
                           retrievedPersonalInformation.lastName
+                        : "Unknown"}
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col>
+                      <p>
+                        <b>Location</b>
+                      </p>
+                    </Col>
+                    <Col>
+                      {selectedReportLocation
+                        ? selectedReportLocation.city +
+                          " | " +
+                          selectedReportLocation.regionName +
+                          " | " +
+                          selectedReportLocation.country
                         : "Unknown"}
                     </Col>
                   </Row>

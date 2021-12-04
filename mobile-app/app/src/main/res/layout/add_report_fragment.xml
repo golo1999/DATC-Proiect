@@ -11,6 +11,10 @@
             type="com.example.citydangersalertapp.HomeActivity" />
 
         <variable
+            name="fragment"
+            type="com.example.citydangersalertapp.feature.addreport.AddReportFragment" />
+
+        <variable
             name="viewModel"
             type="com.example.citydangersalertapp.feature.addreport.AddReportViewModel" />
 
@@ -100,7 +104,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10sp"
                         android:background="@drawable/ic_view_blue_border"
-                        android:onClick="@{() -> viewModel.saveReportHandler(activity)}"
+                        android:onClick="@{() -> viewModel.saveReportHandler(activity, fragment)}"
                         android:padding="10sp"
                         android:text="Add"
                         android:textColor="?attr/colorPrimary"

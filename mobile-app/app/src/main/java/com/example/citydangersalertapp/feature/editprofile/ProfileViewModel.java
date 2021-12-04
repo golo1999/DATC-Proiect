@@ -84,6 +84,10 @@ public class ProfileViewModel extends ViewModel {
 //        }
     }
 
+    public void changePhotoHandler() {
+
+    }
+
     public boolean personalInformationIsValid(String firstName,
                                               String lastName,
                                               String pin) {

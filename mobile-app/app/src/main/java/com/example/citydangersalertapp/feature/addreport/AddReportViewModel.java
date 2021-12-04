@@ -5,6 +5,7 @@ import android.app.Activity;
 import androidx.annotation.NonNull;
 import androidx.databinding.ObservableField;
 import androidx.databinding.ObservableInt;
+import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModel;
 
 import com.example.citydangersalertapp.model.MyCustomDateTime;
@@ -45,13 +46,20 @@ public class AddReportViewModel extends ViewModel {
         parentActivity.onBackPressed();
     }
 
-    public void saveReportHandler(@NonNull Activity parentActivity) {
+    private void resetInputs() {
+        reportNote.set("");
+        reportCategory.set(0);
+    }
+
+    public void saveReportHandler(@NonNull Activity parentActivity,
+                                  @NonNull Fragment fragment) {
         final Call<UserLocation> userLocationCall = api.getUserLocation();
         final String currentUserId = MyCustomVariables.getFirebaseAuth().getUid();
         final String reportNote = String.valueOf(getReportNote().get()).trim().isEmpty() ? null : getReportNote().get();
         final MyCustomDateTime reportLocalDateTime = new MyCustomDateTime(LocalDateTime.now());
         final Report newReport = new Report(currentUserId, reportNote, reportLocalDateTime, reportCategory.get());
 
+        ((AddReportFragment) fragment).toggleButton(false);
         MyCustomMethods.closeTheKeyboard(parentActivity);
 
         userLocationCall.enqueue(new Callback<UserLocation>() {
@@ -82,6 +90,9 @@ public class AddReportViewModel extends ViewModel {
                             })
                             .addOnFailureListener(e -> MyCustomMethods.showShortMessage(parentActivity,
                                     "Couldn't add the report. Please try again"));
+
+                    ((AddReportFragment) fragment).toggleButton(true);
+                    resetInputs();
                 }
             }
 

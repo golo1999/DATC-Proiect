@@ -48,6 +48,11 @@ public class AddReportFragment extends Fragment {
 
     private void setLayoutVariables() {
         binding.setActivity((HomeActivity) requireActivity());
+        binding.setFragment(this);
         binding.setViewModel(viewModel);
+    }
+
+    public void toggleButton(boolean enabled) {
+        binding.addButton.setEnabled(enabled);
     }
 }
