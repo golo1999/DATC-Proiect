@@ -128,6 +128,7 @@
                     android:drawablePadding="10sp"
                     android:hint="PIN"
                     android:inputType="numberSigned"
+                    android:maxLength="13"
                     android:padding="10sp"
                     android:text="@={viewModel.pin}"
                     android:textColor="?attr/colorPrimary"

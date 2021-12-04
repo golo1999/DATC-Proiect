@@ -89,8 +89,11 @@ public class ProfileFragment extends Fragment {
 
                                     binding.emailField.setHint(personalInformation.getEmail());
                                     binding.firstNameField.setHint(personalInformation.getFirstName());
+                                    binding.firstNameField.setText(personalInformation.getFirstName());
                                     binding.lastNameField.setHint(personalInformation.getLastName());
+                                    binding.lastNameField.setText(personalInformation.getLastName());
                                     binding.pinField.setHint(personalInformation.getPin());
+                                    binding.pinField.setText(personalInformation.getPin());
 
                                     setBirthDateText(LocalDate.of(birthDate.getYear(), birthDate.getMonth(), birthDate.getDay()));
                                 }

@@ -91,30 +91,31 @@ public class ProfileViewModel extends ViewModel {
     }
 
     public void updateProfileHandler(@NonNull Activity parentActivity) {
-        if (personalInformationIsValid(firstName.get(), lastName.get(), pin.get())) {
-            MyCustomMethods.closeTheKeyboard(parentActivity);
+        final String enteredFirstName = firstName.get();
+        final String enteredLastName = lastName.get();
+        final String enteredPIN = pin.get();
 
-            final String currentUserID = MyCustomVariables.getFirebaseAuth().getUid();
+        if (enteredFirstName != null && enteredLastName != null && enteredPIN != null) {
+            if (personalInformationIsValid(enteredFirstName, enteredLastName, enteredPIN)) {
+                MyCustomMethods.closeTheKeyboard(parentActivity);
 
-            if (currentUserID != null) {
-                MyCustomVariables.getDatabaseReference()
-                        .child("usersList")
-                        .child(currentUserID)
-                        .addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                if (snapshot.exists() &&
-                                        snapshot.hasChild("personalInformation")) {
-                                    final UserPersonalInformation personalInformation =
-                                            snapshot.child("personalInformation").getValue(UserPersonalInformation.class);
+                final String currentUserID = MyCustomVariables.getFirebaseAuth().getUid();
 
-                                    if (personalInformation != null) {
-                                        final String enteredFirstName = firstName.get();
-                                        final String enteredLastName = lastName.get();
-                                        final String enteredPIN = pin.get();
-                                        final MyCustomDate chosenBirthDate = new MyCustomDate(birthDate);
+                if (currentUserID != null) {
+                    MyCustomVariables.getDatabaseReference()
+                            .child("usersList")
+                            .child(currentUserID)
+                            .addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                    if (snapshot.exists() &&
+                                            snapshot.hasChild("personalInformation")) {
+                                        final UserPersonalInformation personalInformation =
+                                                snapshot.child("personalInformation").getValue(UserPersonalInformation.class);
 
-                                        if (enteredFirstName != null && enteredLastName != null && enteredPIN != null) {
+                                        if (personalInformation != null) {
+                                            final MyCustomDate chosenBirthDate = new MyCustomDate(birthDate);
+
                                             final boolean enteredFirstNameIsTheSame =
                                                     enteredFirstName.trim().equals(personalInformation.getFirstName());
                                             final boolean enteredLastNameIsTheSame =
@@ -140,35 +141,42 @@ public class ProfileViewModel extends ViewModel {
                                                 personalInformation.setBirthDate(chosenBirthDate);
                                             }
 
-                                            if (!enteredFirstNameIsTheSame &&
-                                                    !enteredLastNameIsTheSame &&
-                                                    !enteredPinIsTheSame) {
-                                                MyCustomVariables.getDatabaseReference()
-                                                        .child("usersList")
-                                                        .child(currentUserID)
-                                                        .child("personalInformation")
-                                                        .setValue(personalInformation)
-                                                        .addOnCompleteListener((Task<Void> task) -> {
-                                                            MyCustomMethods.showShortMessage(parentActivity,
-                                                                    "Profile updated");
-                                                            parentActivity.onBackPressed();
-                                                        });
-                                            } else {
+                                            MyCustomVariables.getDatabaseReference()
+                                                    .child("usersList")
+                                                    .child(currentUserID)
+                                                    .child("personalInformation")
+                                                    .setValue(personalInformation)
+                                                    .addOnCompleteListener((Task<Void> task) -> {
+                                                        MyCustomMethods.showShortMessage(parentActivity,
+                                                                "Profile updated");
+                                                        parentActivity.onBackPressed();
+                                                    });
 
-                                            }
                                         }
                                     }
                                 }
-                            }
 
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError error) {
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
 
-                            }
-                        });
+                                }
+                            });
+                }
+            } else if (enteredFirstName.trim().isEmpty() &&
+                    enteredLastName.trim().isEmpty() &&
+                    enteredPIN.isEmpty()) {
+                MyCustomMethods.showShortMessage(parentActivity, "Please fill in all fields");
+            } else if ((enteredFirstName.trim().isEmpty() || enteredLastName.trim().isEmpty() ||
+                    (!MyCustomMethods.nameIsValid(enteredFirstName.trim()) || !MyCustomMethods.nameIsValid(enteredLastName.trim())))) {
+                MyCustomMethods.showShortMessage(parentActivity, "All names should have at least 2 characters");
+            } else if (enteredPIN.isEmpty() || !MyCustomMethods.pinIsValid(enteredPIN)) {
+                MyCustomMethods.showShortMessage(parentActivity, "PIN should have 13 characters");
+            } else if (!MyCustomMethods.nameIsValid(enteredFirstName.trim()) &&
+                    !MyCustomMethods.nameIsValid(enteredLastName.trim()) &&
+                    !MyCustomMethods.pinIsValid(enteredPIN)) {
+                MyCustomMethods.showShortMessage(parentActivity,
+                        "All names should have at least 2 characters and PIN should have 13");
             }
-        } else {
-            MyCustomMethods.showShortMessage(parentActivity, "Not valid");
         }
     }
 }
