@@ -12,6 +12,7 @@ import { usersListActions } from "./store/users-list-slice";
 import AllReports from "./components/AllReports";
 import AllUsers from "./components/AllUsers";
 import Login from "./components/Authentication/Login";
+import Map from "./components/Map";
 import PageNotFound from "./components/PageNotFound";
 import Profile from "./components/Profile";
 import Register from "./components/Authentication/Register";
@@ -27,6 +28,13 @@ const App = () => {
   const db = getDatabase();
 
   const dispatch = useDispatch();
+
+  const { REACT_APP_GOOGLE_KEY: GOOGLE_KEY } = process.env;
+
+  const googleMapURL =
+    "https://maps.googleapis.com/maps/api/js?key=" +
+    GOOGLE_KEY +
+    "&v=3.exp&libraries=geometry,drawing,places";
 
   const history = useHistory();
 
@@ -143,6 +151,20 @@ const App = () => {
           {!isAuthenticated && <Redirect to="/login" />}
           {isAuthenticated && <UserProfile />}
         </Route>
+        <Route
+          exact
+          path="/map"
+          component={() => (
+            <Map
+              isMarkerShown={false}
+              // isMarkerShown // for showing a marker
+              googleMapURL={googleMapURL}
+              loadingElement={<div style={{ height: "100%" }} />}
+              containerElement={<div style={{ height: "500px" }} />}
+              mapElement={<div style={{ height: "100%" }} />}
+            />
+          )}
+        ></Route>
         <Route exact path="/profile">
           {!isAuthenticated && <Redirect to="/login" />}
           {isAuthenticated && <Profile />}

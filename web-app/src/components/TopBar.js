@@ -18,6 +18,8 @@ const TopBar = () => {
 
   const [usersLinkIsActive, setUsersLinkIsActive] = useState(false);
 
+  const [mapLinkIsActive, setMapLinkIsActive] = useState(false);
+
   const [profileLinkIsActive, setProfileLinkIsActive] = useState(false);
 
   const [navbarIsExpanded, setNavbarIsExpanded] = useState(false);
@@ -42,6 +44,10 @@ const TopBar = () => {
         setUsersLinkIsActive((prevState) => !prevState);
       }
 
+      if (mapLinkIsActive) {
+        setMapLinkIsActive((prevState) => !prevState);
+      }
+
       if (profileLinkIsActive) {
         setProfileLinkIsActive((prevState) => !prevState);
       }
@@ -52,6 +58,26 @@ const TopBar = () => {
 
       if (!usersLinkIsActive) {
         setUsersLinkIsActive((prevState) => !prevState);
+      }
+
+      if (mapLinkIsActive) {
+        setMapLinkIsActive((prevState) => !prevState);
+      }
+
+      if (profileLinkIsActive) {
+        setProfileLinkIsActive((prevState) => !prevState);
+      }
+    } else if (location.pathname === "/map") {
+      if (reportsLinkIsActive) {
+        setReportsLinkIsActive((prevState) => !prevState);
+      }
+
+      if (usersLinkIsActive) {
+        setUsersLinkIsActive((prevState) => !prevState);
+      }
+
+      if (!mapLinkIsActive) {
+        setMapLinkIsActive((prevState) => !prevState);
       }
 
       if (profileLinkIsActive) {
@@ -66,6 +92,10 @@ const TopBar = () => {
         setUsersLinkIsActive((prevState) => !prevState);
       }
 
+      if (mapLinkIsActive) {
+        setMapLinkIsActive((prevState) => !prevState);
+      }
+
       if (!profileLinkIsActive) {
         setProfileLinkIsActive((prevState) => !prevState);
       }
@@ -76,6 +106,10 @@ const TopBar = () => {
 
       if (usersLinkIsActive) {
         setUsersLinkIsActive((prevState) => !prevState);
+      }
+
+      if (mapLinkIsActive) {
+        setMapLinkIsActive((prevState) => !prevState);
       }
 
       if (profileLinkIsActive) {
@@ -112,6 +146,16 @@ const TopBar = () => {
 
     if (location.pathname !== "/reports") {
       history.push("/reports");
+    }
+  };
+
+  const redirectToMapPageHandler = () => {
+    if (navbarIsExpanded) {
+      toggleNavbarHandler();
+    }
+
+    if (location.pathname !== "/map") {
+      history.push("/map");
     }
   };
 
@@ -187,6 +231,21 @@ const TopBar = () => {
                 onClick={redirectToUsersPageHandler}
               >
                 Users
+              </Nav.Link>
+              <Nav.Link
+                active={mapLinkIsActive}
+                className={
+                  navbarIsExpanded && mapLinkIsActive
+                    ? classes["nav-link-active"]
+                    : navbarIsExpanded && !mapLinkIsActive
+                    ? classes["nav-link"]
+                    : !navbarIsExpanded && mapLinkIsActive
+                    ? classes["nav-link-active-centered"]
+                    : classes["nav-link-centered"]
+                }
+                onClick={redirectToMapPageHandler}
+              >
+                Map
               </Nav.Link>
             </Nav>
 
