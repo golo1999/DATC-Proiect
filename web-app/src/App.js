@@ -6,6 +6,7 @@ import { useHistory } from "react-router";
 import { Redirect, Route, Switch } from "react-router-dom";
 
 import { authActions } from "./store/auth-slice";
+import { locationActions } from "./store/location-slice";
 import { reportsListActions } from "./store/reports-list-slice";
 import { usersListActions } from "./store/users-list-slice";
 
@@ -37,6 +38,46 @@ const App = () => {
     "&v=3.exp&libraries=geometry,drawing,places";
 
   const history = useHistory();
+
+  const reportsLocation = [
+    {
+      category: 0,
+      name: "location1",
+      position: { lat: 45.2909465, lng: 21.8945535 },
+    },
+    {
+      category: 2,
+      name: "location2",
+      position: { lat: 45.285799605761326, lng: 21.88802333548665 },
+    },
+  ];
+
+  const fetchCurrentLocation = useCallback(async () => {
+    try {
+      // const details = {
+      //   headers: { "Content-Type": "application/json" },
+      //   method: "POST",
+      // };
+
+      const response = await fetch("http://ip-api.com/json/?fields=223");
+
+      if (!response.ok) {
+        throw new Error("Something went wrong!");
+      }
+
+      const data = await response.json();
+
+      dispatch(
+        locationActions.setAdminLocation({
+          newLocation: { latitude: data.lat, longitude: data.lon },
+        })
+      );
+
+      // setMovies(loadedMovies);
+    } catch (error) {
+      // setError(error.message);
+    }
+  }, [dispatch]);
 
   const fetchAuthenticatedAdmin = useCallback(async () => {
     onAuthStateChanged(auth, (admin) => {
@@ -76,13 +117,42 @@ const App = () => {
 
       dispatch(reportsListActions.clearReportsList());
 
+      dispatch(locationActions.clearReportsLocationList());
+
       usersList.forEach((userDetails) => {
         const userData = userDetails;
 
         const userPersonalReportsList = Object.values(userData.personalReports);
 
         userPersonalReportsList.forEach((report) => {
+          const reportLocation = report.location;
+
           dispatch(reportsListActions.addReport({ report }));
+
+          if (reportLocation) {
+            dispatch(
+              locationActions.addReportLocation({
+                newReportLocation: {
+                  category: report.category,
+                  name: report.note ? report.note : "No note provided",
+                  position: {
+                    lat: reportLocation.latitude,
+                    lng: reportLocation.longitude,
+                  },
+                },
+              })
+            );
+          }
+
+          /*
+
+          {
+      category: 0,
+      name: "location1",
+      position: { lat: 45.2909465, lng: 21.8945535 },
+    },
+
+          */
         });
       });
     });
@@ -106,15 +176,33 @@ const App = () => {
 
   useEffect(() => {
     fetchAuthenticatedAdmin();
+    fetchCurrentLocation();
     fetchReportsList();
     fetchUsersList();
-  }, [dispatch, fetchAuthenticatedAdmin, fetchReportsList, fetchUsersList]);
+  }, [
+    dispatch,
+    fetchAuthenticatedAdmin,
+    fetchCurrentLocation,
+    fetchReportsList,
+    fetchUsersList,
+  ]);
 
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
 
+  const adminLocation = useSelector((state) => state.location.adminLocation);
+
   const reportsList = useSelector((state) => state.reportsList.reportsList);
 
+  const reportsLocationList = useSelector(
+    (state) => state.location.reportsLocationList
+  );
+
   const usersList = useSelector((state) => state.usersList.usersList);
+
+  // navigator.geolocation.getCurrentPosition((position) => {
+  //   console.log("CURRENT POSITION");
+  //   console.log(position.coords.latitude + " " + position.coords.longitude);
+  // });
 
   return (
     <Fragment>
@@ -157,10 +245,16 @@ const App = () => {
           component={() => (
             <Map
               isMarkerShown={false}
+              centerCoordinates={{
+                lat: adminLocation.latitude,
+                lng: adminLocation.longitude,
+              }}
+              // reportsLocation={reportsLocation}
+              reportsLocation={reportsLocationList}
               // isMarkerShown // for showing a marker
               googleMapURL={googleMapURL}
               loadingElement={<div style={{ height: "100%" }} />}
-              containerElement={<div style={{ height: "500px" }} />}
+              containerElement={<div style={{ flex: "1", height: "100%" }} />}
               mapElement={<div style={{ height: "100%" }} />}
             />
           )}

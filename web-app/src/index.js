@@ -1,4 +1,4 @@
-import React, { StrictMode } from "react";
+import React, { Fragment } from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter } from "react-router-dom";
 
@@ -12,12 +12,12 @@ import "./index.css";
 import { Provider } from "react-redux";
 
 ReactDOM.render(
-  <StrictMode>
+  <Fragment>
     <BrowserRouter>
       <Provider store={store}>
         <App />
       </Provider>
     </BrowserRouter>
-  </StrictMode>,
+  </Fragment>,
   document.getElementById("root")
 );

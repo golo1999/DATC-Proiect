@@ -32,10 +32,12 @@ code {
 
 #root {
   background: #adefd1;
-  height: 100vh;
-  max-width: 100vw;
-  max-height: 100vh;
-  /* font-family: "Indie Flower", cursive; */
+  display: flex;
+  flex-direction: column;
   font-family: "Ubuntu", sans-serif;
+  height: 100vh;
+  max-height: 100vh;
+  max-width: 100vw;
+  /* font-family: "Indie Flower", cursive; */
   /* font-family: "JetBrains Mono", monospace; */
 }

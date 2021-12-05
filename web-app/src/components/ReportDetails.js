@@ -170,9 +170,12 @@ const ReportDetails = (props) => {
                 </Row>
                 {mapIsVisible && (
                   <Row className={classes.map}>
-                    {/* <CustomMap /> */}
                     <Map
                       isMarkerShown // for showing a marker
+                      centerCoordinates={{
+                        lat: selectedReportLocation.latitude,
+                        lng: selectedReportLocation.longitude,
+                      }}
                       googleMapURL={googleMapURL}
                       loadingElement={customStyle}
                       containerElement={customStyle}

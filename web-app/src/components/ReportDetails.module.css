@@ -27,6 +27,11 @@
   align-items: center;
 }
 
+.map-toggler {
+  color: gold !important;
+  font-weight: bold;
+}
+
 .map {
-  height: 500px !important;
+  height: 25em !important;
 }

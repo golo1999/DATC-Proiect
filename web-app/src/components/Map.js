@@ -8,20 +8,39 @@ import {
 
 const Map = withScriptjs(
   withGoogleMap((props) => {
-    const centerCoordinates = {
-      lat: 45.2913542,
-      lng: 21.8958344,
-    };
+    const centerCoordinates = props.centerCoordinates;
 
-    const containerStyle = { width: "100%", height: "500px" };
+    const reportsLocation = props.reportsLocation;
 
     return (
-      <GoogleMap
-        defaultCenter={centerCoordinates}
-        defaultZoom={18}
-        // mapContainerStyle={containerStyle}
-      >
+      <GoogleMap defaultCenter={centerCoordinates} defaultZoom={18}>
         {props.isMarkerShown && <Marker position={centerCoordinates} />}
+        {reportsLocation &&
+          reportsLocation.map((location, index) => (
+            <Marker
+              key={index}
+              // icon={
+              //   {
+              //     // url: "http://maps.google.com/mapfiles/ms/icons/purple-dot.png",
+              //   }
+              // }
+              label={{
+                text:
+                  location.category === 0
+                    ? "D"
+                    : location.category === 1
+                    ? "G"
+                    : location.category === 2
+                    ? "P"
+                    : "V",
+              }}
+              onClick={() => {
+                alert("ez");
+              }}
+              position={location.position}
+              title={location.name}
+            />
+          ))}
       </GoogleMap>
     );
   })
