@@ -9,8 +9,8 @@ import {
 const Map = withScriptjs(
   withGoogleMap((props) => {
     const centerCoordinates = {
-      lat: 45.299800872802734,
-      lng: 21.88010025024414,
+      lat: 45.2913542,
+      lng: 21.8958344,
     };
 
     const containerStyle = { width: "100%", height: "500px" };
@@ -18,7 +18,7 @@ const Map = withScriptjs(
     return (
       <GoogleMap
         defaultCenter={centerCoordinates}
-        defaultZoom={15}
+        defaultZoom={18}
         // mapContainerStyle={containerStyle}
       >
         {props.isMarkerShown && <Marker position={centerCoordinates} />}

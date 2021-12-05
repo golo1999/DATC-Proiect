@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 
 import { Card, Col, Container, Row } from "react-bootstrap";
 
-import CustomMap from "./CustomMap";
+import Map from "./Map";
 
 import classes from "./ReportDetails.module.css";
 
@@ -12,6 +12,15 @@ const ReportDetails = (props) => {
   const selectedReport = useSelector((state) => state.report.report);
 
   const db = getDatabase();
+
+  const { REACT_APP_GOOGLE_KEY: GOOGLE_KEY } = process.env;
+
+  const customStyle = <div style={{ width: "100%", height: "100%" }} />;
+
+  const googleMapURL =
+    "https://maps.googleapis.com/maps/api/js?key=" +
+    GOOGLE_KEY +
+    "&v=3.exp&libraries=geometry,drawing,places";
 
   const userPersonalInformationRef = ref(
     db,
@@ -156,12 +165,19 @@ const ReportDetails = (props) => {
                     className={classes["map-toggler"]}
                     onClick={toggleMapHandler}
                   >
-                    {mapIsVisible ? "Hide map" : "Show map"}
+                    {mapIsVisible ? "Hide" : "Show"} location
                   </h5>
                 </Row>
                 {mapIsVisible && (
                   <Row className={classes.map}>
-                    <CustomMap />
+                    {/* <CustomMap /> */}
+                    <Map
+                      isMarkerShown // for showing a marker
+                      googleMapURL={googleMapURL}
+                      loadingElement={customStyle}
+                      containerElement={customStyle}
+                      mapElement={customStyle}
+                    />
                   </Row>
                 )}
               </Container>
