@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 
 import { Card, Col, Container, Row } from "react-bootstrap";
 
-import Map from "./CustomMap";
+import CustomMap from "./CustomMap";
 
 import classes from "./ReportDetails.module.css";
 
@@ -63,7 +63,6 @@ const ReportDetails = (props) => {
   return (
     <div className={classes["main-container"]}>
       <Card className={classes.card}>
-        {" "}
         <Container>
           <Row>
             <Col className={classes["photo-column"]} lg={6} md={12}>
@@ -162,7 +161,7 @@ const ReportDetails = (props) => {
                 </Row>
                 {mapIsVisible && (
                   <Row className={classes.map}>
-                    <Map />
+                    <CustomMap />
                   </Row>
                 )}
               </Container>

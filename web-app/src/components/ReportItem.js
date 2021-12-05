@@ -6,7 +6,7 @@ import { useHistory } from "react-router";
 import { reportActions } from "../store/report-slice";
 import { reportsListActions } from "../store/reports-list-slice";
 
-import { Button, Card, Modal } from "react-bootstrap";
+import { Button, Card, Col, Container, Modal, Row } from "react-bootstrap";
 import { FaAngleRight, FaCheck } from "react-icons/fa";
 
 import classes from "./ReportItem.module.css";
@@ -128,7 +128,77 @@ const ReportItem = (props) => {
       </Modal>
       <Card className={classes.card}>
         <Card.Body className={classes["card-body"]}>
-          <div className={classes["report-category-container"]}>
+          <Container>
+            {/* XL, LG, MD LAYOUT */}
+            <Row className="d-none d-md-flex">
+              <Col className={classes["report-category-container"]}>
+                {report.category === 0
+                  ? "Danger"
+                  : report.category === 1
+                  ? "Garbage"
+                  : report.category === 2
+                  ? "Pothole"
+                  : "Vandalism"}
+              </Col>
+              <Col className={classes["report-date-time-container"]}>
+                {reportParsedDateTime}
+              </Col>
+              <Col className={classes["icons-container"]}>
+                <FaCheck
+                  className={
+                    isChecked
+                      ? classes["report-status-icon"]
+                      : classes["report-status-icon-unchecked"]
+                  }
+                  onClick={checkReportHandler}
+                />
+                <FaAngleRight
+                  className={classes["report-details-icon"]}
+                  onClick={checkReportDetailsHandler}
+                />
+              </Col>
+            </Row>
+            {/* SM, XS LAYOUT */}
+            <Row className="d-flex d-sm-flex d-md-none">
+              <Col>
+                <Row>
+                  <Col className={classes["report-category-container"]}>
+                    {report.category === 0
+                      ? "Danger"
+                      : report.category === 1
+                      ? "Garbage"
+                      : report.category === 2
+                      ? "Pothole"
+                      : "Vandalism"}
+                  </Col>
+                </Row>
+                <Row>
+                  <Col
+                    className={
+                      classes["report-date-time-container-second-layout"]
+                    }
+                  >
+                    {reportParsedDateTime}
+                  </Col>
+                </Row>
+              </Col>
+              <Col className={classes["icons-container"]}>
+                <FaCheck
+                  className={
+                    isChecked
+                      ? classes["report-status-icon"]
+                      : classes["report-status-icon-unchecked"]
+                  }
+                  onClick={checkReportHandler}
+                />
+                <FaAngleRight
+                  className={classes["report-details-icon"]}
+                  onClick={checkReportDetailsHandler}
+                />
+              </Col>
+            </Row>
+          </Container>
+          {/* <div className={classes["report-category-container"]}>
             {report.category === 0
               ? "Danger"
               : report.category === 1
@@ -136,11 +206,11 @@ const ReportItem = (props) => {
               : report.category === 2
               ? "Pothole"
               : "Vandalism"}
-          </div>
-          <div className={classes["report-date-time-container"]}>
+          </div> */}
+          {/* <div className={classes["report-date-time-container"]}>
             {reportParsedDateTime}
-          </div>
-          <div className={classes["icons-container"]}>
+          </div> */}
+          {/* <div className={classes["icons-container"]}>
             <FaCheck
               className={
                 isChecked
@@ -153,7 +223,7 @@ const ReportItem = (props) => {
               className={classes["report-details-icon"]}
               onClick={checkReportDetailsHandler}
             />
-          </div>
+          </div> */}
         </Card.Body>
       </Card>
     </li>

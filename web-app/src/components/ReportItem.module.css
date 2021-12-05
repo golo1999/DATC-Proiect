@@ -29,7 +29,8 @@
   color: gold !important;
 }
 
-.card:hover .report-date-time-container {
+.card:hover .report-date-time-container,
+.card:hover .report-date-time-container-second-layout {
   color: gold !important;
 }
 
@@ -44,6 +45,11 @@
   justify-content: center;
   margin: 0 1vmax;
   transition: 0.6s ease;
+}
+
+.report-date-time-container-second-layout {
+  font-size: x-large;
+  user-select: none;
 }
 
 .icons-container {
