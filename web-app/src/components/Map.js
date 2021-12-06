@@ -19,12 +19,10 @@ const Map = withScriptjs(
           reportsLocation.map((location, index) => (
             <Marker
               key={index}
-              // icon={
-              //   {
-              //     // url: "http://maps.google.com/mapfiles/ms/icons/purple-dot.png",
-              //   }
-              // }
               label={{
+                color: "gold",
+                fontSize: "large",
+                fontWeight: "bold",
                 text:
                   location.category === 0
                     ? "D"

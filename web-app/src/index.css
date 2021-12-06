@@ -41,3 +41,19 @@ code {
   /* font-family: "Indie Flower", cursive; */
   /* font-family: "JetBrains Mono", monospace; */
 }
+
+::-webkit-scrollbar {
+  background: transparent !important;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent !important;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #295abb !important;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #2497d8 !important;
+}

@@ -4,7 +4,7 @@ import { useHistory } from "react-router";
 
 import { userActions } from "../store/user-slice";
 
-import { Card } from "react-bootstrap";
+import { Button, Card, Col, Container, Modal, Row } from "react-bootstrap";
 import { FaAngleRight } from "react-icons/fa";
 
 import classes from "./UserItem.module.css";
@@ -28,18 +28,58 @@ const UserItem = (props) => {
     <li>
       <Card className={classes.card}>
         <Card.Body className={classes["card-body"]}>
-          <div className={classes["user-name-container"]}>
+          <Container>
+            {/* XL, LG, MD LAYOUT */}
+            <Row className="d-none d-md-flex">
+              <Col className={classes["user-name-container"]}>
+              {`${userPersonalInformation.firstName} ${userPersonalInformation.lastName}`}
+              </Col>
+              <Col className={classes["user-level-container"]}>
+                {`Level ` + userPersonalInformation.level}
+              </Col>
+              <Col className={classes["icons-container"]}>
+                <FaAngleRight
+                  className={classes["user-details-icon"]}
+                  onClick={checkUserDetailsHandler}
+                />
+              </Col>
+            </Row>
+            {/* SM, XS LAYOUT */}
+            <Row className="d-flex d-sm-flex d-md-none">
+              <Col>
+                <Row>
+                  <Col className={classes["user-name-container"]}>
+                    {`${userPersonalInformation.firstName} ${userPersonalInformation.lastName}`}
+                  </Col>
+                </Row>
+                <Row>
+                  <Col
+                    className={classes["user-level-container-second-layout"]}
+                  >
+                    {`Level ` + userPersonalInformation.level}
+                  </Col>
+                </Row>
+              </Col>
+              <Col className={classes["icons-container"]}>
+                <FaAngleRight
+                  className={classes["user-details-icon"]}
+                  onClick={checkUserDetailsHandler}
+                />
+              </Col>
+            </Row>
+          </Container>
+          {/* <div className={classes["user-name-container"]}>
             {userPersonalInformation.firstName}
-          </div>
-          <div className={classes["user-level-container"]}>
+          </div> */}
+          {/* <div className={classes["user-level-container"]}>
             {`Level ` + userPersonalInformation.level}
-          </div>
-          <div className={classes["icons-container"]}>
+          </div> */}
+          {/* <div className={classes["icons-container"]}>
             <FaAngleRight
               className={classes["user-details-icon"]}
               onClick={checkUserDetailsHandler}
             />
-          </div>
+          </div> */}
         </Card.Body>
       </Card>
     </li>

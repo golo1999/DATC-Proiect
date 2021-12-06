@@ -38,7 +38,11 @@
   display: flex;
 }
 
-.report-category-container {
+.report-category-container,
+.report-date-time-container-second-layout {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .report-date-time-container {

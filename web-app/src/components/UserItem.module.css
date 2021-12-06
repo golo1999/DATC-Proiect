@@ -16,7 +16,8 @@
   color: gold !important;
 }
 
-.card:hover .user-level-container {
+.card:hover .user-level-container,
+.card:hover .user-level-container-second-layout {
   color: gold !important;
 }
 
@@ -24,13 +25,23 @@
   display: flex;
 }
 
-.user-name-container {
+.user-name-container,
+.user-level-container,
+.user-level-container-second-layout {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .user-level-container {
   justify-content: center;
   margin: 0 1vmax;
   transition: 0.6s ease;
+}
+
+.user-level-container-second-layout {
+  font-size: x-large;
+  user-select: none;
 }
 
 .icons-container {

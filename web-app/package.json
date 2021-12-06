@@ -21,6 +21,7 @@
     "react-scripts": "^4.0.3",
     "recompose": "^0.30.0",
     "redux": "^4.1.2",
+    "styled-components": "^5.3.3",
     "web-vitals": "^1.1.2"
   },
   "scripts": {
