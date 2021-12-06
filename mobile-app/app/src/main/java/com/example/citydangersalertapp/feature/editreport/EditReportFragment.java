@@ -10,6 +10,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.citydangersalertapp.HomeActivity;
 import com.example.citydangersalertapp.R;
 import com.example.citydangersalertapp.databinding.EditReportFragmentBinding;
 import com.example.citydangersalertapp.feature.HomeViewModel;
@@ -24,6 +25,12 @@ public class EditReportFragment extends Fragment {
     private EditReportFragmentBinding binding;
     private HomeViewModel homeViewModel;
     private EditReportViewModel editReportViewModel;
+
+    public interface OnReportDateTimeReceivedCallback {
+        void onReportDateReceived(LocalDate newReportDate);
+
+        void onReportTimeReceived(LocalTime newReportTime);
+    }
 
     public EditReportFragment() {
         // Required empty public constructor
@@ -86,7 +93,9 @@ public class EditReportFragment extends Fragment {
     }
 
     private void setLayoutVariables() {
-
+        binding.setActivity((HomeActivity) requireActivity());
+        binding.setFragmentManager(requireActivity().getSupportFragmentManager());
+        binding.setViewModel(editReportViewModel);
     }
 
     public void setReportDateText(final LocalDate date) {

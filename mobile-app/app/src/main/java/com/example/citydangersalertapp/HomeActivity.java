@@ -1,11 +1,13 @@
 package com.example.citydangersalertapp;
 
 import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.DatePicker;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -33,14 +35,17 @@ import com.example.citydangersalertapp.utility.MyCustomVariables;
 import com.google.android.material.navigation.NavigationView;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 
 public class HomeActivity
         extends AppCompatActivity
         implements DatePickerDialog.OnDateSetListener,
         DeleteReportCustomDialog.DeleteDialogListener,
+        EditReportFragment.OnReportDateTimeReceivedCallback,
         NavigationView.OnNavigationItemSelectedListener,
-        ProfileFragment.OnBirthDateReceivedCallback {
+        ProfileFragment.OnBirthDateReceivedCallback,
+        TimePickerDialog.OnTimeSetListener {
     private HomeActivityBinding homeActivityBinding;
     private NavigationDrawerHeaderBinding drawerHeaderBinding;
     private HomeViewModel viewModel;
@@ -74,15 +79,6 @@ public class HomeActivity
     }
 
     @Override
-    public void onBirthDateReceived(LocalDate newBirthDate) {
-        final Fragment currentDisplayedFragment = viewModel.getCurrentFragment();
-
-        if (currentDisplayedFragment instanceof ProfileFragment) {
-            ((ProfileFragment) currentDisplayedFragment).setBirthDateText(newBirthDate);
-        }
-    }
-
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setActivityVariables();
@@ -91,6 +87,22 @@ public class HomeActivity
         setToolbar();
         setDrawer();
         setNavigationViewItemListener();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        setFragment(viewModel.getCurrentFragment());
+        setDrawerUserProfile();
+    }
+
+    @Override
+    public void onBirthDateReceived(LocalDate newBirthDate) {
+        final Fragment currentDisplayedFragment = viewModel.getCurrentFragment();
+
+        if (currentDisplayedFragment instanceof ProfileFragment) {
+            ((ProfileFragment) currentDisplayedFragment).setBirthDateText(newBirthDate);
+        }
     }
 
     @Override
@@ -124,9 +136,13 @@ public class HomeActivity
                           int year,
                           int month,
                           int dayOfMonth) {
-        final LocalDate newBirthDate = LocalDate.of(year, month + 1, dayOfMonth);
+        final LocalDate newDate = LocalDate.of(year, month + 1, dayOfMonth);
 
-        onBirthDateReceived(newBirthDate);
+        if (viewModel.getCurrentFragment() instanceof ProfileFragment) {
+            onBirthDateReceived(newDate);
+        } else if (viewModel.getCurrentFragment() instanceof EditReportFragment) {
+            onReportDateReceived(newDate);
+        }
     }
 
     @Override
@@ -135,10 +151,32 @@ public class HomeActivity
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
-        setFragment(viewModel.getCurrentFragment());
-        setDrawerUserProfile();
+    public void onReportDateReceived(LocalDate newReportDate) {
+        final Fragment currentDisplayedFragment = viewModel.getCurrentFragment();
+
+        if (currentDisplayedFragment instanceof EditReportFragment) {
+            ((EditReportFragment) currentDisplayedFragment).setReportDateText(newReportDate);
+        }
+    }
+
+    @Override
+    public void onReportTimeReceived(LocalTime newReportTime) {
+        final Fragment currentDisplayedFragment = viewModel.getCurrentFragment();
+
+        if (currentDisplayedFragment instanceof EditReportFragment) {
+            ((EditReportFragment) currentDisplayedFragment).setReportTimeText(newReportTime);
+        }
+    }
+
+    @Override
+    public void onTimeSet(TimePicker view,
+                          int hourOfDay,
+                          int minute) {
+        final LocalTime newTime = LocalTime.of(hourOfDay, minute);
+
+        if (viewModel.getCurrentFragment() instanceof EditReportFragment) {
+            onReportTimeReceived(newTime);
+        }
     }
 
     private void setToolbarTitle() {

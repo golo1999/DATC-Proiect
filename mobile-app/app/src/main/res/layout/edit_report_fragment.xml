@@ -2,7 +2,21 @@
 
 <layout>
 
-    <data></data>
+    <data>
+
+        <variable
+            name="activity"
+            type="com.example.citydangersalertapp.HomeActivity" />
+
+        <variable
+            name="fragmentManager"
+            type="androidx.fragment.app.FragmentManager" />
+
+        <variable
+            name="viewModel"
+            type="com.example.citydangersalertapp.feature.editreport.EditReportViewModel" />
+
+    </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -63,6 +77,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="20sp"
+                    android:onClick="@{() -> viewModel.reportDateTextClickHandler(fragmentManager)}"
                     android:text="Date"
                     android:textColor="?attr/colorPrimary"
                     android:textSize="18sp"
@@ -73,6 +88,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="20sp"
+                    android:onClick="@{() -> viewModel.reportTimeTextClickHandler(fragmentManager)}"
                     android:text="Time"
                     android:textColor="?attr/colorPrimary"
                     android:textSize="18sp"
