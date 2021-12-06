@@ -6,20 +6,22 @@
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/black"
+        android:background="?attr/colorPrimary"
         android:paddingVertical="?attr/actionBarSize">
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/photo"
-            android:layout_width="wrap_content"
+            android:layout_width="0sp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="10sp"
             android:layout_marginBottom="10sp"
             android:src="@mipmap/ic_launcher_round"
             app:layout_constraintBottom_toTopOf="@id/name"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHeight_percent=".25"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_percent=".25"
             tools:src="@mipmap/ic_launcher_round" />
 
         <TextView

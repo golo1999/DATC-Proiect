@@ -23,6 +23,7 @@ import com.example.citydangersalertapp.feature.HomeViewModel;
 import com.example.citydangersalertapp.feature.SettingsFragment;
 import com.example.citydangersalertapp.feature.addreport.AddReportFragment;
 import com.example.citydangersalertapp.feature.editprofile.ProfileFragment;
+import com.example.citydangersalertapp.feature.editreport.EditReportFragment;
 import com.example.citydangersalertapp.feature.myreports.MyReportsFragment;
 import com.example.citydangersalertapp.feature.myreports.MyReportsListAdapter;
 import com.example.citydangersalertapp.feature.nearbydangersmap.NearbyDangersMapFragment;
@@ -144,6 +145,9 @@ public class HomeActivity
         if (viewModel.getCurrentFragment() instanceof AddReportFragment &&
                 !String.valueOf(homeActivityBinding.toolbar.getTitle()).trim().equals("Add report")) {
             homeActivityBinding.toolbar.setTitle("Add report");
+        } else if (viewModel.getCurrentFragment() instanceof EditReportFragment &&
+                !String.valueOf(homeActivityBinding.toolbar.getTitle()).trim().equals("Edit report")) {
+            homeActivityBinding.toolbar.setTitle("Edit report");
         } else if (viewModel.getCurrentFragment() instanceof MyReportsFragment &&
                 !String.valueOf(homeActivityBinding.toolbar.getTitle()).trim().equals("My reports")) {
             homeActivityBinding.toolbar.setTitle("My reports");
@@ -167,7 +171,7 @@ public class HomeActivity
         homeActivityBinding.drawer.addDrawerListener(drawerToggle);
         homeActivityBinding.navigationView.setCheckedItem(R.id.drawer_menu_my_reports);
         drawerToggle.syncState();
-        drawerToggle.getDrawerArrowDrawable().setColor(Color.WHITE);
+        drawerToggle.getDrawerArrowDrawable().setColor(Color.parseColor("#ADEFD1"));
     }
 
     public void setFragment(Fragment newFragment) {

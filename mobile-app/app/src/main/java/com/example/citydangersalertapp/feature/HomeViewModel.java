@@ -20,6 +20,7 @@ import com.example.citydangersalertapp.feature.editprofile.ProfileFragment;
 import com.example.citydangersalertapp.feature.editreport.EditReportFragment;
 import com.example.citydangersalertapp.feature.myreports.MyReportsFragment;
 import com.example.citydangersalertapp.feature.nearbydangersmap.NearbyDangersMapFragment;
+import com.example.citydangersalertapp.model.Report;
 import com.example.citydangersalertapp.model.UserPersonalInformation;
 import com.example.citydangersalertapp.utility.MyCustomVariables;
 import com.google.firebase.database.DataSnapshot;
@@ -28,13 +29,14 @@ import com.google.firebase.database.ValueEventListener;
 
 public class HomeViewModel extends ViewModel {
     private final AddReportFragment addReportFragmentInstance = new AddReportFragment();
-    private final EditReportFragment editReportFragmentInstance = new EditReportFragment();
-    private final MyReportsFragment myReportsFragmentInstance = new MyReportsFragment();
+    private final EditReportFragment editReportFragmentInstance = new EditReportFragment(this);
+    private final MyReportsFragment myReportsFragmentInstance = new MyReportsFragment(this);
     private final NearbyDangersMapFragment nearbyDangersMapFragmentInstance = new NearbyDangersMapFragment();
     private final ProfileFragment profileFragmentInstance = new ProfileFragment();
     private final SettingsFragment settingsFragmentInstance = new SettingsFragment();
     private Fragment currentFragment = myReportsFragmentInstance;
     private Fragment lastFragment = currentFragment;
+    private Report selectedReport;
     private long backPressedTime;
 
     public AddReportFragment getAddReportFragmentInstance() {
@@ -75,6 +77,14 @@ public class HomeViewModel extends ViewModel {
 
     public void setLastFragment(Fragment lastFragment) {
         this.lastFragment = lastFragment;
+    }
+
+    public Report getSelectedReport() {
+        return selectedReport;
+    }
+
+    public void setSelectedReport(Report selectedReport) {
+        this.selectedReport = selectedReport;
     }
 
     public long getBackPressedTime() {

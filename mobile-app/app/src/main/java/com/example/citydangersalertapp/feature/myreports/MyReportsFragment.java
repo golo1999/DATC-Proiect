@@ -8,11 +8,12 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.example.citydangersalertapp.HomeActivity;
 import com.example.citydangersalertapp.R;
 import com.example.citydangersalertapp.databinding.MyReportsFragmentBinding;
+import com.example.citydangersalertapp.feature.HomeViewModel;
 import com.example.citydangersalertapp.model.Report;
 import com.example.citydangersalertapp.utility.MyCustomVariables;
 import com.google.firebase.database.DataSnapshot;
@@ -23,12 +24,16 @@ import java.util.ArrayList;
 
 public class MyReportsFragment extends Fragment {
     private MyReportsFragmentBinding binding;
-    private MyReportsViewModel viewModel;
+    private HomeViewModel viewModel;
     private final ArrayList<Report> reportsList = new ArrayList<>();
     private MyReportsListAdapter recyclerViewAdapter;
 
     public MyReportsFragment() {
         // Required empty public constructor
+    }
+
+    public MyReportsFragment(HomeViewModel viewModel) {
+        this.viewModel = viewModel;
     }
 
     public static MyReportsFragment newInstance() {
@@ -59,10 +64,8 @@ public class MyReportsFragment extends Fragment {
     private void setFragmentVariables(LayoutInflater inflater,
                                       ViewGroup container) {
         binding = DataBindingUtil.inflate(inflater, R.layout.my_reports_fragment, container, false);
-        viewModel = new ViewModelProvider(requireActivity()).get(MyReportsViewModel.class);
-        recyclerViewAdapter =
-                new MyReportsListAdapter(viewModel, reportsList, requireContext(), binding.recyclerView,
-                        requireActivity().getSupportFragmentManager());
+        recyclerViewAdapter = new MyReportsListAdapter((HomeActivity) requireActivity(), viewModel, reportsList,
+                requireContext(), binding.recyclerView, requireActivity().getSupportFragmentManager());
     }
 
     private void setLayoutVariables() {

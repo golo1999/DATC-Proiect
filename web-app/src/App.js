@@ -39,19 +39,6 @@ const App = () => {
 
   const history = useHistory();
 
-  const reportsLocation = [
-    {
-      category: 0,
-      name: "location1",
-      position: { lat: 45.2909465, lng: 21.8945535 },
-    },
-    {
-      category: 2,
-      name: "location2",
-      position: { lat: 45.285799605761326, lng: 21.88802333548665 },
-    },
-  ];
-
   const fetchCurrentLocation = useCallback(async () => {
     try {
       // const details = {
@@ -143,16 +130,6 @@ const App = () => {
               })
             );
           }
-
-          /*
-
-          {
-      category: 0,
-      name: "location1",
-      position: { lat: 45.2909465, lng: 21.8945535 },
-    },
-
-          */
         });
       });
     });
@@ -249,7 +226,6 @@ const App = () => {
                 lat: adminLocation.latitude,
                 lng: adminLocation.longitude,
               }}
-              // reportsLocation={reportsLocation}
               reportsLocation={reportsLocationList}
               // isMarkerShown // for showing a marker
               googleMapURL={googleMapURL}

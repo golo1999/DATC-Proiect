@@ -3,6 +3,7 @@ package com.example.citydangersalertapp.model;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import java.util.Objects;
 import java.util.UUID;
 
 public class Report {
@@ -154,6 +155,27 @@ public class Report {
 
     public void setLocation(UserLocation location) {
         this.location = location;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Report report = (Report) o;
+        return checkStatus == report.checkStatus &&
+                category == report.category &&
+                reportId.equals(report.reportId) &&
+                userId.equals(report.userId) &&
+                Objects.equals(note, report.note) &&
+                Objects.equals(checkedBy, report.checkedBy) &&
+                Objects.equals(photoURL, report.photoURL) &&
+                Objects.equals(dateTime, report.dateTime) &&
+                Objects.equals(location, report.location);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(reportId, userId, note, checkStatus, checkedBy, photoURL, dateTime, category, location);
     }
 
     @NonNull
