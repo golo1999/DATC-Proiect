@@ -59,7 +59,9 @@ public class HomeActivity
         // if the current Fragment is AddDanger
         else if (viewModel.getCurrentFragment() instanceof AddReportFragment) {
             setFragment(viewModel.getLastFragment());
-        } else if (!(viewModel.getCurrentFragment() instanceof MyReportsFragment)) {
+        }
+        // if the current Fragment is MyReports
+        else if (!(viewModel.getCurrentFragment() instanceof MyReportsFragment)) {
             setFragment(viewModel.getMyReportsFragmentInstance());
         } else {
             if (viewModel.getBackPressedTime() + 2000 > System.currentTimeMillis()) {
@@ -68,7 +70,7 @@ public class HomeActivity
                 return;
             } else {
                 backToast = Toast.makeText(this,
-                        "Press again to exit",
+                        getResources().getString(R.string.press_again_to_exit),
                         Toast.LENGTH_SHORT);
 
                 backToast.show();
@@ -256,7 +258,8 @@ public class HomeActivity
 
     private void setActivityVariables() {
         homeActivityBinding = DataBindingUtil.setContentView(this, R.layout.home_activity);
-        drawerHeaderBinding = DataBindingUtil.inflate(getLayoutInflater(), R.layout.navigation_drawer_header, homeActivityBinding.drawer, false);
+        drawerHeaderBinding = DataBindingUtil.inflate(getLayoutInflater(), R.layout.navigation_drawer_header,
+                homeActivityBinding.drawer, false);
         viewModel = new ViewModelProvider(this).get(HomeViewModel.class);
     }
 

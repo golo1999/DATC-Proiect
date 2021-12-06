@@ -8,6 +8,7 @@ import androidx.databinding.ObservableInt;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModel;
 
+import com.example.citydangersalertapp.R;
 import com.example.citydangersalertapp.model.MyCustomDateTime;
 import com.example.citydangersalertapp.model.Report;
 import com.example.citydangersalertapp.model.UserLocation;
@@ -74,7 +75,7 @@ public class AddReportViewModel extends ViewModel {
                     }
                 } else {
                     MyCustomMethods.showShortMessage(parentActivity,
-                            "Response unsuccessful, code: " + response.code());
+                            parentActivity.getResources().getString(R.string.response_unsuccessful_code) + response.code());
                 }
 
                 if (currentUserId != null) {
@@ -85,11 +86,12 @@ public class AddReportViewModel extends ViewModel {
                             .child(newReport.getReportId())
                             .setValue(newReport)
                             .addOnSuccessListener(unused -> {
-                                MyCustomMethods.showShortMessage(parentActivity, "Report added successfully");
+                                MyCustomMethods.showShortMessage(parentActivity,
+                                        parentActivity.getResources().getString(R.string.report_added_successfully));
                                 parentActivity.onBackPressed();
                             })
                             .addOnFailureListener(e -> MyCustomMethods.showShortMessage(parentActivity,
-                                    "Couldn't add the report. Please try again"));
+                                    parentActivity.getResources().getString(R.string.could_not_add_report)));
 
                     ((AddReportFragment) fragment).toggleButton(true);
                     resetInputs();
@@ -99,7 +101,8 @@ public class AddReportViewModel extends ViewModel {
             @Override
             public void onFailure(@NonNull Call<UserLocation> call,
                                   @NonNull Throwable t) {
-                MyCustomMethods.showShortMessage(parentActivity, "Couldn't add location to the report");
+                MyCustomMethods.showShortMessage(parentActivity,
+                        parentActivity.getResources().getString(R.string.could_not_add_location_to_report));
             }
         });
     }
