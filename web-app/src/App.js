@@ -18,6 +18,7 @@ import PageNotFound from "./components/PageNotFound";
 import Profile from "./components/Profile";
 import Register from "./components/Authentication/Register";
 import ReportDetails from "./components/ReportDetails";
+import SplashScreen from "./components/SplashScreen";
 import TopBar from "./components/TopBar";
 import UserProfile from "./components/UserProfile";
 
@@ -41,7 +42,7 @@ const App = () => {
 
   const history = useHistory();
 
-  const [pageNotFoundIsVisible, setPageNotFoundIsVisible] = useState(false);
+  const [topBarIsVisible, setTopBarIsVisible] = useState(false);
 
   const fetchCurrentLocation = useCallback(async () => {
     try {
@@ -169,8 +170,12 @@ const App = () => {
   ]);
 
   useEffect(() => {
-    if (location.pathname === "/page-not-found") {
-      setPageNotFoundIsVisible((prevValue) => !prevValue);
+    if (location.pathname === "/page-not-found" || location.pathname === "/") {
+      if (!topBarIsVisible) {
+        setTopBarIsVisible((prevValue) => !prevValue);
+      }
+    } else if (topBarIsVisible) {
+      setTopBarIsVisible((prevValue) => !prevValue);
     }
   }, [location.pathname]);
 
@@ -193,11 +198,11 @@ const App = () => {
 
   return (
     <Fragment>
-      {!pageNotFoundIsVisible && <TopBar />}
+      {!topBarIsVisible && <TopBar />}
       <Switch>
-        <Route exact path="/">
-          {isAuthenticated && <Redirect to="/reports" />}
-          {!isAuthenticated && <Redirect to="/login" />}
+        <Route exact path="/" component={SplashScreen}>
+          {/* {isAuthenticated && <Redirect to="/reports" />}
+          {!isAuthenticated && <Redirect to="/login" />} */}
         </Route>
         <Route exact path="/login">
           {isAuthenticated && <Redirect to="/" />}

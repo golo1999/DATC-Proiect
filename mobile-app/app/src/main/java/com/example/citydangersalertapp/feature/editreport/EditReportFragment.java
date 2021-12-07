@@ -73,7 +73,7 @@ public class EditReportFragment extends Fragment {
                              Bundle savedInstanceState) {
         setFragmentVariables(inflater, container);
         setLayoutVariables();
-        setCategorySpinnerListener();
+        setCategoriesSpinnerListener();
 
         return binding.getRoot();
     }
@@ -87,7 +87,11 @@ public class EditReportFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        binding.categorySpinner.setOnItemSelectedListener(null);
+        removeCategoriesSpinnerListener();
+    }
+
+    private void removeCategoriesSpinnerListener() {
+        binding.categoriesSpinner.setOnItemSelectedListener(null);
     }
 
     private void setFieldHints() {
@@ -107,7 +111,7 @@ public class EditReportFragment extends Fragment {
                 editReportViewModel.setNote(selectedReport.getNote());
             }
 
-            binding.categorySpinner.setSelection(selectedReport.getCategory());
+            binding.categoriesSpinner.setSelection(selectedReport.getCategory());
 
             setReportDateText(reportFormattedDate);
             setReportTimeText(reportFormattedTime);
@@ -147,7 +151,7 @@ public class EditReportFragment extends Fragment {
         binding.timeText.setText(formattedTime);
     }
 
-    private void setCategorySpinnerListener() {
-        binding.categorySpinner.setOnItemSelectedListener(itemSelectedListener);
+    private void setCategoriesSpinnerListener() {
+        binding.categoriesSpinner.setOnItemSelectedListener(itemSelectedListener);
     }
 }
