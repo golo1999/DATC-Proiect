@@ -24,7 +24,7 @@ import java.util.ArrayList;
 
 public class MyReportsFragment extends Fragment {
     private MyReportsFragmentBinding binding;
-    private HomeViewModel viewModel;
+    private HomeViewModel homeViewModel;
     private final ArrayList<Report> reportsList = new ArrayList<>();
     private MyReportsListAdapter recyclerViewAdapter;
 
@@ -32,8 +32,8 @@ public class MyReportsFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public MyReportsFragment(HomeViewModel viewModel) {
-        this.viewModel = viewModel;
+    public MyReportsFragment(HomeViewModel homeViewModel) {
+        this.homeViewModel = homeViewModel;
     }
 
     public static MyReportsFragment newInstance() {
@@ -64,7 +64,7 @@ public class MyReportsFragment extends Fragment {
     private void setFragmentVariables(LayoutInflater inflater,
                                       ViewGroup container) {
         binding = DataBindingUtil.inflate(inflater, R.layout.my_reports_fragment, container, false);
-        recyclerViewAdapter = new MyReportsListAdapter((HomeActivity) requireActivity(), viewModel, reportsList,
+        recyclerViewAdapter = new MyReportsListAdapter((HomeActivity) requireActivity(), homeViewModel, reportsList,
                 requireContext(), binding.recyclerView, requireActivity().getSupportFragmentManager());
     }
 

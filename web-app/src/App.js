@@ -1,8 +1,8 @@
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { getDatabase, ref, onValue } from "firebase/database";
-import { Fragment, useCallback, useEffect } from "react";
+import { Fragment, useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory } from "react-router";
+import { useHistory, useLocation } from "react-router";
 import { Redirect, Route, Switch } from "react-router-dom";
 
 import { authActions } from "./store/auth-slice";
@@ -30,6 +30,8 @@ const App = () => {
 
   const dispatch = useDispatch();
 
+  const location = useLocation();
+
   const { REACT_APP_GOOGLE_KEY: GOOGLE_KEY } = process.env;
 
   const googleMapURL =
@@ -38,6 +40,8 @@ const App = () => {
     "&v=3.exp&libraries=geometry,drawing,places";
 
   const history = useHistory();
+
+  const [pageNotFoundIsVisible, setPageNotFoundIsVisible] = useState(false);
 
   const fetchCurrentLocation = useCallback(async () => {
     try {
@@ -164,6 +168,12 @@ const App = () => {
     fetchUsersList,
   ]);
 
+  useEffect(() => {
+    if (location.pathname === "/page-not-found") {
+      setPageNotFoundIsVisible((prevValue) => !prevValue);
+    }
+  }, [location.pathname]);
+
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
 
   const adminLocation = useSelector((state) => state.location.adminLocation);
@@ -183,7 +193,7 @@ const App = () => {
 
   return (
     <Fragment>
-      <TopBar />
+      {!pageNotFoundIsVisible && <TopBar />}
       <Switch>
         <Route exact path="/">
           {isAuthenticated && <Redirect to="/reports" />}
@@ -242,7 +252,11 @@ const App = () => {
         <Route exact path="/logout">
           <Redirect to="/" />
         </Route>
-        <Route exact path="/page-not-found" component={PageNotFound} />
+        <Route
+          exact
+          path="/page-not-found"
+          component={() => <PageNotFound history={history} />}
+        />
         {/* <Route
           exact
           path="/page-not-found"

@@ -13,8 +13,12 @@
             type="androidx.fragment.app.FragmentManager" />
 
         <variable
-            name="viewModel"
+            name="editReportViewModel"
             type="com.example.citydangersalertapp.feature.editreport.EditReportViewModel" />
+
+        <variable
+            name="homeViewModel"
+            type="com.example.citydangersalertapp.feature.HomeViewModel" />
 
     </data>
 
@@ -55,6 +59,7 @@
                     android:maxLength="50"
                     android:maxLines="1"
                     android:padding="10sp"
+                    android:text="@={editReportViewModel.note}"
                     android:textColor="?attr/colorPrimary"
                     android:textColorHint="?attr/colorPrimary"
                     android:textCursorDrawable="?attr/colorPrimary"
@@ -77,7 +82,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="20sp"
-                    android:onClick="@{() -> viewModel.reportDateTextClickHandler(fragmentManager)}"
+                    android:onClick="@{() -> editReportViewModel.reportDateTextClickHandler(fragmentManager)}"
                     android:text="@string/date"
                     android:textColor="?attr/colorPrimary"
                     android:textSize="18sp"
@@ -88,7 +93,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="20sp"
-                    android:onClick="@{() -> viewModel.reportTimeTextClickHandler(fragmentManager)}"
+                    android:onClick="@{() -> editReportViewModel.reportTimeTextClickHandler(fragmentManager)}"
                     android:text="@string/time"
                     android:textColor="?attr/colorPrimary"
                     android:textSize="18sp"
@@ -115,6 +120,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="10sp"
                         android:background="@drawable/ic_view_blue_border"
+                        android:onClick="@{() -> editReportViewModel.cancelHandler(activity)}"
                         android:padding="10sp"
                         android:text="@string/cancel"
                         android:textColor="?attr/colorPrimary"
@@ -131,6 +137,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10sp"
                         android:background="@drawable/ic_view_blue_border"
+                        android:onClick="@{() -> editReportViewModel.saveReportDetailsHandler(activity)}"
                         android:padding="10sp"
                         android:text="@string/save"
                         android:textColor="?attr/colorPrimary"
@@ -148,4 +155,5 @@
         </ScrollView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 </layout>

@@ -1,26 +1,35 @@
 import React from "react";
 
-import { Button, Col, Container, Row } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 
 import classes from "./PageNotFound.module.css";
 
 const PageNotFound = (props) => {
+  const history = props.history;
+
+  const goBackHandler = (event) => {
+    event.preventDefault();
+    history.goBack();
+  };
+
   return (
-    <div>
-      <Container>
-        <Row className={classes["error-code-container"]}>
-          <h1>404</h1>
-        </Row>
-        <Row className={classes["error-message-container"]}>
-          <h2>Oops! Page not found</h2>
-        </Row>
-        <Row className={classes["error-description-container"]}>
-          <h5>Sorry, the page you're looking for doesn't exist.</h5>
-        </Row>
-        <Row>
-          <Button>Go back</Button>
-        </Row>
-      </Container>
+    <div className={classes["main-container"]}>
+      <div>
+        <div className={classes["message-container"]}>
+          <h1 className={classes["error-code"]}>404</h1>
+          <h2>Page not found</h2>
+        </div>
+        <div className={classes["button-container"]}>
+          <Button
+            className={classes.button}
+            onClick={goBackHandler}
+            size="lg"
+            variant="outline-primary"
+          >
+            Go back
+          </Button>
+        </div>
+      </div>
     </div>
   );
 };

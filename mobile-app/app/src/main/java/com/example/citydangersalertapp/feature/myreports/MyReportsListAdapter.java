@@ -125,6 +125,8 @@ public class MyReportsListAdapter extends RecyclerView.Adapter<MyReportsListAdap
                                     !viewModel.getSelectedReport().equals(selectedReport))) {
                         viewModel.setSelectedReport(selectedReport);
                         viewModel.editReportHandler(homeActivity);
+//                        viewModel.saveReportDetailsHandler(homeActivity);
+                        viewModel.saveReportToSharedPreferences(homeActivity);
                     }
                 }
             });

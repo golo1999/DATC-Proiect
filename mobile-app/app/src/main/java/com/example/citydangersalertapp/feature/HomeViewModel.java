@@ -1,7 +1,10 @@
 package com.example.citydangersalertapp.feature;
 
+import static android.content.Context.MODE_PRIVATE;
+
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -26,6 +29,7 @@ import com.example.citydangersalertapp.utility.MyCustomVariables;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
+import com.google.gson.Gson;
 
 public class HomeViewModel extends ViewModel {
     private final AddReportFragment addReportFragmentInstance = new AddReportFragment();
@@ -117,6 +121,26 @@ public class HomeViewModel extends ViewModel {
         parentActivity.startActivity(new Intent(parentActivity, AuthenticationActivity.class));
         parentActivity.finishAffinity();
 //        parentActivity.overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+    }
+
+    public void saveReportDetailsHandler(@NonNull Activity parentActivity) {
+        if (selectedReport != null) {
+            parentActivity.onBackPressed();
+        }
+    }
+
+    public void saveReportToSharedPreferences(@NonNull Activity parentActivity) {
+        if (selectedReport != null) {
+            SharedPreferences preferences =
+                    parentActivity.getSharedPreferences("CITY_DANGERS_ALERT_APP_DATA", MODE_PRIVATE);
+
+            SharedPreferences.Editor editor = preferences.edit();
+            Gson gson = new Gson();
+            String json = gson.toJson(selectedReport);
+
+            editor.putString("selectedReport", json);
+            editor.apply();
+        }
     }
 
     public boolean selectNavigationItemHandler(@NonNull HomeActivity parentActivity,

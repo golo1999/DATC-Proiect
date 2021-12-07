@@ -6,7 +6,7 @@ import androidx.annotation.Nullable;
 import java.util.Objects;
 import java.util.UUID;
 
-public class Report {
+public class Report implements Cloneable{
     private String reportId;
     private String userId;
     @Nullable
@@ -22,6 +22,10 @@ public class Report {
 
     public Report() {
         // Required empty public constructor
+    }
+
+    public Report(Report report) {
+
     }
 
     public Report(String userId,
@@ -155,6 +159,12 @@ public class Report {
 
     public void setLocation(UserLocation location) {
         this.location = location;
+    }
+
+    @NonNull
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
     }
 
     @Override

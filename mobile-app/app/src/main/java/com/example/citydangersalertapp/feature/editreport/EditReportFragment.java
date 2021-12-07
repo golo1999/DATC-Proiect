@@ -77,6 +77,7 @@ public class EditReportFragment extends Fragment {
 
             if (selectedReport.getNote() != null) {
                 binding.noteField.setHint(selectedReport.getNote());
+                binding.noteField.setText(selectedReport.getNote());
             }
 
             binding.categorySpinner.setSelection(selectedReport.getCategory());
@@ -95,14 +96,15 @@ public class EditReportFragment extends Fragment {
     private void setLayoutVariables() {
         binding.setActivity((HomeActivity) requireActivity());
         binding.setFragmentManager(requireActivity().getSupportFragmentManager());
-        binding.setViewModel(editReportViewModel);
+        binding.setEditReportViewModel(editReportViewModel);
+        binding.setHomeViewModel(homeViewModel);
     }
 
     public void setReportDateText(final LocalDate date) {
         final String formattedDate = MyCustomMethods.getFormattedDate(date);
 
-        if (!editReportViewModel.getReportDate().equals(date)) {
-            editReportViewModel.setReportDate(date);
+        if (!editReportViewModel.getDate().equals(date)) {
+            editReportViewModel.setDate(date);
         }
 
         binding.dateText.setText(formattedDate);
@@ -111,8 +113,8 @@ public class EditReportFragment extends Fragment {
     public void setReportTimeText(final LocalTime time) {
         final String formattedTime = MyCustomMethods.getFormattedTime(requireContext(), time);
 
-        if (!editReportViewModel.getReportTime().equals(time)) {
-            editReportViewModel.setReportTime(time);
+        if (!editReportViewModel.getTime().equals(time)) {
+            editReportViewModel.setTime(time);
         }
 
         binding.timeText.setText(formattedTime);
