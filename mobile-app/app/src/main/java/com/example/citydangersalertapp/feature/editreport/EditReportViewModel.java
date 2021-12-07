@@ -25,19 +25,10 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 public class EditReportViewModel extends ViewModel {
-    private Report selectedReport;
     private final ObservableField<String> note = new ObservableField<>();
     private final ObservableInt category = new ObservableInt();
     private LocalDate date = LocalDate.now();
     private LocalTime time = LocalTime.now();
-
-    public Report getSelectedReport() {
-        return selectedReport;
-    }
-
-    public void setSelectedReport(Report selectedReport) {
-        this.selectedReport = selectedReport;
-    }
 
     public ObservableField<String> getNote() {
         return note;

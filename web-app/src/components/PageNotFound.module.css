@@ -12,15 +12,29 @@
   position: relative;
 }
 
+.message-container:hover > h1 {
+  color: #800020;
+  transition: 1s ease;
+  text-shadow: -1px -1px 0px silver, 1px 1px 0px black;
+}
+
+.message-container:hover > h2 {
+  text-shadow: 10px 10px 25px rgb(255, 215, 0), -10px 10px 25px rgb(255, 215, 0),
+    -10px -10px 25px rgb(255, 215, 0), 10px -10px 25px rgb(255, 215, 0);
+}
+
 .message-container:hover > h2,
 .message-container:hover + .button-container > .button {
   color: gold !important;
-  transition: 0.6s ease !important;
+  transition: 1s ease !important;
 }
 
 .message-container:hover + .button-container > .button,
 .message-container:hover > .button {
   border-color: gold !important;
+  box-shadow: rgba(255, 215, 0, 0.25) 0px 54px 55px,
+    rgba(255, 215, 0, 0.12) 0px -12px 30px, rgba(255, 215, 0, 0.12) 0px 4px 6px,
+    rgba(255, 215, 0, 0.17) 0px 12px 13px, rgba(255, 215, 0, 0.09) 0px -3px 5px;
 }
 
 .message-container > h1 {
@@ -28,7 +42,9 @@
   color: #00203f;
   font-weight: 900;
   font-family: "Montserrat", sans-serif;
-  text-shadow: -1px -1px 0px #8400ff, 1px 1px 0px #ff005a;
+  text-shadow: -1px -1px 0px black, 1px 1px 0px silver;
+  /* text-shadow: -1px -1px 0px #8400ff, 1px 1px 0px #ff005a; */
+  transition: 1s ease;
 }
 
 .message-container > h2 {
@@ -38,9 +54,9 @@
   top: 75%;
   left: 50%;
   width: 100%;
-  color: white;
+  color: silver;
   transform: translate(-50%, -50%);
-  transition: 0.6s ease;
+  transition: 1s ease;
 }
 
 .button-container {
@@ -51,13 +67,16 @@
 
 .button {
   background: #00203f !important;
-  border: 0.25em solid white !important;
-  color: white !important;
-  transition: 0.6s ease !important;
+  border: 0.25em solid silver !important;
+  color: silver !important;
+  transition: 1s ease !important;
 }
 
 .button:hover {
   border-color: gold !important;
   color: gold !important;
-  transition: 0.6s ease !important;
+  transition: 1s ease !important;
+  box-shadow: rgba(255, 215, 0, 0.25) 0px 54px 55px,
+    rgba(255, 215, 0, 0.12) 0px -12px 30px, rgba(255, 215, 0, 0.12) 0px 4px 6px,
+    rgba(255, 215, 0, 0.17) 0px 12px 13px, rgba(255, 215, 0, 0.09) 0px -3px 5px;
 }
