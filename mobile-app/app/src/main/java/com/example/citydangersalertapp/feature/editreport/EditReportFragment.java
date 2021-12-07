@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
@@ -32,6 +33,25 @@ public class EditReportFragment extends Fragment {
         void onReportTimeReceived(LocalTime newReportTime);
     }
 
+    final AdapterView.OnItemSelectedListener itemSelectedListener = new AdapterView.OnItemSelectedListener() {
+        @Override
+        public void onItemSelected(AdapterView<?> parent,
+                                   View view,
+                                   int position,
+                                   long id) {
+            MyCustomMethods.showShortMessage(requireContext(), String.valueOf(position));
+
+            if (editReportViewModel.getCategory().get() != position) {
+                editReportViewModel.setCategory(position);
+            }
+        }
+
+        @Override
+        public void onNothingSelected(AdapterView<?> parent) {
+
+        }
+    };
+
     public EditReportFragment() {
         // Required empty public constructor
     }
@@ -53,6 +73,7 @@ public class EditReportFragment extends Fragment {
                              Bundle savedInstanceState) {
         setFragmentVariables(inflater, container);
         setLayoutVariables();
+        setCategorySpinnerListener();
 
         return binding.getRoot();
     }
@@ -61,6 +82,12 @@ public class EditReportFragment extends Fragment {
     public void onStart() {
         super.onStart();
         setFieldHints();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        binding.categorySpinner.setOnItemSelectedListener(null);
     }
 
     private void setFieldHints() {
@@ -77,7 +104,7 @@ public class EditReportFragment extends Fragment {
 
             if (selectedReport.getNote() != null) {
                 binding.noteField.setHint(selectedReport.getNote());
-                binding.noteField.setText(selectedReport.getNote());
+                editReportViewModel.setNote(selectedReport.getNote());
             }
 
             binding.categorySpinner.setSelection(selectedReport.getCategory());
@@ -118,5 +145,9 @@ public class EditReportFragment extends Fragment {
         }
 
         binding.timeText.setText(formattedTime);
+    }
+
+    private void setCategorySpinnerListener() {
+        binding.categorySpinner.setOnItemSelectedListener(itemSelectedListener);
     }
 }

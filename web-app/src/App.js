@@ -257,11 +257,6 @@ const App = () => {
           path="/page-not-found"
           component={() => <PageNotFound history={history} />}
         />
-        {/* <Route
-          exact
-          path="/page-not-found"
-          component={() => <PageNotFound errorCode="404" />}
-        ></Route> */}
         <Route path="*">
           <Redirect to="/page-not-found" />
         </Route>

@@ -4,6 +4,8 @@ import androidx.annotation.NonNull;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.Objects;
+
 public class UserLocation {
     private String country;
 
@@ -95,6 +97,25 @@ public class UserLocation {
 
     public void setLongitude(float longitude) {
         this.longitude = longitude;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        UserLocation that = (UserLocation) o;
+        return Float.compare(that.latitude, latitude) == 0 &&
+                Float.compare(that.longitude, longitude) == 0 &&
+                country.equals(that.country) &&
+                countryCode.equals(that.countryCode) &&
+                region.equals(that.region) &&
+                regionName.equals(that.regionName) &&
+                city.equals(that.city);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(country, countryCode, region, regionName, city, latitude, longitude);
     }
 
     @NonNull

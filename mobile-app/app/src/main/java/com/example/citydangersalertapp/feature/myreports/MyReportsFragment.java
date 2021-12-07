@@ -79,7 +79,7 @@ public class MyReportsFragment extends Fragment {
             MyCustomVariables.getDatabaseReference()
                     .child("usersList")
                     .child(currentUserId)
-                    .addListenerForSingleValueEvent(new ValueEventListener() {
+                    .addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
                             final boolean personalReportsNodeExists =

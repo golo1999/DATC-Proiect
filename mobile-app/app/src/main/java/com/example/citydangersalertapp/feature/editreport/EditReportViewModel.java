@@ -4,7 +4,6 @@ import static android.content.Context.MODE_PRIVATE;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.ObservableField;
@@ -13,9 +12,13 @@ import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModel;
 
+import com.example.citydangersalertapp.R;
 import com.example.citydangersalertapp.model.Report;
 import com.example.citydangersalertapp.utility.DatePickerFragment;
+import com.example.citydangersalertapp.utility.MyCustomMethods;
+import com.example.citydangersalertapp.utility.MyCustomVariables;
 import com.example.citydangersalertapp.utility.TimePickerFragment;
+import com.google.android.gms.tasks.Task;
 import com.google.gson.Gson;
 
 import java.time.LocalDate;
@@ -99,47 +102,80 @@ public class EditReportViewModel extends ViewModel {
     }
 
     public void saveReportDetailsHandler(@NonNull Activity parentActivity) {
-        final Report retrievedReport = retrieveReportFromSharedPreferences(parentActivity);
+        final Report report = retrieveReportFromSharedPreferences(parentActivity);
 
-        Log.d("retrievedReport", retrievedReport != null ? retrievedReport.toString() : "null");
-
-        if (retrievedReport != null) {
-
-            Report editedReport = null;
-            try {
-                editedReport = (Report) retrievedReport.clone();
-            } catch (CloneNotSupportedException e) {
-                e.printStackTrace();
+        if (report != null) {
+            if (!String.valueOf(note.get()).equals(report.getNote())) {
+                report.setNote(note.get());
             }
 
-            if (editedReport != null) {
-                Log.d("123initialReport", retrievedReport.toString());
-
-                if (!String.valueOf(note.get()).equals(retrievedReport.getNote())) {
-                    editedReport.setNote(note.get());
-                }
-
-                if (category.get() != retrievedReport.getCategory()) {
-                    editedReport.setCategory(category.get());
-                }
-
-                Log.d("123copiedReport", editedReport.toString());
-                Log.d("123reportsAreTheSame", String.valueOf(retrievedReport.equals(editedReport)));
+            if (category.get() != report.getCategory()) {
+                report.setCategory(category.get());
             }
+
+            if (date.getYear() != report.getDateTime().getYear()) {
+                report.getDateTime().setYear(date.getYear());
+            }
+
+            if (date.getMonthValue() != report.getDateTime().getMonth()) {
+                report.getDateTime().setMonth(date.getMonthValue());
+            }
+
+            if (!String.valueOf(date.getMonth()).equals(report.getDateTime().getMonthName())) {
+                report.getDateTime().setMonthName(String.valueOf(date.getMonth()));
+            }
+
+            if (date.getDayOfMonth() != report.getDateTime().getDay()) {
+                report.getDateTime().setDay(date.getDayOfMonth());
+            }
+
+            if (!String.valueOf(date.getDayOfWeek()).equals(report.getDateTime().getDayName())) {
+                report.getDateTime().setDayName(String.valueOf(date.getDayOfWeek()));
+            }
+
+            if (time.getHour() != report.getDateTime().getHour()) {
+                report.getDateTime().setHour(time.getHour());
+            }
+
+            if (time.getMinute() != report.getDateTime().getMinute()) {
+                report.getDateTime().setMinute(time.getMinute());
+            }
+
+            if (time.getSecond() != report.getDateTime().getSecond()) {
+                report.getDateTime().setSecond(time.getSecond());
+            }
+
+            final Report retrievedReport = retrieveReportFromSharedPreferences(parentActivity);
+
+            // if the report has been modified
+            if (!report.equals(retrievedReport)) {
+                final String currentUserId = MyCustomVariables.getFirebaseAuth().getUid();
+
+                if (currentUserId != null) {
+                    MyCustomVariables.getDatabaseReference()
+                            .child("usersList")
+                            .child(currentUserId)
+                            .child("personalReports")
+                            .child(report.getReportId())
+                            .setValue(report)
+                            .addOnCompleteListener((Task<Void> task) -> {
+                                if (task.isSuccessful()) {
+                                    MyCustomMethods.showShortMessage(parentActivity,
+                                            parentActivity.getResources().getString(R.string.report_updated));
+                                    parentActivity.onBackPressed();
+                                }
+                            });
+                }
+            }
+            // if the report has NOT been modified
+            else {
+                MyCustomMethods.showShortMessage(parentActivity,
+                        parentActivity.getResources().getString(R.string.no_changes_have_been_made));
+            }
+
+//            Log.d("123editedReport", report.toString());
+//            Log.d("123initialReport", retrievedReport.toString());
+//            Log.d("123reportsAreTheSame", String.valueOf(report.equals(retrievedReport)));
         }
     }
-
-//    private void saveReportToSharedPreferences(@NonNull Activity parentActivity) {
-//        if (selectedReport != null) {
-//            SharedPreferences preferences =
-//                    parentActivity.getSharedPreferences(MyCustomVariables.getSharedPreferencesFileName(), MODE_PRIVATE);
-//
-//            SharedPreferences.Editor editor = preferences.edit();
-//            Gson gson = new Gson();
-//            String json = gson.toJson(report);
-//
-//            editor.putString("currentUserDetails", json);
-//            editor.apply();
-//        }
-//    }
 }

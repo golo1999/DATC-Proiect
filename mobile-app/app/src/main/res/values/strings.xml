@@ -16,6 +16,7 @@
     <string name="login_here">Login here</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="no_changes_have_been_made">No changes have been made</string>
     <string name="no_reports_found">No reports found</string>
     <string name="note">Note</string>
     <string name="ok" translatable="false">OK</string>
@@ -26,6 +27,7 @@
     <string name="register_here">Register here</string>
     <string name="remember_me">Remember me</string>
     <string name="report_added_successfully">Report added successfully</string>
+    <string name="report_updated">Report updated</string>
     <string name="response_unsuccessful_code">Response unsuccessful, code:&#32;</string>
     <string name="save">Save</string>
     <string name="time">Time</string>

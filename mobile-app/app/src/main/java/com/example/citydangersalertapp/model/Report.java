@@ -6,7 +6,7 @@ import androidx.annotation.Nullable;
 import java.util.Objects;
 import java.util.UUID;
 
-public class Report implements Cloneable{
+public class Report implements Cloneable {
     private String reportId;
     private String userId;
     @Nullable
@@ -167,6 +167,23 @@ public class Report implements Cloneable{
         return super.clone();
     }
 
+//    @Override
+//    public boolean equals(Object o) {
+//        if (this == o) return true;
+//        if (o == null || getClass() != o.getClass()) return false;
+//        Report report = (Report) o;
+//        return checkStatus == report.checkStatus &&
+//                category == report.category &&
+//                reportId.equals(report.reportId) &&
+//                userId.equals(report.userId) &&
+//                Objects.equals(note, report.note) &&
+//                Objects.equals(checkedBy, report.checkedBy) &&
+//                Objects.equals(photoURL, report.photoURL) &&
+//                Objects.equals(dateTime, report.dateTime) &&
+//                Objects.equals(location, report.location);
+//    }
+
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -179,13 +196,12 @@ public class Report implements Cloneable{
                 Objects.equals(note, report.note) &&
                 Objects.equals(checkedBy, report.checkedBy) &&
                 Objects.equals(photoURL, report.photoURL) &&
-                Objects.equals(dateTime, report.dateTime) &&
-                Objects.equals(location, report.location);
+                dateTime.equals(report.dateTime);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(reportId, userId, note, checkStatus, checkedBy, photoURL, dateTime, category, location);
+        return Objects.hash(reportId, userId, note, checkStatus, checkedBy, photoURL, dateTime, category);
     }
 
     @NonNull
@@ -196,6 +212,7 @@ public class Report implements Cloneable{
                 ", userId='" + userId + '\'' +
                 ", note='" + note + '\'' +
                 ", checkStatus=" + checkStatus +
+                ", checkedBy='" + checkedBy + '\'' +
                 ", photoURL='" + photoURL + '\'' +
                 ", dateTime=" + dateTime +
                 ", category=" + category +
