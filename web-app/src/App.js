@@ -200,9 +200,13 @@ const App = () => {
     <Fragment>
       {!topBarIsVisible && <TopBar />}
       <Switch>
-        <Route exact path="/" component={SplashScreen}>
-          {/* {isAuthenticated && <Redirect to="/reports" />}
-          {!isAuthenticated && <Redirect to="/login" />} */}
+        <Route
+          exact
+          path="/"
+          // component={() => <SplashScreen isAuthenticated={isAuthenticated} />}
+        >
+          {isAuthenticated && <Redirect to="/reports" />}
+          {!isAuthenticated && <Redirect to="/login" />}
         </Route>
         <Route exact path="/login">
           {isAuthenticated && <Redirect to="/" />}

@@ -47,7 +47,7 @@ code {
 }
 
 ::-webkit-scrollbar-track {
-  background: transparent !important;
+  background: #FFD580 !important;
 }
 
 ::-webkit-scrollbar-thumb {

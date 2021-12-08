@@ -7,6 +7,10 @@
   margin: auto !important;
 }
 
+.empty-container > h2 {
+  user-select: none;
+}
+
 .spinner-container {
   align-items: center;
   display: flex;

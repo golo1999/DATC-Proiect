@@ -4,14 +4,18 @@ import { useHistory } from "react-router";
 
 import classes from "./SplashScreen.module.css";
 
-const SplashScreen = () => {
+const SplashScreen = (props) => {
   const history = useHistory();
+
+  const isAuthenticated = props.isAuthenticated;
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      history.replace({ pathname: "/reports" });
+      console.log("splash: " + isAuthenticated);
+
+      history.replace({ pathname: isAuthenticated ? "/reports" : "/login" });
       //   history.push("/reports");
-    }, 1500);
+    }, 1000);
 
     return () => {
       clearTimeout(timer);

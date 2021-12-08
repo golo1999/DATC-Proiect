@@ -13,7 +13,7 @@ const AllReports = (props) => {
   // const history = useHistory();
 
   // if (!isAuthenticated) {
-  //   history.push("/login");
+  //   history.replace("/login");
   // }
 
   const [isLoading, setIsLoading] = useState(true);
