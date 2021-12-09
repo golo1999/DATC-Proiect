@@ -11,9 +11,25 @@ import androidx.fragment.app.Fragment;
 
 import com.example.citydangersalertapp.R;
 import com.example.citydangersalertapp.databinding.NearbyDangersMapFragmentBinding;
+import com.example.citydangersalertapp.model.Report;
+import com.example.citydangersalertapp.utility.MyCustomMethods;
+import com.example.citydangersalertapp.utility.MyCustomVariables;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
 
-public class NearbyDangersMapFragment extends Fragment {
+import java.util.ArrayList;
+
+public class NearbyDangersMapFragment extends Fragment implements OnMapReadyCallback {
     private NearbyDangersMapFragmentBinding binding;
+    private final ArrayList<MarkerOptions> reportsLocationList = new ArrayList<>();
 
     public NearbyDangersMapFragment() {
         // Required empty public constructor
@@ -33,8 +49,71 @@ public class NearbyDangersMapFragment extends Fragment {
                              Bundle savedInstanceState) {
         setFragmentVariables(inflater, container);
         setLayoutVariables();
+        initializeMap();
 
         return binding.getRoot();
+    }
+
+    @Override
+    public void onMapReady(@NonNull GoogleMap googleMap) {
+        final String currentUserId = MyCustomVariables.getFirebaseAuth().getUid();
+
+        if (currentUserId != null) {
+            MyCustomVariables.getDatabaseReference()
+                    .child("usersList")
+                    .addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            if (snapshot.exists()) {
+                                if (!reportsLocationList.isEmpty()) {
+                                    reportsLocationList.clear();
+                                }
+
+                                for (final DataSnapshot userSnapshot : snapshot.getChildren()) {
+                                    if (userSnapshot.hasChild("personalReports")) {
+                                        for (final DataSnapshot reportSnapshot :
+                                                userSnapshot.child("personalReports").getChildren()) {
+                                            final Report report = reportSnapshot.getValue(Report.class);
+
+                                            if (report != null && report.getLocation() != null) {
+                                                reportsLocationList.add(new MarkerOptions()
+                                                        .position(new LatLng(report.getLocation().getLatitude(),
+                                                                report.getLocation().getLongitude()))
+                                                        .title(report.getNote() != null ?
+                                                                report.getNote() : "No note provided"));
+                                            }
+                                        }
+                                    }
+                                }
+
+                                final LatLng resita = new LatLng(45.2998, 21.8801);
+
+                                reportsLocationList.forEach(googleMap::addMarker);
+
+                                CameraPosition cameraPosition = new CameraPosition.Builder()
+                                        .target(resita)
+                                        .zoom(16)
+                                        .build();
+
+                                googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
+        }
+    }
+
+    private void initializeMap() {
+        SupportMapFragment mapFragment =
+                (SupportMapFragment) getChildFragmentManager().findFragmentById(binding.mapContainer.getId());
+
+        if (mapFragment != null) {
+            mapFragment.getMapAsync(NearbyDangersMapFragment.this);
+        }
     }
 
     private void setFragmentVariables(LayoutInflater inflater,

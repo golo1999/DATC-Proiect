@@ -10,6 +10,8 @@ import { locationActions } from "./store/location-slice";
 import { reportsListActions } from "./store/reports-list-slice";
 import { usersListActions } from "./store/users-list-slice";
 
+import { fetchCurrentLocation } from "./lib/api";
+
 import AllReports from "./components/AllReports";
 import AllUsers from "./components/AllUsers";
 import Login from "./components/Authentication/Login";
@@ -44,32 +46,32 @@ const App = () => {
 
   const [topBarIsVisible, setTopBarIsVisible] = useState(false);
 
-  const fetchCurrentLocation = useCallback(async () => {
-    try {
-      // const details = {
-      //   headers: { "Content-Type": "application/json" },
-      //   method: "POST",
-      // };
+  // const fetchCurrentLocation = useCallback(async () => {
+  //   try {
+  //     // const details = {
+  //     //   headers: { "Content-Type": "application/json" },
+  //     //   method: "POST",
+  //     // };
 
-      const response = await fetch("http://ip-api.com/json/?fields=223");
+  //     const response = await fetch("http://ip-api.com/json/?fields=223");
 
-      if (!response.ok) {
-        throw new Error("Something went wrong!");
-      }
+  //     if (!response.ok) {
+  //       throw new Error("Something went wrong!");
+  //     }
 
-      const data = await response.json();
+  //     const data = await response.json();
 
-      dispatch(
-        locationActions.setAdminLocation({
-          newLocation: { latitude: data.lat, longitude: data.lon },
-        })
-      );
+  //     dispatch(
+  //       locationActions.setAdminLocation({
+  //         newLocation: { latitude: data.lat, longitude: data.lon },
+  //       })
+  //     );
 
-      // setMovies(loadedMovies);
-    } catch (error) {
-      // setError(error.message);
-    }
-  }, [dispatch]);
+  //     // setMovies(loadedMovies);
+  //   } catch (error) {
+  //     // setError(error.message);
+  //   }
+  // }, [dispatch]);
 
   const fetchAuthenticatedAdmin = useCallback(async () => {
     onAuthStateChanged(auth, (admin) => {
@@ -158,16 +160,27 @@ const App = () => {
 
   useEffect(() => {
     fetchAuthenticatedAdmin();
-    fetchCurrentLocation();
+
+    fetchCurrentLocation()
+      .then((result) => {
+        if (result) {
+          dispatch(
+            locationActions.setAdminLocation({
+              newLocation: result,
+            })
+          );
+        }
+      })
+      .catch(() => {
+        console.log(
+          "Failed to fetch your location. Using the default one instead"
+        );
+      });
+
     fetchReportsList();
+
     fetchUsersList();
-  }, [
-    dispatch,
-    fetchAuthenticatedAdmin,
-    fetchCurrentLocation,
-    fetchReportsList,
-    fetchUsersList,
-  ]);
+  }, [dispatch, fetchAuthenticatedAdmin, fetchReportsList, fetchUsersList]);
 
   useEffect(() => {
     if (location.pathname === "/page-not-found" || location.pathname === "/") {
@@ -177,7 +190,7 @@ const App = () => {
     } else if (topBarIsVisible) {
       setTopBarIsVisible((prevValue) => !prevValue);
     }
-  }, [location.pathname]);
+  }, [location.pathname, topBarIsVisible]);
 
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
 
@@ -190,11 +203,6 @@ const App = () => {
   );
 
   const usersList = useSelector((state) => state.usersList.usersList);
-
-  // navigator.geolocation.getCurrentPosition((position) => {
-  //   console.log("CURRENT POSITION");
-  //   console.log(position.coords.latitude + " " + position.coords.longitude);
-  // });
 
   return (
     <Fragment>

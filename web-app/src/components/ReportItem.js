@@ -1,10 +1,15 @@
 import { getDatabase, onValue, ref, set } from "firebase/database";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router";
 
 import { reportActions } from "../store/report-slice";
 import { reportsListActions } from "../store/reports-list-slice";
+
+import {
+  getNumberOfSolvedReports,
+  getUserPersonalInformation,
+} from "../lib/api";
 
 import { Button, Card, Col, Container, Modal, Row } from "react-bootstrap";
 import { FaAngleRight, FaCheck } from "react-icons/fa";
@@ -18,77 +23,9 @@ const ReportItem = (props) => {
 
   const dispatch = useDispatch();
 
-  // const { REACT_APP_REALTIME_DATABASE_URL: DATABASE_URL } = process.env;
-
-  const getNumberOfSolvedReports = useCallback(
-    async (userId) => {
-      const reportsListRef = ref(db, `usersList/${userId}/personalReports`);
-
-      let numberOfSolvedReports = 0;
-
-      onValue(reportsListRef, (snapshot) => {
-        const data = snapshot.val();
-
-        const personalReportsList = Object.values(data);
-
-        personalReportsList.forEach((report) => {
-          if (report.checkedStatus) {
-            ++numberOfSolvedReports;
-          }
-        });
-      });
-
-      return numberOfSolvedReports;
-    },
-    [db]
-  );
-
-  const getUserPersonalInformation = useCallback(
-    async (userId) => {
-      const userPersonalInformationRef = ref(
-        db,
-        `usersList/${userId}/personalInformation`
-      );
-
-      let personalInformation = {};
-
-      onValue(userPersonalInformationRef, (snapshot) => {
-        const data = snapshot.val();
-
-        // console.log(data);
-
-        personalInformation = data;
-      });
-
-      // console.log(personalInformation);
-
-      return personalInformation;
-    },
-    [db]
-  );
-
   const history = useHistory();
 
   const report = props.report;
-
-  useEffect(() => {
-    // const reportsListPromise = getNumberOfSolvedReports(report.userId);
-    // reportsListPromise.then((result) => {
-    //   const currentLevel = parseInt(result / 5) + 1;
-    //   console.log(`${report.userId}:` + currentLevel);
-    // });
-    // const searchedUserId = "aoJCsyLhHgYxRknu7INI1Q4ge0N2";
-    // const personalInformationPromise =
-    //   getUserPersonalInformation(searchedUserId);
-    // personalInformationPromise.then((result) => {
-    //   const birthDate = result.birthDate;
-    //   console.log(`${searchedUserId}`);
-    //   console.log(result);
-    //   if (birthDate) {
-    //     console.log("birthDate: " + birthDate.dayName);
-    //   }
-    // });
-  }, []);
 
   const reportDetailsRef = ref(
     db,
@@ -164,22 +101,23 @@ const ReportItem = (props) => {
     setIsChecked((previousValue) => !previousValue);
     dispatch(reportsListActions.updateReport({ updatedReport: editedReport }));
 
-    const numberOfSolvedReportsPromise = getNumberOfSolvedReports(
-      editedReport.userId
-    );
+    modifyUserLevel(editedReport.userId);
+
+    closeModalHandler();
+  };
+
+  const modifyUserLevel = (userId) => {
+    const numberOfSolvedReportsPromise = getNumberOfSolvedReports(userId);
 
     numberOfSolvedReportsPromise.then((result) => {
-      const searchedUserId = editedReport.userId;
-
       const userPersonalInformationRef = ref(
         db,
-        `usersList/${searchedUserId}/personalInformation`
+        `usersList/${userId}/personalInformation`
       );
 
       const newUserLevel = parseInt(result / 5) + 1;
 
-      const userPersonalInformationPromise =
-        getUserPersonalInformation(searchedUserId);
+      const userPersonalInformationPromise = getUserPersonalInformation(userId);
 
       userPersonalInformationPromise.then((result) => {
         const personalInformation = result;
@@ -194,8 +132,6 @@ const ReportItem = (props) => {
         }
       });
     });
-
-    closeModalHandler();
   };
 
   const showModalHandler = () => {

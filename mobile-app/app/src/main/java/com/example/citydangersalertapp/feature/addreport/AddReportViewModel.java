@@ -30,7 +30,7 @@ public class AddReportViewModel extends ViewModel {
     private final ObservableInt reportCategory = new ObservableInt();
 
     private final Retrofit retrofit = new Retrofit.Builder()
-            .baseUrl(MyCustomVariables.getBaseURL())
+            .baseUrl(MyCustomVariables.getLocationApiBaseUrl())
             .addConverterFactory(GsonConverterFactory.create()).build();
 
     private final JsonPlaceHolderAPI api = retrofit.create(JsonPlaceHolderAPI.class);

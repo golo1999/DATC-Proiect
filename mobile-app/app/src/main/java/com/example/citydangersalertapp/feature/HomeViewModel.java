@@ -38,7 +38,7 @@ public class HomeViewModel extends ViewModel {
     private final NearbyDangersMapFragment nearbyDangersMapFragmentInstance = new NearbyDangersMapFragment();
     private final ProfileFragment profileFragmentInstance = new ProfileFragment();
     private final SettingsFragment settingsFragmentInstance = new SettingsFragment();
-    private Fragment currentFragment = myReportsFragmentInstance;
+    private Fragment currentFragment;
     private Fragment lastFragment = currentFragment;
     private Report selectedReport;
     private long backPressedTime;

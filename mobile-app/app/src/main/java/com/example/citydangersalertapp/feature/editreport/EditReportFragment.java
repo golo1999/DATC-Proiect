@@ -39,7 +39,7 @@ public class EditReportFragment extends Fragment {
                                    View view,
                                    int position,
                                    long id) {
-            MyCustomMethods.showShortMessage(requireContext(), String.valueOf(position));
+//            MyCustomMethods.showShortMessage(requireContext(), String.valueOf(position));
 
             if (editReportViewModel.getCategory().get() != position) {
                 editReportViewModel.setCategory(position);

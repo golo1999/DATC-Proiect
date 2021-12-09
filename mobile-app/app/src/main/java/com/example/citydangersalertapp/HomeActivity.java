@@ -94,7 +94,8 @@ public class HomeActivity
     @Override
     protected void onStart() {
         super.onStart();
-        setFragment(viewModel.getCurrentFragment());
+        setFragment(viewModel.getCurrentFragment() != null ?
+                viewModel.getCurrentFragment() : viewModel.getMyReportsFragmentInstance());
         setDrawerUserProfile();
     }
 
@@ -215,32 +216,35 @@ public class HomeActivity
     }
 
     public void setFragment(Fragment newFragment) {
-        final int addReportButtonVisibility =
-                !(newFragment instanceof MyReportsFragment || newFragment instanceof NearbyDangersMapFragment) ?
-                        View.GONE : View.VISIBLE;
+        if (viewModel.getCurrentFragment() == null
+                || !newFragment.getClass().toString().equals(viewModel.getCurrentFragment().getClass().toString())) {
+            final int addReportButtonVisibility =
+                    !(newFragment instanceof MyReportsFragment || newFragment instanceof NearbyDangersMapFragment) ?
+                            View.GONE : View.VISIBLE;
 
-        final int newCheckedItemId =
-                newFragment instanceof MyReportsFragment ?
-                        R.id.drawer_menu_my_reports :
-                        newFragment instanceof NearbyDangersMapFragment ?
-                                R.id.drawer_menu_nearby_dangers :
-                                newFragment instanceof ProfileFragment ?
-                                        R.id.drawer_menu_profile :
-                                        newFragment instanceof SettingsFragment ?
-                                                R.id.drawer_menu_settings : R.id.drawer_menu_add_report;
+            final int newCheckedItemId =
+                    newFragment instanceof MyReportsFragment ?
+                            R.id.drawer_menu_my_reports :
+                            newFragment instanceof NearbyDangersMapFragment ?
+                                    R.id.drawer_menu_nearby_dangers :
+                                    newFragment instanceof ProfileFragment ?
+                                            R.id.drawer_menu_profile :
+                                            newFragment instanceof SettingsFragment ?
+                                                    R.id.drawer_menu_settings : R.id.drawer_menu_add_report;
 
-        viewModel.setLastFragment(viewModel.getCurrentFragment());
-        viewModel.setCurrentFragment(newFragment);
+            viewModel.setLastFragment(viewModel.getCurrentFragment());
+            viewModel.setCurrentFragment(newFragment);
 
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(homeActivityBinding.fragmentContainer.getId(), newFragment)
-                .commit();
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(homeActivityBinding.fragmentContainer.getId(), newFragment)
+                    .commit();
 
-        // hiding the button if the new fragment is an instance of AddReportFragment, SettingsFragment or ProfileFragment
-        homeActivityBinding.addReportButton.setVisibility(addReportButtonVisibility);
-        homeActivityBinding.navigationView.setCheckedItem(newCheckedItemId);
-        setToolbarTitle();
+            // hiding the button if the new fragment is an instance of AddReportFragment, SettingsFragment or ProfileFragment
+            homeActivityBinding.addReportButton.setVisibility(addReportButtonVisibility);
+            homeActivityBinding.navigationView.setCheckedItem(newCheckedItemId);
+            setToolbarTitle();
+        }
     }
 
     private void setLayoutVariables() {

@@ -43,11 +43,11 @@ code {
 }
 
 ::-webkit-scrollbar {
-  background: transparent !important;
+  background: #ffd580 !important;
 }
 
 ::-webkit-scrollbar-track {
-  background: #FFD580 !important;
+  background: #ffd580 !important;
 }
 
 ::-webkit-scrollbar-thumb {
