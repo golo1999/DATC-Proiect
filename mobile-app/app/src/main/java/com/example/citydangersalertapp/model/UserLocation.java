@@ -18,10 +18,10 @@ public class UserLocation {
     private String city;
 
     @SerializedName("lat")
-    private float latitude;
+    private double latitude;
 
     @SerializedName("lon")
-    private float longitude;
+    private double longitude;
 
     public UserLocation() {
         // Required empty constructor
@@ -32,13 +32,19 @@ public class UserLocation {
                         String region,
                         String regionName,
                         String city,
-                        float latitude,
-                        float longitude) {
+                        double latitude,
+                        double longitude) {
         this.country = country;
         this.countryCode = countryCode;
         this.region = region;
         this.regionName = regionName;
         this.city = city;
+        this.latitude = latitude;
+        this.longitude = longitude;
+    }
+
+    public UserLocation(double latitude,
+                        double longitude) {
         this.latitude = latitude;
         this.longitude = longitude;
     }
@@ -83,19 +89,19 @@ public class UserLocation {
         this.city = city;
     }
 
-    public float getLatitude() {
+    public double getLatitude() {
         return latitude;
     }
 
-    public void setLatitude(float latitude) {
+    public void setLatitude(double latitude) {
         this.latitude = latitude;
     }
 
-    public float getLongitude() {
+    public double getLongitude() {
         return longitude;
     }
 
-    public void setLongitude(float longitude) {
+    public void setLongitude(double longitude) {
         this.longitude = longitude;
     }
 
@@ -104,8 +110,8 @@ public class UserLocation {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         UserLocation that = (UserLocation) o;
-        return Float.compare(that.latitude, latitude) == 0 &&
-                Float.compare(that.longitude, longitude) == 0 &&
+        return Double.compare(that.latitude, latitude) == 0 &&
+                Double.compare(that.longitude, longitude) == 0 &&
                 country.equals(that.country) &&
                 countryCode.equals(that.countryCode) &&
                 region.equals(that.region) &&
