@@ -37,41 +37,11 @@ const App = () => {
 
   const { REACT_APP_GOOGLE_KEY: GOOGLE_KEY } = process.env;
 
-  const googleMapURL =
-    "https://maps.googleapis.com/maps/api/js?key=" +
-    GOOGLE_KEY +
-    "&v=3.exp&libraries=geometry,drawing,places";
+  const googleMapURL = `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_KEY}&v=3.exp&libraries=geometry,drawing,places`;
 
   const history = useHistory();
 
   const [topBarIsVisible, setTopBarIsVisible] = useState(false);
-
-  // const fetchCurrentLocation = useCallback(async () => {
-  //   try {
-  //     // const details = {
-  //     //   headers: { "Content-Type": "application/json" },
-  //     //   method: "POST",
-  //     // };
-
-  //     const response = await fetch("http://ip-api.com/json/?fields=223");
-
-  //     if (!response.ok) {
-  //       throw new Error("Something went wrong!");
-  //     }
-
-  //     const data = await response.json();
-
-  //     dispatch(
-  //       locationActions.setAdminLocation({
-  //         newLocation: { latitude: data.lat, longitude: data.lon },
-  //       })
-  //     );
-
-  //     // setMovies(loadedMovies);
-  //   } catch (error) {
-  //     // setError(error.message);
-  //   }
-  // }, [dispatch]);
 
   const fetchAuthenticatedAdmin = useCallback(async () => {
     onAuthStateChanged(auth, (admin) => {

@@ -1,8 +1,11 @@
 package com.example.citydangersalertapp.utility;
 
+import static android.content.Context.MODE_PRIVATE;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.text.format.DateFormat;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -11,6 +14,9 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 
 import com.example.citydangersalertapp.model.MyCustomDate;
+import com.example.citydangersalertapp.model.Report;
+import com.example.citydangersalertapp.model.UserLocation;
+import com.google.gson.Gson;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -205,6 +211,31 @@ public final class MyCustomMethods {
         activity.startActivity(activity.getIntent());
         activity.finish();
         activity.overridePendingTransition(0, 0);
+    }
+
+    public static UserLocation retrieveLocationFromSharedPreferences(@NonNull Activity parentActivity,
+                                                                     @NonNull String key) {
+        SharedPreferences preferences =
+                parentActivity.getSharedPreferences(MyCustomVariables.getSharedPreferencesAppData(), MODE_PRIVATE);
+        Gson gson = new Gson();
+        String json = preferences.getString(key, "");
+
+        return gson.fromJson(json, UserLocation.class);
+    }
+
+    public static void saveLocationToSharedPreferences(@NonNull Activity parentActivity,
+                                              @NonNull UserLocation location,
+                                              @NonNull String key) {
+
+        SharedPreferences preferences =
+                parentActivity.getSharedPreferences(MyCustomVariables.getSharedPreferencesAppData(), MODE_PRIVATE);
+
+        SharedPreferences.Editor editor = preferences.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(location);
+
+        editor.putString(key, json);
+        editor.apply();
     }
 
     public static void showShortMessage(final Context context, final String message) {
