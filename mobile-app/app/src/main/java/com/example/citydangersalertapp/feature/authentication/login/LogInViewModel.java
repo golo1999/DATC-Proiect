@@ -5,12 +5,13 @@ import android.content.Intent;
 import android.util.Patterns;
 
 import androidx.annotation.NonNull;
+import androidx.databinding.ObservableBoolean;
 import androidx.databinding.ObservableField;
 import androidx.lifecycle.ViewModel;
 
 import com.example.citydangersalertapp.HomeActivity;
 import com.example.citydangersalertapp.feature.authentication.AuthenticationActivity;
-import com.example.citydangersalertapp.feature.authentication.register.RegisterFragment;
+import com.example.citydangersalertapp.feature.authentication.register.*;
 import com.example.citydangersalertapp.utility.MyCustomMethods;
 import com.example.citydangersalertapp.utility.MyCustomVariables;
 import com.google.android.gms.tasks.Task;
@@ -22,6 +23,7 @@ import com.google.firebase.database.ValueEventListener;
 public class LogInViewModel extends ViewModel {
     private final ObservableField<String> userEmail = new ObservableField<>("");
     private final ObservableField<String> userPassword = new ObservableField<>("");
+    private final ObservableBoolean rememberMeChecked = new ObservableBoolean(false);
 
     public ObservableField<String> getUserEmail() {
         return userEmail;
@@ -33,6 +35,10 @@ public class LogInViewModel extends ViewModel {
 
     public void resetUserPassword() {
         this.userPassword.set("");
+    }
+
+    public ObservableBoolean getRememberMeChecked() {
+        return rememberMeChecked;
     }
 
     public void logInHandler(@NonNull Activity currentActivity,
@@ -72,6 +78,11 @@ public class LogInViewModel extends ViewModel {
                                                             if (signInTask.isSuccessful() &&
                                                                     MyCustomVariables.getFirebaseAuth().getCurrentUser() != null) {
                                                                 if (MyCustomVariables.getFirebaseAuth().getCurrentUser().isEmailVerified()) {
+                                                                    MyCustomMethods
+                                                                            .saveRememberMeToSharedPreferences(currentActivity,
+                                                                                    rememberMeChecked.get(),
+                                                                                    "rememberMeChecked");
+
                                                                     currentActivity.finish();
                                                                     currentActivity.startActivity(new Intent(currentActivity, HomeActivity.class));
                                                                 } else {

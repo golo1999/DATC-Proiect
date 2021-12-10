@@ -60,12 +60,12 @@ public class SplashScreenActivity extends AppCompatActivity {
                 @Override
                 public void onResponse(@NonNull Call<UserLocation> call,
                                        @NonNull Response<UserLocation> response) {
-                    UserLocation fetchedUserLocation = response.isSuccessful() ?
+                    UserLocation fetchedLocation = response.isSuccessful() ?
                             response.body() : MyCustomVariables.getDefaultUserLocation();
 
-                    if (fetchedUserLocation != null) {
+                    if (fetchedLocation != null) {
                         MyCustomMethods.saveLocationToSharedPreferences(SplashScreenActivity.this,
-                                fetchedUserLocation, "userLocation");
+                                fetchedLocation, "userLocation");
                     }
                 }
 
@@ -88,9 +88,16 @@ public class SplashScreenActivity extends AppCompatActivity {
                                     final UserPersonalInformation personalInformation =
                                             snapshot.getValue(UserPersonalInformation.class);
 
+                                    final String rememberMeChecked = MyCustomMethods
+                                            .retrieveRememberMeFromSharedPreferences(SplashScreenActivity.this,
+                                                    "rememberMeChecked");
+
+                                    final boolean userCanBeRedirectedToHomePage =
+                                            personalInformation != null && !personalInformation.isAdmin() &&
+                                                    rememberMeChecked != null && rememberMeChecked.equals("true");
+
                                     MyCustomMethods.goToActivityWithoutTransition(SplashScreenActivity.this,
-                                            personalInformation != null && !personalInformation.isAdmin() ?
-                                                    HomeActivity.class : AuthenticationActivity.class);
+                                            userCanBeRedirectedToHomePage ? HomeActivity.class : AuthenticationActivity.class);
                                 }
                             }
 

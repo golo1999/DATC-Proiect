@@ -25,6 +25,7 @@ import com.example.citydangersalertapp.feature.myreports.MyReportsFragment;
 import com.example.citydangersalertapp.feature.nearbydangersmap.NearbyDangersMapFragment;
 import com.example.citydangersalertapp.model.Report;
 import com.example.citydangersalertapp.model.UserPersonalInformation;
+import com.example.citydangersalertapp.utility.MyCustomMethods;
 import com.example.citydangersalertapp.utility.MyCustomVariables;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -118,6 +119,7 @@ public class HomeViewModel extends ViewModel {
 
     public void logOutHandler(@NonNull Activity parentActivity) {
         MyCustomVariables.getFirebaseAuth().signOut();
+        MyCustomMethods.saveRememberMeToSharedPreferences(parentActivity, false, "rememberMeChecked");
         parentActivity.startActivity(new Intent(parentActivity, AuthenticationActivity.class));
         parentActivity.finishAffinity();
 //        parentActivity.overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
