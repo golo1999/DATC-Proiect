@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 
+import com.example.citydangersalertapp.HomeActivity;
 import com.example.citydangersalertapp.R;
 import com.example.citydangersalertapp.utility.MyCustomMethods;
 import com.example.citydangersalertapp.utility.MyCustomVariables;
@@ -92,6 +93,8 @@ public class SelectPhotoViewModel extends ViewModel {
                                     .setValue(String.valueOf(url))
                                     .addOnCompleteListener((Task<Void> uploadPhotoTask) -> {
                                         if (uploadPhotoTask.isSuccessful()) {
+                                            ((HomeActivity) activity).setDrawerUserProfile();
+
                                             MyCustomMethods.showShortMessage(activity,
                                                     activity.getResources().getString(R.string.upload_successful));
                                         }

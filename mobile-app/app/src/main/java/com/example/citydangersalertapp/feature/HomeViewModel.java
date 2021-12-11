@@ -33,6 +33,9 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
+import com.squareup.picasso.Picasso;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class HomeViewModel extends ViewModel {
     private final AddReportFragment addReportFragmentInstance = new AddReportFragment();
@@ -185,6 +188,7 @@ public class HomeViewModel extends ViewModel {
 
     public void setDrawerProfile(HomeActivityBinding binding) {
         final View drawerHeader = binding.navigationView.getHeaderView(0);
+        final CircleImageView drawerPhoto = drawerHeader.findViewById(R.id.photo);
         final TextView drawerName = drawerHeader.findViewById(R.id.name);
         final TextView drawerEmail = drawerHeader.findViewById(R.id.email);
         final TextView drawerLevel = drawerHeader.findViewById(R.id.level);
@@ -204,6 +208,13 @@ public class HomeViewModel extends ViewModel {
 
                                 if (personalInformation != null) {
                                     final String currentUserLevel = "Level " + personalInformation.getLevel();
+
+                                    if (personalInformation.getPhotoURL() != null) {
+                                        Picasso.get()
+                                                .load(personalInformation.getPhotoURL())
+                                                .fit()
+                                                .into(drawerPhoto);
+                                    }
 
                                     drawerName.setText(personalInformation.getFirstName());
                                     drawerEmail.setText(personalInformation.getEmail());

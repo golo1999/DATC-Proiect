@@ -97,7 +97,7 @@ public class HomeActivity
         setActivityVariables();
         setLayoutVariables();
         setToolbar();
-        setDrawer();
+        initializeDrawer();
         setNavigationViewItemListener();
     }
 
@@ -234,7 +234,7 @@ public class HomeActivity
         }
     }
 
-    private void setDrawer() {
+    private void initializeDrawer() {
         final ActionBarDrawerToggle drawerToggle =
                 new ActionBarDrawerToggle(this, homeActivityBinding.drawer, homeActivityBinding.toolbar,
                         R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -297,7 +297,7 @@ public class HomeActivity
         viewModel = new ViewModelProvider(this).get(HomeViewModel.class);
     }
 
-    private void setDrawerUserProfile() {
+    public void setDrawerUserProfile() {
         viewModel.setDrawerProfile(homeActivityBinding);
     }
 
