@@ -26,3 +26,7 @@
   justify-content: center;
   align-items: center;
 }
+
+.photo {
+  padding-bottom: 5vmax;
+}

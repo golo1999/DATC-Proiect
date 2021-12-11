@@ -38,9 +38,14 @@ const UserProfile = (props) => {
         <Container>
           <Row>
             <Col className={classes["photo-column"]} lg={6} md={12}>
-              {userPersonalInformation.photoURL
-                ? userPersonalInformation.photoURL
-                : "No photo uploaded"}
+              {userPersonalInformation.photoURL ? (
+                <img
+                  className={classes.photo}
+                  src={userPersonalInformation.photoURL}
+                />
+              ) : (
+                "No photo uploaded"
+              )}
             </Col>
             <Col lg={6} md={12}>
               <Row>
