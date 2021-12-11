@@ -55,10 +55,16 @@ public class HomeActivity
     private HomeViewModel viewModel;
     private Toast backToast;
     private final int profileSelectPhotoRequestId = 2;
+    private final int addReportPhotoRequestId = 3;
     private GetSelectedPhotoUriCallback selectedPhotoUriCallback;
+    private GetAddReportPhotoUriCallback addReportPhotoUriCallback;
 
     public interface GetSelectedPhotoUriCallback {
         void getSelectedPhotoUri(Uri selectedUri);
+    }
+
+    public interface GetAddReportPhotoUriCallback {
+        void getAddReportPhotoUri(Uri selectedUri);
     }
 
     @Override
@@ -116,9 +122,14 @@ public class HomeActivity
                                     @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == profileSelectPhotoRequestId && data != null && data.getData() != null) {
-            viewModel.setImageUri(data.getData());
-            selectedPhotoUriCallback.getSelectedPhotoUri(viewModel.getImageUri());
+        if (data != null && data.getData() != null) {
+            if (requestCode == profileSelectPhotoRequestId) {
+                viewModel.setImageUri(data.getData());
+                selectedPhotoUriCallback.getSelectedPhotoUri(viewModel.getImageUri());
+            } else if (requestCode == addReportPhotoRequestId) {
+                viewModel.setImageUri(data.getData());
+                addReportPhotoUriCallback.getAddReportPhotoUri(viewModel.getImageUri());
+            }
         }
     }
 
@@ -299,6 +310,10 @@ public class HomeActivity
 
     public void setDrawerUserProfile() {
         viewModel.setDrawerProfile(homeActivityBinding);
+    }
+
+    public void setAddReportPhotoUriCallback(GetAddReportPhotoUriCallback callback) {
+        this.addReportPhotoUriCallback = callback;
     }
 
     public void setSelectedPhotoUriCallback(GetSelectedPhotoUriCallback callback) {

@@ -66,15 +66,8 @@ public class SelectPhotoFragment extends Fragment {
 
     private void setSelectedPhotoCallback() {
         ((HomeActivity) requireActivity()).setSelectedPhotoUriCallback(selectedUri -> {
-            MyCustomMethods.showShortMessage(requireActivity(), selectedUri.toString());
             viewModel.setSelectedPhotoUri(selectedUri);
             binding.photo.setImageURI(viewModel.getSelectedPhotoUri());
         });
-
-        // cazul in care avem deja o imagine existenta
-
-//        if (viewModel.getSelectedPhotoUri() != null) {
-//            binding.photo.setImageURI(viewModel.getSelectedPhotoUri());
-//        }
     }
 }

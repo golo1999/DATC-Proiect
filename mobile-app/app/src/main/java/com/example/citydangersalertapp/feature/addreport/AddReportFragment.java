@@ -1,10 +1,7 @@
 package com.example.citydangersalertapp.feature.addreport;
 
 import android.graphics.Color;
-import android.graphics.PorterDuff;
-import android.graphics.Typeface;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +17,6 @@ import com.example.citydangersalertapp.HomeActivity;
 import com.example.citydangersalertapp.R;
 import com.example.citydangersalertapp.databinding.AddReportFragmentBinding;
 import com.example.citydangersalertapp.utility.CategoriesSpinnerAdapter;
-import com.example.citydangersalertapp.utility.MyCustomVariables;
 
 public class AddReportFragment extends Fragment {
     private AddReportFragmentBinding binding;
@@ -61,6 +57,7 @@ public class AddReportFragment extends Fragment {
         setLayoutVariables();
         setCategoriesSpinner();
         setCategoriesSpinnerStyling();
+        setAddReportPhotoCallback();
 //        setCategoriesSpinnerListener();
 
         return binding.getRoot();
@@ -136,6 +133,15 @@ public class AddReportFragment extends Fragment {
 //
 ////        // setting elements' color
 ////        binding.categoriesSpinner.setPopupBackgroundResource(dropDownTheme);
+    }
+
+    private void setAddReportPhotoCallback() {
+        ((HomeActivity) requireActivity()).setAddReportPhotoUriCallback(selectedUri -> {
+            viewModel.setSelectedPhotoUri(selectedUri);
+            binding.photo.setImageURI(viewModel.getSelectedPhotoUri());
+            binding.photo.setVisibility(View.VISIBLE);
+            binding.photoText.setText(requireActivity().getResources().getString(R.string.change_photo));
+        });
     }
 
     public void toggleButton(boolean enabled) {

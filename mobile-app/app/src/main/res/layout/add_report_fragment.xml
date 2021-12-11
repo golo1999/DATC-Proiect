@@ -75,6 +75,27 @@
                     android:entries="@array/danger_category_names"
                     android:selectedItemPosition="@={viewModel.reportCategory}" />
 
+                <TextView
+                    android:id="@+id/photoText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="20sp"
+                    android:layout_marginTop="20sp"
+                    android:onClick="@{() -> viewModel.openFileChooser(activity)}"
+                    android:text="@string/add_photo"
+                    android:textColor="?attr/colorPrimary"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <ImageView
+                    android:id="@+id/photo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="20sp"
+                    android:layout_marginTop="20sp"
+                    android:visibility="gone"
+                    tools:src="?attr/colorPrimary" />
+
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/buttonsLayout"
                     android:layout_width="match_parent"
