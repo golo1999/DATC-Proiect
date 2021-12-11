@@ -23,6 +23,7 @@ import com.example.citydangersalertapp.feature.editprofile.ProfileFragment;
 import com.example.citydangersalertapp.feature.editreport.EditReportFragment;
 import com.example.citydangersalertapp.feature.myreports.MyReportsFragment;
 import com.example.citydangersalertapp.feature.nearbydangersmap.NearbyDangersMapFragment;
+import com.example.citydangersalertapp.feature.selectphoto.SelectPhotoFragment;
 import com.example.citydangersalertapp.model.Report;
 import com.example.citydangersalertapp.model.UserPersonalInformation;
 import com.example.citydangersalertapp.utility.MyCustomMethods;
@@ -39,6 +40,7 @@ public class HomeViewModel extends ViewModel {
     private final NearbyDangersMapFragment nearbyDangersMapFragmentInstance = new NearbyDangersMapFragment();
     private final ProfileFragment profileFragmentInstance = new ProfileFragment();
     private final SettingsFragment settingsFragmentInstance = new SettingsFragment();
+    private final SelectPhotoFragment selectPhotoFragmentInstance = new SelectPhotoFragment();
     private Fragment currentFragment;
     private Fragment lastFragment = currentFragment;
     private Report selectedReport;
@@ -66,6 +68,10 @@ public class HomeViewModel extends ViewModel {
 
     public SettingsFragment getSettingsFragmentInstance() {
         return settingsFragmentInstance;
+    }
+
+    public SelectPhotoFragment getSelectPhotoFragmentInstance() {
+        return selectPhotoFragmentInstance;
     }
 
     public Fragment getCurrentFragment() {

@@ -5,6 +5,7 @@
     <string name="birth_date">Birth date</string>
     <string name="cancel">Cancel</string>
     <string name="category">Category</string>
+    <string name="choose">Choose</string>
     <string name="could_not_add_location_to_report">Could not add location to the report</string>
     <string name="could_not_add_report">Could not add the report. Please try again</string>
     <string name="date">Date</string>
@@ -31,6 +32,7 @@
     <string name="response_unsuccessful_code">Response unsuccessful, code:&#32;</string>
     <string name="save">Save</string>
     <string name="time">Time</string>
+    <string name="upload">Upload</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

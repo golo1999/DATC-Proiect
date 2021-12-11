@@ -8,6 +8,7 @@ import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModel;
 
+import com.example.citydangersalertapp.HomeActivity;
 import com.example.citydangersalertapp.model.MyCustomDate;
 import com.example.citydangersalertapp.model.UserPersonalInformation;
 import com.example.citydangersalertapp.utility.DatePickerFragment;
@@ -93,6 +94,10 @@ public class ProfileViewModel extends ViewModel {
                                               String lastName,
                                               String pin) {
         return MyCustomMethods.nameIsValid(firstName) && MyCustomMethods.nameIsValid(lastName) && MyCustomMethods.pinIsValid(pin);
+    }
+
+    public void onPhotoClickHandler(@NonNull Activity parentActivity) {
+        ((HomeActivity) parentActivity).setFragment(((HomeActivity) parentActivity).getPhotoFragmentInstance());
     }
 
     public void updateProfileHandler(@NonNull Activity parentActivity) {

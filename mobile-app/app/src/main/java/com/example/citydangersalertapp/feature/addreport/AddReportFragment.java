@@ -139,6 +139,6 @@ public class AddReportFragment extends Fragment {
     }
 
     public void toggleButton(boolean enabled) {
-        binding.addButton.setEnabled(enabled);
+        binding.uploadButton.setEnabled(enabled);
     }
 }

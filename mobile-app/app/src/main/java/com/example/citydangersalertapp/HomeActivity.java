@@ -29,6 +29,7 @@ import com.example.citydangersalertapp.feature.editreport.EditReportFragment;
 import com.example.citydangersalertapp.feature.myreports.MyReportsFragment;
 import com.example.citydangersalertapp.feature.myreports.MyReportsListAdapter;
 import com.example.citydangersalertapp.feature.nearbydangersmap.NearbyDangersMapFragment;
+import com.example.citydangersalertapp.feature.selectphoto.SelectPhotoFragment;
 import com.example.citydangersalertapp.model.Report;
 import com.example.citydangersalertapp.utility.DeleteReportCustomDialog;
 import com.example.citydangersalertapp.utility.MyCustomVariables;
@@ -56,8 +57,9 @@ public class HomeActivity
         if (homeActivityBinding != null && homeActivityBinding.drawer.isDrawerOpen(GravityCompat.START)) {
             homeActivityBinding.drawer.closeDrawer(GravityCompat.START);
         }
-        // if the current Fragment is AddDanger
-        else if (viewModel.getCurrentFragment() instanceof AddReportFragment) {
+        // if the current Fragment is AddDanger or SelectPhoto
+        else if (viewModel.getCurrentFragment() instanceof AddReportFragment ||
+                viewModel.getCurrentFragment() instanceof SelectPhotoFragment) {
             setFragment(viewModel.getLastFragment());
         }
         // if the current Fragment is MyReports
@@ -84,7 +86,6 @@ public class HomeActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setActivityVariables();
-        setToolbarTitle();
         setLayoutVariables();
         setToolbar();
         setDrawer();
@@ -97,6 +98,7 @@ public class HomeActivity
         setFragment(viewModel.getCurrentFragment() != null ?
                 viewModel.getCurrentFragment() : viewModel.getMyReportsFragmentInstance());
         setDrawerUserProfile();
+        setToolbarTitle();
     }
 
     @Override
@@ -182,6 +184,10 @@ public class HomeActivity
         }
     }
 
+    public SelectPhotoFragment getPhotoFragmentInstance() {
+        return viewModel.getSelectPhotoFragmentInstance();
+    }
+
     private void setToolbarTitle() {
         if (viewModel.getCurrentFragment() instanceof AddReportFragment &&
                 !String.valueOf(homeActivityBinding.toolbar.getTitle()).trim().equals("Add report")) {
@@ -189,7 +195,7 @@ public class HomeActivity
         } else if (viewModel.getCurrentFragment() instanceof EditReportFragment &&
                 !String.valueOf(homeActivityBinding.toolbar.getTitle()).trim().equals("Edit report")) {
             homeActivityBinding.toolbar.setTitle("Edit report");
-        } else if (viewModel.getCurrentFragment() instanceof MyReportsFragment &&
+        } else if ((viewModel.getCurrentFragment() instanceof MyReportsFragment || viewModel.getCurrentFragment() == null) &&
                 !String.valueOf(homeActivityBinding.toolbar.getTitle()).trim().equals("My reports")) {
             homeActivityBinding.toolbar.setTitle("My reports");
         } else if (viewModel.getCurrentFragment() instanceof NearbyDangersMapFragment &&
@@ -201,6 +207,9 @@ public class HomeActivity
         } else if (viewModel.getCurrentFragment() instanceof SettingsFragment &&
                 !String.valueOf(homeActivityBinding.toolbar.getTitle()).trim().equals("Settings")) {
             homeActivityBinding.toolbar.setTitle("Settings");
+        } else if (viewModel.getCurrentFragment() instanceof SelectPhotoFragment &&
+                !String.valueOf(homeActivityBinding.toolbar.getTitle()).trim().equals("Select photo")) {
+            homeActivityBinding.toolbar.setTitle("Select photo");
         }
     }
 
