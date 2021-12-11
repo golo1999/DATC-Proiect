@@ -50,6 +50,7 @@ public class ProfileFragment extends Fragment {
         setFragmentVariables(inflater, container);
         setLayoutVariables();
         setFieldHints();
+        viewModel.showPhoto(binding.photo);
 
         return binding.getRoot();
     }

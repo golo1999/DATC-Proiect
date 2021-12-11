@@ -1,6 +1,7 @@
 package com.example.citydangersalertapp.feature.editprofile;
 
 import android.app.Activity;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.ObservableField;
@@ -9,6 +10,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModel;
 
 import com.example.citydangersalertapp.HomeActivity;
+import com.example.citydangersalertapp.R;
 import com.example.citydangersalertapp.model.MyCustomDate;
 import com.example.citydangersalertapp.model.UserPersonalInformation;
 import com.example.citydangersalertapp.utility.DatePickerFragment;
@@ -18,6 +20,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 import java.time.LocalDate;
 
@@ -90,14 +93,46 @@ public class ProfileViewModel extends ViewModel {
 
     }
 
+    public void onPhotoClickHandler(@NonNull Activity parentActivity) {
+        ((HomeActivity) parentActivity).setFragment(((HomeActivity) parentActivity).getPhotoFragmentInstance());
+    }
+
     public boolean personalInformationIsValid(String firstName,
                                               String lastName,
                                               String pin) {
         return MyCustomMethods.nameIsValid(firstName) && MyCustomMethods.nameIsValid(lastName) && MyCustomMethods.pinIsValid(pin);
     }
 
-    public void onPhotoClickHandler(@NonNull Activity parentActivity) {
-        ((HomeActivity) parentActivity).setFragment(((HomeActivity) parentActivity).getPhotoFragmentInstance());
+    public void showPhoto(final ImageView uploadedPhoto) {
+        if (MyCustomVariables.getFirebaseAuth().getUid() != null) {
+            MyCustomVariables.getDatabaseReference()
+                    .child("usersList")
+                    .child(MyCustomVariables.getFirebaseAuth().getUid())
+                    .child("personalInformation")
+                    .addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(final @NonNull DataSnapshot snapshot) {
+                            if (snapshot.hasChild("photoURL")) {
+                                final String URL = String.valueOf(snapshot.child("photoURL").getValue());
+
+                                if (!URL.trim().isEmpty()) {
+                                    Picasso.get()
+                                            .load(URL)
+                                            .placeholder(R.color.cardview_dark_background)
+                                            .fit()
+                                            .into(uploadedPhoto);
+                                } else {
+                                    uploadedPhoto.setImageResource(R.color.cardview_dark_background);
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(final @NonNull DatabaseError error) {
+
+                        }
+                    });
+        }
     }
 
     public void updateProfileHandler(@NonNull Activity parentActivity) {

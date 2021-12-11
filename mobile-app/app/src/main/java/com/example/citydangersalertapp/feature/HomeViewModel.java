@@ -5,6 +5,7 @@ import static android.content.Context.MODE_PRIVATE;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -45,6 +46,7 @@ public class HomeViewModel extends ViewModel {
     private Fragment lastFragment = currentFragment;
     private Report selectedReport;
     private long backPressedTime;
+    private Uri imageUri;
 
     public AddReportFragment getAddReportFragmentInstance() {
         return addReportFragmentInstance;
@@ -104,6 +106,14 @@ public class HomeViewModel extends ViewModel {
 
     public void setBackPressedTime(long backPressedTime) {
         this.backPressedTime = backPressedTime;
+    }
+
+    public Uri getImageUri() {
+        return imageUri;
+    }
+
+    public void setImageUri(Uri imageUri) {
+        this.imageUri = imageUri;
     }
 
     public void setFragmentHandler(@NonNull Activity parentActivity,

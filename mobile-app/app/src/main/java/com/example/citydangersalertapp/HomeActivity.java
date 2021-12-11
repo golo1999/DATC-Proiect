@@ -2,7 +2,9 @@ package com.example.citydangersalertapp;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -11,6 +13,7 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
@@ -51,6 +54,12 @@ public class HomeActivity
     private NavigationDrawerHeaderBinding drawerHeaderBinding;
     private HomeViewModel viewModel;
     private Toast backToast;
+    private final int profileSelectPhotoRequestId = 2;
+    private GetSelectedPhotoUriCallback selectedPhotoUriCallback;
+
+    public interface GetSelectedPhotoUriCallback {
+        void getSelectedPhotoUri(Uri selectedUri);
+    }
 
     @Override
     public void onBackPressed() {
@@ -99,6 +108,18 @@ public class HomeActivity
                 viewModel.getCurrentFragment() : viewModel.getMyReportsFragmentInstance());
         setDrawerUserProfile();
         setToolbarTitle();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode,
+                                    int resultCode,
+                                    @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == profileSelectPhotoRequestId && data != null && data.getData() != null) {
+            viewModel.setImageUri(data.getData());
+            selectedPhotoUriCallback.getSelectedPhotoUri(viewModel.getImageUri());
+        }
     }
 
     @Override
@@ -190,26 +211,26 @@ public class HomeActivity
 
     private void setToolbarTitle() {
         if (viewModel.getCurrentFragment() instanceof AddReportFragment &&
-                !String.valueOf(homeActivityBinding.toolbar.getTitle()).trim().equals("Add report")) {
-            homeActivityBinding.toolbar.setTitle("Add report");
+                !String.valueOf(homeActivityBinding.toolbar.getTitle()).trim().equals(getResources().getString(R.string.add_report))) {
+            homeActivityBinding.toolbar.setTitle(getResources().getString(R.string.add_report));
         } else if (viewModel.getCurrentFragment() instanceof EditReportFragment &&
-                !String.valueOf(homeActivityBinding.toolbar.getTitle()).trim().equals("Edit report")) {
-            homeActivityBinding.toolbar.setTitle("Edit report");
+                !String.valueOf(homeActivityBinding.toolbar.getTitle()).trim().equals(getResources().getString(R.string.edit_report))) {
+            homeActivityBinding.toolbar.setTitle(getResources().getString(R.string.edit_report));
         } else if ((viewModel.getCurrentFragment() instanceof MyReportsFragment || viewModel.getCurrentFragment() == null) &&
-                !String.valueOf(homeActivityBinding.toolbar.getTitle()).trim().equals("My reports")) {
-            homeActivityBinding.toolbar.setTitle("My reports");
+                !String.valueOf(homeActivityBinding.toolbar.getTitle()).trim().equals(getResources().getString(R.string.my_reports))) {
+            homeActivityBinding.toolbar.setTitle(getResources().getString(R.string.my_reports));
         } else if (viewModel.getCurrentFragment() instanceof NearbyDangersMapFragment &&
-                !String.valueOf(homeActivityBinding.toolbar.getTitle()).trim().equals("Nearby dangers")) {
-            homeActivityBinding.toolbar.setTitle("Nearby dangers");
+                !String.valueOf(homeActivityBinding.toolbar.getTitle()).trim().equals(getResources().getString(R.string.nearby_dangers))) {
+            homeActivityBinding.toolbar.setTitle(getResources().getString(R.string.nearby_dangers));
         } else if (viewModel.getCurrentFragment() instanceof ProfileFragment &&
-                !String.valueOf(homeActivityBinding.toolbar.getTitle()).trim().equals("Profile")) {
-            homeActivityBinding.toolbar.setTitle("Profile");
+                !String.valueOf(homeActivityBinding.toolbar.getTitle()).trim().equals(getResources().getString(R.string.profile))) {
+            homeActivityBinding.toolbar.setTitle(getResources().getString(R.string.profile));
         } else if (viewModel.getCurrentFragment() instanceof SettingsFragment &&
-                !String.valueOf(homeActivityBinding.toolbar.getTitle()).trim().equals("Settings")) {
-            homeActivityBinding.toolbar.setTitle("Settings");
+                !String.valueOf(homeActivityBinding.toolbar.getTitle()).trim().equals(getResources().getString(R.string.settings))) {
+            homeActivityBinding.toolbar.setTitle(getResources().getString(R.string.settings));
         } else if (viewModel.getCurrentFragment() instanceof SelectPhotoFragment &&
-                !String.valueOf(homeActivityBinding.toolbar.getTitle()).trim().equals("Select photo")) {
-            homeActivityBinding.toolbar.setTitle("Select photo");
+                !String.valueOf(homeActivityBinding.toolbar.getTitle()).trim().equals(getResources().getString(R.string.select_photo))) {
+            homeActivityBinding.toolbar.setTitle(getResources().getString(R.string.select_photo));
         }
     }
 
@@ -278,5 +299,9 @@ public class HomeActivity
 
     private void setDrawerUserProfile() {
         viewModel.setDrawerProfile(homeActivityBinding);
+    }
+
+    public void setSelectedPhotoUriCallback(GetSelectedPhotoUriCallback callback) {
+        this.selectedPhotoUriCallback = callback;
     }
 }
