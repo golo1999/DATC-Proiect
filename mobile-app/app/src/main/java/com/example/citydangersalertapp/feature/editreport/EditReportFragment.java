@@ -15,14 +15,27 @@ import com.example.citydangersalertapp.HomeActivity;
 import com.example.citydangersalertapp.R;
 import com.example.citydangersalertapp.databinding.EditReportFragmentBinding;
 import com.example.citydangersalertapp.feature.HomeViewModel;
+import com.example.citydangersalertapp.model.AdminPersonalInformation;
 import com.example.citydangersalertapp.model.MyCustomDateTime;
 import com.example.citydangersalertapp.model.Report;
 import com.example.citydangersalertapp.utility.MyCustomMethods;
+import com.example.citydangersalertapp.utility.MyCustomVariables;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-public class EditReportFragment extends Fragment {
+public class EditReportFragment extends Fragment implements OnMapReadyCallback {
     private EditReportFragmentBinding binding;
     private HomeViewModel homeViewModel;
     private EditReportViewModel editReportViewModel;
@@ -39,8 +52,6 @@ public class EditReportFragment extends Fragment {
                                    View view,
                                    int position,
                                    long id) {
-//            MyCustomMethods.showShortMessage(requireContext(), String.valueOf(position));
-
             if (editReportViewModel.getCategory().get() != position) {
                 editReportViewModel.setCategory(position);
             }
@@ -90,6 +101,41 @@ public class EditReportFragment extends Fragment {
         removeCategoriesSpinnerListener();
     }
 
+    @Override
+    public void onMapReady(@NonNull GoogleMap googleMap) {
+        final Report selectedReport = homeViewModel.getSelectedReport();
+
+        googleMap.getUiSettings().setScrollGesturesEnabled(false);
+        googleMap.getUiSettings().setZoomGesturesEnabled(false);
+
+        if (selectedReport != null && selectedReport.getLocation() != null) {
+            final LatLng reportLocationCoordinates =
+                    new LatLng(selectedReport.getLocation().getLatitude(), selectedReport.getLocation().getLongitude());
+
+            final CameraPosition cameraPosition = new CameraPosition.Builder()
+                    .target(reportLocationCoordinates)
+                    .zoom(16)
+                    .build();
+
+            googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+
+            googleMap.addMarker(new MarkerOptions()
+                    .position(new LatLng(selectedReport.getLocation().getLatitude(),
+                            selectedReport.getLocation().getLongitude()))
+                    .title(selectedReport.getNote() != null ?
+                            selectedReport.getNote() : "No note provided"));
+        }
+    }
+
+    private void initializeMap() {
+        SupportMapFragment mapFragment =
+                (SupportMapFragment) getChildFragmentManager().findFragmentById(binding.map.getId());
+
+        if (mapFragment != null) {
+            mapFragment.getMapAsync(EditReportFragment.this);
+        }
+    }
+
     private void removeCategoriesSpinnerListener() {
         binding.categoriesSpinner.setOnItemSelectedListener(null);
     }
@@ -111,10 +157,74 @@ public class EditReportFragment extends Fragment {
                 editReportViewModel.setNote(selectedReport.getNote());
             }
 
+            if (selectedReport.getCheckedBy() != null) {
+                final String currentUserId = MyCustomVariables.getFirebaseAuth().getUid();
+
+                if (currentUserId != null) {
+                    MyCustomVariables.getDatabaseReference()
+                            .child("adminsList")
+                            .child(selectedReport.getCheckedBy())
+                            .child("personalInformation")
+                            .addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                    if (snapshot.exists()) {
+                                        final AdminPersonalInformation adminPersonalInformation =
+                                                snapshot.getValue(AdminPersonalInformation.class);
+
+                                        String solvedByText =
+                                                requireActivity().getResources().getString(R.string.solved_by) + " ";
+
+                                        solvedByText += adminPersonalInformation != null ?
+                                                (adminPersonalInformation.getFirstName() + " " +
+                                                        adminPersonalInformation.getLastName()) :
+                                                requireActivity().getResources().getString(R.string.unknown);
+
+                                        binding.solvedText.setText(solvedByText);
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
+
+                                }
+                            });
+                }
+            } else {
+                binding.solvedText.setText(requireActivity().getResources().getString(R.string.not_solved_yet));
+            }
+
             binding.categoriesSpinner.setSelection(selectedReport.getCategory());
 
             setReportDateText(reportFormattedDate);
             setReportTimeText(reportFormattedTime);
+
+            if (selectedReport.getPhotoURL() != null) {
+                Picasso.get()
+                        .load(selectedReport.getPhotoURL())
+                        .placeholder(R.color.cardview_dark_background)
+                        .fit()
+                        .into(binding.photo);
+
+                binding.photoText.setText(requireActivity().getResources().getString(R.string.change_photo));
+                binding.photoLayout.setVisibility(View.VISIBLE);
+            } else {
+                binding.photoText.setText(requireActivity().getResources().getString(R.string.add_photo));
+            }
+
+//            else if (binding.photoLayout.getVisibility() == View.VISIBLE) {
+//                binding.photoLayout.setVisibility(View.GONE);
+//            }
+
+            if (selectedReport.getLocation() != null) {
+                initializeMap();
+                binding.locationText.setText(requireActivity().getResources().getString(R.string.change_location));
+                binding.mapContainer.setVisibility(View.VISIBLE);
+            } else if (binding.mapContainer.getVisibility() == View.VISIBLE) {
+                binding.mapContainer.setVisibility(View.GONE);
+            } else if (selectedReport.getLocation() == null) {
+                binding.locationText.setText(requireActivity().getResources().getString(R.string.add_location));
+            }
         }
     }
 

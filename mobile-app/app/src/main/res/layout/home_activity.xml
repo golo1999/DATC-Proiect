@@ -34,6 +34,7 @@
                 android:layout_height="?attr/actionBarSize"
                 android:background="?attr/colorPrimary"
                 app:layout_constraintTop_toTopOf="parent"
+                app:title="@string/my_reports"
                 app:titleTextColor="?attr/colorSecondary" />
 
             <FrameLayout

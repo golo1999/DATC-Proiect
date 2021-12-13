@@ -285,6 +285,14 @@ public class HomeActivity
             homeActivityBinding.addReportButton.setVisibility(addReportButtonVisibility);
             homeActivityBinding.navigationView.setCheckedItem(newCheckedItemId);
             setToolbarTitle();
+
+            if (viewModel.getCurrentFragment() instanceof EditReportFragment) {
+                int navMenuSize = homeActivityBinding.navigationView.getMenu().size();
+
+                for (int i = 0; i < navMenuSize; i++) {
+                    homeActivityBinding.navigationView.getMenu().getItem(i).setChecked(false);
+                }
+            }
         }
     }
 

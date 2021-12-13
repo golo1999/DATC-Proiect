@@ -10,9 +10,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="5sp"
-        android:layout_marginVertical="10sp"
+        android:layout_marginBottom="10sp"
         app:cardCornerRadius="5sp"
-        app:cardElevation="10sp">
+        app:cardElevation="0sp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/mainLayout"

@@ -87,14 +87,24 @@
                     android:textSize="18sp"
                     android:textStyle="bold" />
 
-                <ImageView
-                    android:id="@+id/photo"
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/photoContainer"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="20sp"
                     android:layout_marginTop="20sp"
-                    android:visibility="gone"
-                    tools:src="?attr/colorPrimary" />
+                    android:visibility="gone">
+
+                    <ImageView
+                        android:id="@+id/photo"
+                        android:layout_width="match_parent"
+                        android:layout_height="0sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintDimensionRatio="1:1"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:src="?attr/colorPrimary" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/buttonsLayout"

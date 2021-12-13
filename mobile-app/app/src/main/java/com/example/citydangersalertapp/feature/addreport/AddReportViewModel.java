@@ -126,8 +126,9 @@ public class AddReportViewModel extends ViewModel {
                                                     parentActivity.getResources().getString(R.string.report_added_successfully));
                                             parentActivity.onBackPressed();
                                         })
-                                        .addOnFailureListener(e -> MyCustomMethods.showShortMessage(parentActivity,
-                                                parentActivity.getResources().getString(R.string.could_not_add_report)));
+                                        .addOnFailureListener((Exception exception) ->
+                                                MyCustomMethods.showShortMessage(parentActivity,
+                                                        parentActivity.getResources().getString(R.string.could_not_add_report)));
                             }
 
                             @Override
@@ -138,8 +139,8 @@ public class AddReportViewModel extends ViewModel {
                             }
                         });
                     })
-                    .addOnFailureListener((final Exception e) ->
-                            MyCustomMethods.showShortMessage(parentActivity, e.getMessage()));
+                    .addOnFailureListener((final Exception exception) ->
+                            MyCustomMethods.showShortMessage(parentActivity, exception.getMessage()));
 
             setSelectedPhotoUri(null);
         } else {
@@ -170,7 +171,7 @@ public class AddReportViewModel extends ViewModel {
                                             parentActivity.getResources().getString(R.string.report_added_successfully));
                                     parentActivity.onBackPressed();
                                 })
-                                .addOnFailureListener(e -> MyCustomMethods.showShortMessage(parentActivity,
+                                .addOnFailureListener((Exception e) -> MyCustomMethods.showShortMessage(parentActivity,
                                         parentActivity.getResources().getString(R.string.could_not_add_report)));
                     }
                 }

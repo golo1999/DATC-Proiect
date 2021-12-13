@@ -139,7 +139,7 @@ public class AddReportFragment extends Fragment {
         ((HomeActivity) requireActivity()).setAddReportPhotoUriCallback(selectedUri -> {
             viewModel.setSelectedPhotoUri(selectedUri);
             binding.photo.setImageURI(viewModel.getSelectedPhotoUri());
-            binding.photo.setVisibility(View.VISIBLE);
+            binding.photoContainer.setVisibility(View.VISIBLE);
             binding.photoText.setText(requireActivity().getResources().getString(R.string.change_photo));
         });
     }

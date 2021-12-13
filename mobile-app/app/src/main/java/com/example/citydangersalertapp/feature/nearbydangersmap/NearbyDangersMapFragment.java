@@ -21,6 +21,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -75,12 +76,19 @@ public class NearbyDangersMapFragment extends Fragment implements OnMapReadyCall
                                     new LatLng(MyCustomVariables.getDefaultUserLocation().getLatitude(),
                                             MyCustomVariables.getDefaultUserLocation().getLongitude());
 
+                            final LatLngBounds maxBounds =
+                                    new LatLngBounds(new LatLng(currentLocationCoordinates.latitude - 0.1,
+                                            currentLocationCoordinates.longitude - 0.1),
+                                            new LatLng(currentLocationCoordinates.latitude + 0.1,
+                                                    currentLocationCoordinates.longitude + 0.1));
+
                             final CameraPosition cameraPosition = new CameraPosition.Builder()
                                     .target(currentLocationCoordinates)
                                     .zoom(16)
                                     .build();
 
                             googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+                            googleMap.setLatLngBoundsForCameraTarget(maxBounds);
 
                             if (snapshot.exists()) {
                                 if (!reportsLocationList.isEmpty()) {
