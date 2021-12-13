@@ -37,6 +37,7 @@
     <string name="register">Register</string>
     <string name="register_here">Register here</string>
     <string name="remember_me">Remember me</string>
+    <string name="remove_photo">Remove photo</string>
     <string name="report_added_successfully">Report added successfully</string>
     <string name="report_updated">Report updated</string>
     <string name="response_unsuccessful_code">Response unsuccessful, code:&#32;</string>

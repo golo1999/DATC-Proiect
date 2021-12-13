@@ -36,7 +36,7 @@ const ReportItem = (props) => {
 
   const [modalMessage, setModalMessage] = useState("");
 
-  const [isChecked, setIsChecked] = useState(report.checkedStatus);
+  const [isChecked, setIsChecked] = useState(report.checkStatus);
 
   const reportDateTime = report.dateTime;
 
@@ -90,7 +90,7 @@ const ReportItem = (props) => {
     const editedReport = {
       category: report.category,
       checkedBy: !isChecked ? adminPersonalInformation.id : null,
-      checkedStatus: !isChecked,
+      checkStatus: !isChecked,
       dateTime,
       note: report.note ? report.note : null,
       reportId: report.reportId,

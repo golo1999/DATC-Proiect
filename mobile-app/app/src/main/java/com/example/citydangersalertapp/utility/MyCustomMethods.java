@@ -7,7 +7,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.text.format.DateFormat;
-import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
@@ -179,6 +178,15 @@ public final class MyCustomMethods {
         }
 
         return true;
+    }
+
+    public static void openFileChooser(@NonNull Activity activity,
+                                final int REQUEST_ID) {
+        final Intent intent = new Intent();
+
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        activity.startActivityForResult(intent, REQUEST_ID);
     }
 
     public static boolean pinIsValid(String pin) {

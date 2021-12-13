@@ -112,7 +112,7 @@ const ReportDetails = (props) => {
                         <b>Solved</b>
                       </p>
                     </Col>
-                    <Col>{selectedReport.checkedStatus ? "Yes" : "No"}</Col>
+                    <Col>{selectedReport.checkStatus ? "Yes" : "No"}</Col>
                   </Row>
                   <Row>
                     <Col>

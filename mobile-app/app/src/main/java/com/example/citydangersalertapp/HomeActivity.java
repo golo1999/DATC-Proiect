@@ -56,8 +56,10 @@ public class HomeActivity
     private Toast backToast;
     private final int profileSelectPhotoRequestId = 2;
     private final int addReportPhotoRequestId = 3;
+    private final int editReportPhotoRequestId = 5;
     private GetSelectedPhotoUriCallback selectedPhotoUriCallback;
     private GetAddReportPhotoUriCallback addReportPhotoUriCallback;
+    private GetEditReportPhotoUriCallback editReportPhotoUriCallback;
 
     public interface GetSelectedPhotoUriCallback {
         void getSelectedPhotoUri(Uri selectedUri);
@@ -65,6 +67,10 @@ public class HomeActivity
 
     public interface GetAddReportPhotoUriCallback {
         void getAddReportPhotoUri(Uri selectedUri);
+    }
+
+    public interface GetEditReportPhotoUriCallback {
+        void getEditReportPhotoUri(Uri selectedUri);
     }
 
     @Override
@@ -129,6 +135,9 @@ public class HomeActivity
             } else if (requestCode == addReportPhotoRequestId) {
                 viewModel.setImageUri(data.getData());
                 addReportPhotoUriCallback.getAddReportPhotoUri(viewModel.getImageUri());
+            } else if (requestCode == editReportPhotoRequestId) {
+                viewModel.setImageUri(data.getData());
+                editReportPhotoUriCallback.getEditReportPhotoUri(viewModel.getImageUri());
             }
         }
     }
@@ -322,6 +331,10 @@ public class HomeActivity
 
     public void setAddReportPhotoUriCallback(GetAddReportPhotoUriCallback callback) {
         this.addReportPhotoUriCallback = callback;
+    }
+
+    public void setEditReportPhotoUriCallback(GetEditReportPhotoUriCallback callback) {
+        this.editReportPhotoUriCallback = callback;
     }
 
     public void setSelectedPhotoUriCallback(GetSelectedPhotoUriCallback callback) {

@@ -84,6 +84,7 @@ public class EditReportFragment extends Fragment implements OnMapReadyCallback {
                              Bundle savedInstanceState) {
         setFragmentVariables(inflater, container);
         setLayoutVariables();
+        setEditReportPhotoCallback();
         setCategoriesSpinnerListener();
 
         return binding.getRoot();
@@ -93,12 +94,18 @@ public class EditReportFragment extends Fragment implements OnMapReadyCallback {
     public void onStart() {
         super.onStart();
         setFieldHints();
+        setPhotoText();
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
         removeCategoriesSpinnerListener();
+        editReportViewModel.resetInputs();
+
+        if (editReportViewModel.isPhotoRemovable()) {
+            editReportViewModel.setPhotoRemovable(false);
+        }
     }
 
     @Override
@@ -138,6 +145,21 @@ public class EditReportFragment extends Fragment implements OnMapReadyCallback {
 
     private void removeCategoriesSpinnerListener() {
         binding.categoriesSpinner.setOnItemSelectedListener(null);
+    }
+
+    private void setEditReportPhotoCallback() {
+        ((HomeActivity) requireActivity()).setEditReportPhotoUriCallback(selectedUri -> {
+            editReportViewModel.setSelectedPhotoUri(selectedUri);
+            binding.photo.setImageURI(editReportViewModel.getSelectedPhotoUri());
+            binding.photoLayout.setVisibility(View.VISIBLE);
+
+            if (!editReportViewModel.isPhotoRemovable()) {
+                editReportViewModel.setPhotoRemovable(true);
+            }
+
+//            setPhotoText();
+//            binding.photoText.setText(requireActivity().getResources().getString(R.string.change_photo));
+        });
     }
 
     private void setFieldHints() {
@@ -200,17 +222,24 @@ public class EditReportFragment extends Fragment implements OnMapReadyCallback {
             setReportTimeText(reportFormattedTime);
 
             if (selectedReport.getPhotoURL() != null) {
+                if (!editReportViewModel.isPhotoRemovable()) {
+                    editReportViewModel.setPhotoRemovable(true);
+                }
+
                 Picasso.get()
                         .load(selectedReport.getPhotoURL())
                         .placeholder(R.color.cardview_dark_background)
                         .fit()
                         .into(binding.photo);
 
-                binding.photoText.setText(requireActivity().getResources().getString(R.string.change_photo));
                 binding.photoLayout.setVisibility(View.VISIBLE);
             } else {
-                binding.photoText.setText(requireActivity().getResources().getString(R.string.add_photo));
+//                if (editReportViewModel.isPhotoRemovable()) {
+//                    editReportViewModel.setPhotoRemovable(false);
+//                }
             }
+
+//            setPhotoText();
 
 //            else if (binding.photoLayout.getVisibility() == View.VISIBLE) {
 //                binding.photoLayout.setVisibility(View.GONE);
@@ -239,6 +268,11 @@ public class EditReportFragment extends Fragment implements OnMapReadyCallback {
         binding.setFragmentManager(requireActivity().getSupportFragmentManager());
         binding.setEditReportViewModel(editReportViewModel);
         binding.setHomeViewModel(homeViewModel);
+    }
+
+    private void setPhotoText() {
+        binding.photoText.setText(requireActivity().getResources().getString(editReportViewModel.isPhotoRemovable() ?
+                R.string.remove_photo : R.string.add_photo));
     }
 
     public void setReportDateText(final LocalDate date) {

@@ -34,13 +34,13 @@ public class SelectPhotoViewModel extends ViewModel {
         return 2;
     }
 
-    public void openFileChooser(@NonNull Activity activity) {
-        final Intent intent = new Intent();
-
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        activity.startActivityForResult(intent, getRequestId());
-    }
+//    public void openFileChooser(@NonNull Activity activity) {
+//        final Intent intent = new Intent();
+//
+//        intent.setType("image/*");
+//        intent.setAction(Intent.ACTION_GET_CONTENT);
+//        activity.startActivityForResult(intent, getRequestId());
+//    }
 
     public void showPhoto(final ImageView uploadedPhoto) {
         if (MyCustomVariables.getFirebaseAuth().getUid() != null) {

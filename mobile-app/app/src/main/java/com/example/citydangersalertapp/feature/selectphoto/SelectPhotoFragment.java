@@ -56,7 +56,8 @@ public class SelectPhotoFragment extends Fragment {
 
     private void setOnClickListeners() {
         binding.chooseButton.setOnClickListener((View v) -> {
-            viewModel.openFileChooser(requireActivity());
+            MyCustomMethods.openFileChooser(requireActivity(), viewModel.getRequestId());
+//            viewModel.openFileChooser(requireActivity());
         });
 
         binding.uploadButton.setOnClickListener((View v) -> {
