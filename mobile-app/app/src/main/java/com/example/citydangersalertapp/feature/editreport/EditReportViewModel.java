@@ -5,11 +5,13 @@ import static android.content.Context.MODE_PRIVATE;
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.ObservableField;
 import androidx.databinding.ObservableInt;
 import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModel;
 
@@ -22,6 +24,7 @@ import com.example.citydangersalertapp.utility.TimePickerFragment;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.storage.UploadTask;
 import com.google.gson.Gson;
+import com.squareup.picasso.Picasso;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -94,8 +97,16 @@ public class EditReportViewModel extends ViewModel {
         parentActivity.onBackPressed();
     }
 
-    public void onPhotoTextClickHandler(@NonNull Activity parentActivity) {
+    public void changePhotoHandler(@NonNull Activity parentActivity) {
+        MyCustomMethods.openFileChooser(parentActivity, getREQUEST_ID());
+    }
+
+    public void onPhotoTextClickHandler(@NonNull Activity parentActivity,
+                                        @NonNull Fragment parentFragment) {
         if (isPhotoRemovable()) {
+            setPhotoRemovable(false);
+            setSelectedPhotoUri(null);
+            ((EditReportFragment) parentFragment).setPhotoText();
         } else {
             MyCustomMethods.openFileChooser(parentActivity, getREQUEST_ID());
         }
@@ -126,7 +137,7 @@ public class EditReportViewModel extends ViewModel {
         final String currentUserId = MyCustomVariables.getFirebaseAuth().getUid();
         final Report report = retrieveReportFromSharedPreferences(parentActivity);
 
-        if (report != null) {
+        if (report != null && currentUserId != null) {
             if (!String.valueOf(note.get()).equals(report.getNote())) {
                 report.setNote(note.get());
             }
@@ -167,7 +178,7 @@ public class EditReportViewModel extends ViewModel {
                 report.getDateTime().setSecond(time.getSecond());
             }
 
-            if (selectedPhotoUri != null && currentUserId != null) {
+            if (selectedPhotoUri != null) {
                 MyCustomVariables.getFirebaseStorageReference()
                         .child(currentUserId)
                         .child("reportsList")
@@ -181,56 +192,60 @@ public class EditReportViewModel extends ViewModel {
                             final Uri url = uriTask.getResult();
 
                             report.setPhotoURL(String.valueOf(url));
+                            updateReportInDatabase(parentActivity, currentUserId, report, isPhotoRemovable());
 
-                            final Report retrievedReport = retrieveReportFromSharedPreferences(parentActivity);
-
-                            // if the report has been modified
-                            if (!report.equals(retrievedReport)) {
-                                MyCustomVariables.getDatabaseReference()
-                                        .child("usersList")
-                                        .child(currentUserId)
-                                        .child("personalReports")
-                                        .child(report.getReportId())
-                                        .setValue(report)
-                                        .addOnCompleteListener((Task<Void> task) -> {
-                                            if (task.isSuccessful()) {
-                                                MyCustomMethods.showShortMessage(parentActivity,
-                                                        parentActivity.getResources().getString(R.string.report_updated));
-                                                parentActivity.onBackPressed();
-                                            }
-                                        });
-                            }
-                            // if the report has NOT been modified
-                            else {
-                                MyCustomMethods.showShortMessage(parentActivity,
-                                        parentActivity.getResources().getString(R.string.no_changes_have_been_made));
-                            }
-
-                            setSelectedPhotoUri(null);
-                            setNote(null);
+//                            final Report retrievedReport = retrieveReportFromSharedPreferences(parentActivity);
+//
+//                            // if the report has been modified
+//                            if (!report.equals(retrievedReport)) {
+//                                MyCustomVariables.getDatabaseReference()
+//                                        .child("usersList")
+//                                        .child(currentUserId)
+//                                        .child("personalReports")
+//                                        .child(report.getReportId())
+//                                        .setValue(report)
+//                                        .addOnCompleteListener((Task<Void> task) -> {
+//                                            if (task.isSuccessful()) {
+//                                                MyCustomMethods.showShortMessage(parentActivity,
+//                                                        parentActivity.getResources().getString(R.string.report_updated));
+//                                                parentActivity.onBackPressed();
+//                                            }
+//                                        });
+//                            }
+//                            // if the report has NOT been modified
+//                            else {
+//                                MyCustomMethods.showShortMessage(parentActivity,
+//                                        parentActivity.getResources().getString(R.string.no_changes_have_been_made));
+//                            }
+//
+//                            setSelectedPhotoUri(null);
+//                            setNote(null);
                         })
                         .addOnFailureListener((final Exception exception) ->
                                 MyCustomMethods.showShortMessage(parentActivity, exception.getMessage()));
             } else {
                 final Report retrievedReport = retrieveReportFromSharedPreferences(parentActivity);
 
+                if (report.getPhotoURL() != null) {
+                    report.setPhotoURL(null);
+                }
+
                 // if the report has been modified
                 if (!report.equals(retrievedReport)) {
-                    if (currentUserId != null) {
-                        MyCustomVariables.getDatabaseReference()
-                                .child("usersList")
-                                .child(currentUserId)
-                                .child("personalReports")
-                                .child(report.getReportId())
-                                .setValue(report)
-                                .addOnCompleteListener((Task<Void> task) -> {
-                                    if (task.isSuccessful()) {
-                                        MyCustomMethods.showShortMessage(parentActivity,
-                                                parentActivity.getResources().getString(R.string.report_updated));
-                                        parentActivity.onBackPressed();
-                                    }
-                                });
-                    }
+                    MyCustomVariables.getDatabaseReference()
+                            .child("usersList")
+                            .child(currentUserId)
+                            .child("personalReports")
+                            .child(report.getReportId())
+                            .setValue(report)
+                            .addOnCompleteListener((Task<Void> task) -> {
+                                if (task.isSuccessful()) {
+                                    MyCustomMethods.showShortMessage(parentActivity,
+                                            parentActivity.getResources().getString(R.string.report_updated));
+                                    parentActivity.onBackPressed();
+                                }
+                            });
+
                 }
                 // if the report has NOT been modified
                 else {
@@ -239,11 +254,52 @@ public class EditReportViewModel extends ViewModel {
                 }
 
                 setNote(null);
-
-//            Log.d("123editedReport", report.toString());
-//            Log.d("123initialReport", retrievedReport.toString());
-//            Log.d("123reportsAreTheSame", String.valueOf(report.equals(retrievedReport)));
             }
+        }
+    }
+
+    public void showPhoto(final Report selectedReport,
+                          ImageView uploadedPhoto) {
+        if (selectedReport.getPhotoURL() != null && !selectedReport.getPhotoURL().trim().isEmpty()) {
+            Picasso.get()
+                    .load(selectedReport.getPhotoURL())
+                    .fit()
+                    .into(uploadedPhoto);
+        }
+    }
+
+    private void updateReportInDatabase(@NonNull Activity parentActivity,
+                                        final String currentUserId,
+                                        final Report report,
+                                        final boolean hasPhoto) {
+        final Report retrievedReport = retrieveReportFromSharedPreferences(parentActivity);
+
+        // if the report has been modified
+        if (!report.equals(retrievedReport)) {
+            MyCustomVariables.getDatabaseReference()
+                    .child("usersList")
+                    .child(currentUserId)
+                    .child("personalReports")
+                    .child(report.getReportId())
+                    .setValue(report)
+                    .addOnCompleteListener((Task<Void> task) -> {
+                        if (task.isSuccessful()) {
+                            MyCustomMethods.showShortMessage(parentActivity,
+                                    parentActivity.getResources().getString(R.string.report_updated));
+                            parentActivity.onBackPressed();
+                        }
+                    });
+
+            setNote(null);
+        }
+        // if the report has NOT been modified
+        else {
+            MyCustomMethods.showShortMessage(parentActivity,
+                    parentActivity.getResources().getString(R.string.no_changes_have_been_made));
+        }
+
+        if (hasPhoto) {
+            setSelectedPhotoUri(null);
         }
     }
 }

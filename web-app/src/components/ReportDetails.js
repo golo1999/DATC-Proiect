@@ -75,9 +75,11 @@ const ReportDetails = (props) => {
         <Container>
           <Row>
             <Col className={classes["photo-column"]} lg={6} md={12}>
-              {selectedReport.photoURL
-                ? selectedReport.photoURL
-                : "No photo uploaded"}
+              {selectedReport.photoURL ? (
+                <img src={selectedReport.photoURL} />
+              ) : (
+                "No photo uploaded"
+              )}
             </Col>
             <Col lg={6} md={12}>
               <Row>

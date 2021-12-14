@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModel;
 
 import com.example.citydangersalertapp.HomeActivity;
 import com.example.citydangersalertapp.feature.authentication.AuthenticationActivity;
+import com.example.citydangersalertapp.feature.authentication.forgotpassword.ForgotPasswordFragment;
 import com.example.citydangersalertapp.feature.authentication.register.*;
 import com.example.citydangersalertapp.utility.MyCustomMethods;
 import com.example.citydangersalertapp.utility.MyCustomVariables;
@@ -39,6 +40,10 @@ public class LogInViewModel extends ViewModel {
 
     public ObservableBoolean getRememberMeChecked() {
         return rememberMeChecked;
+    }
+
+    public void forgotPasswordHandler(@NonNull Activity currentActivity) {
+        ((AuthenticationActivity) currentActivity).setFragment(new ForgotPasswordFragment());
     }
 
     public void logInHandler(@NonNull Activity currentActivity,

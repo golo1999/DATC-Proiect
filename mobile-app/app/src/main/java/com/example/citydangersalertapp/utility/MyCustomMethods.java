@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.text.format.DateFormat;
+import android.util.Patterns;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
@@ -26,7 +27,7 @@ public final class MyCustomMethods {
 
     }
 
-    public static void closeTheKeyboard(final @NonNull Activity parentActivity) {
+    public static void closeTheKeyboard(@NonNull Activity parentActivity) {
         final View view = parentActivity.getCurrentFocus();
 
         if (view != null) {
@@ -35,6 +36,21 @@ public final class MyCustomMethods {
 
             manager.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
+    }
+
+    public static boolean emailIsValid(@NonNull Activity parentActivity,
+                                       String email) {
+        if (email != null) {
+            if (Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                return true;
+            } else {
+                MyCustomMethods.showShortMessage(parentActivity, "Email is not valid");
+            }
+        } else {
+            MyCustomMethods.showShortMessage(parentActivity, "Email should not be empty");
+        }
+
+        return false;
     }
 
     public static MyCustomDate getBirthDateFromPIN(String pin) {
@@ -181,7 +197,7 @@ public final class MyCustomMethods {
     }
 
     public static void openFileChooser(@NonNull Activity activity,
-                                final int REQUEST_ID) {
+                                       final int REQUEST_ID) {
         final Intent intent = new Intent();
 
         intent.setType("image/*");

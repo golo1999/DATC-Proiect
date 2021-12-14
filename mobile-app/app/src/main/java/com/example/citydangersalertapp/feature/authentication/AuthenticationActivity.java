@@ -9,21 +9,39 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.citydangersalertapp.R;
 import com.example.citydangersalertapp.databinding.AuthenticationActivityBinding;
-import com.example.citydangersalertapp.feature.authentication.login.LogInFragment;
+import com.example.citydangersalertapp.feature.authentication.forgotpassword.ForgotPasswordFragment;
+import com.example.citydangersalertapp.feature.authentication.register.*;
 
 public class AuthenticationActivity extends AppCompatActivity {
     private AuthenticationActivityBinding binding;
     private AuthenticationViewModel viewModel;
 
     @Override
+    public void onBackPressed() {
+        if (viewModel.getSelectedFragment() instanceof RegisterFragment ||
+                viewModel.getSelectedFragment() instanceof ForgotPasswordFragment) {
+            setFragment(viewModel.getLogInFragmentInstance());
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setVariables();
         setLayoutVariables();
-        setFragment(new LogInFragment());
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        setFragment(viewModel.getSelectedFragment());
     }
 
     public void setFragment(Fragment fragment) {
+        viewModel.setSelectedFragment(fragment);
+
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(binding.mainContainer.getId(), fragment)

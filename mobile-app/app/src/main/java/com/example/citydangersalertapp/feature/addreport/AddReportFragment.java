@@ -56,8 +56,8 @@ public class AddReportFragment extends Fragment {
         setFragmentVariables(inflater, container);
         setLayoutVariables();
         setCategoriesSpinner();
-        setCategoriesSpinnerStyling();
         setAddReportPhotoCallback();
+        setCategoriesSpinnerStyling();
 //        setCategoriesSpinnerListener();
 
         return binding.getRoot();
@@ -137,11 +137,19 @@ public class AddReportFragment extends Fragment {
 
     private void setAddReportPhotoCallback() {
         ((HomeActivity) requireActivity()).setAddReportPhotoUriCallback(selectedUri -> {
-            viewModel.setSelectedPhotoUri(selectedUri);
-            binding.photo.setImageURI(viewModel.getSelectedPhotoUri());
-            binding.photoContainer.setVisibility(View.VISIBLE);
-            binding.photoText.setText(requireActivity().getResources().getString(R.string.change_photo));
+            if (!selectedUri.equals(viewModel.getSelectedPhotoUri())) {
+                viewModel.setSelectedPhotoUri(selectedUri);
+                binding.photo.setImageURI(viewModel.getSelectedPhotoUri());
+                setPhotoText();
+            }
         });
+    }
+
+    public void setPhotoText() {
+        binding.photoContainer.setVisibility(viewModel.getSelectedPhotoUri() != null ? View.VISIBLE : View.GONE);
+
+        binding.photoText.setText(requireActivity().getResources().getString(viewModel.getSelectedPhotoUri() != null ?
+                R.string.remove_photo : R.string.add_photo));
     }
 
     public void toggleButton(boolean enabled) {

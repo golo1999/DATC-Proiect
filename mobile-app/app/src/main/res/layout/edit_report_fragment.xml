@@ -9,6 +9,10 @@
             type="com.example.citydangersalertapp.HomeActivity" />
 
         <variable
+            name="fragment"
+            type="com.example.citydangersalertapp.feature.editreport.EditReportFragment" />
+
+        <variable
             name="fragmentManager"
             type="androidx.fragment.app.FragmentManager" />
 
@@ -127,6 +131,7 @@
                         android:id="@+id/photo"
                         android:layout_width="match_parent"
                         android:layout_height="0sp"
+                        android:onClick="@{() -> editReportViewModel.changePhotoHandler(activity)}"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintDimensionRatio="1:1"
                         app:layout_constraintTop_toTopOf="parent"
@@ -140,7 +145,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="20sp"
                     android:layout_marginVertical="10sp"
-                    android:onClick="@{() -> editReportViewModel.onPhotoTextClickHandler(activity)}"
+                    android:onClick="@{() -> editReportViewModel.onPhotoTextClickHandler(activity, fragment)}"
                     android:textColor="?attr/colorPrimary"
                     android:textSize="18sp"
                     android:textStyle="bold" />
@@ -150,7 +155,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="20sp"
-                    android:layout_marginTop="20sp"
+                    android:layout_marginVertical="10sp"
                     android:visibility="gone">
 
                     <androidx.fragment.app.FragmentContainerView

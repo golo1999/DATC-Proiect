@@ -1,7 +1,6 @@
 package com.example.citydangersalertapp.feature.addreport;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.net.Uri;
 
 import androidx.annotation.NonNull;
@@ -57,135 +56,109 @@ public class AddReportViewModel extends ViewModel {
         return 3;
     }
 
-    public void cancelReportHandler(@NonNull Activity parentActivity) {
-        parentActivity.onBackPressed();
+    private void addReportToDatabase(@NonNull Activity parentActivity,
+                                     final String currentUserId,
+                                     final Report newReport) {
+        final Call<UserLocation> userLocationCall = api.getUserLocation();
+
+        userLocationCall.enqueue(new Callback<UserLocation>() {
+            @Override
+            public void onResponse(@NonNull Call<UserLocation> call,
+                                   @NonNull Response<UserLocation> response) {
+                if (response.isSuccessful()) {
+                    final UserLocation fetchedUserLocation = response.body();
+
+                    if (fetchedUserLocation != null) {
+                        newReport.setLocation(fetchedUserLocation);
+                    }
+                } else {
+                    MyCustomMethods.showShortMessage(parentActivity,
+                            parentActivity.getResources().getString(R.string.response_unsuccessful_code) + response.code());
+                }
+
+                MyCustomVariables.getDatabaseReference()
+                        .child("usersList")
+                        .child(currentUserId)
+                        .child("personalReports")
+                        .child(newReport.getReportId())
+                        .setValue(newReport)
+                        .addOnSuccessListener((Void unused) -> {
+                            MyCustomMethods.showShortMessage(parentActivity,
+                                    parentActivity.getResources().getString(R.string.report_added_successfully));
+                            parentActivity.onBackPressed();
+                        })
+                        .addOnFailureListener((Exception exception) ->
+                                MyCustomMethods.showShortMessage(parentActivity,
+                                        parentActivity.getResources().getString(R.string.could_not_add_report)));
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<UserLocation> call,
+                                  @NonNull Throwable t) {
+                MyCustomMethods.showShortMessage(parentActivity,
+                        parentActivity.getResources().getString(R.string.could_not_add_location_to_report));
+            }
+        });
     }
 
-    public void openFileChooser(@NonNull Activity parentActivity) {
-        final Intent intent = new Intent();
+    public void cancelReportHandler(@NonNull Activity parentActivity) {
+        parentActivity.onBackPressed();
+        resetInputs();
+    }
 
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        parentActivity.startActivityForResult(intent, getAddPhotoRequestId());
+    public void onPhotoTextClickHandler(@NonNull Activity parentActivity,
+                                        @NonNull Fragment parentFragment) {
+        if (selectedPhotoUri != null) {
+            setSelectedPhotoUri(null);
+            ((AddReportFragment) parentFragment).setPhotoText();
+        } else {
+            MyCustomMethods.openFileChooser(parentActivity, getAddPhotoRequestId());
+        }
     }
 
     private void resetInputs() {
-        reportNote.set("");
+        reportNote.set(null);
         reportCategory.set(0);
+        setSelectedPhotoUri(null);
     }
 
     public void saveReportHandler(@NonNull Activity parentActivity,
                                   @NonNull Fragment fragment) {
-        final Call<UserLocation> userLocationCall = api.getUserLocation();
         final String currentUserId = MyCustomVariables.getFirebaseAuth().getUid();
         final String reportNote = String.valueOf(getReportNote().get()).trim().isEmpty() ? null : getReportNote().get();
         final MyCustomDateTime reportLocalDateTime = new MyCustomDateTime(LocalDateTime.now());
         final Report newReport = new Report(currentUserId, reportNote, reportLocalDateTime, reportCategory.get());
 
-        ((AddReportFragment) fragment).toggleButton(false);
-        MyCustomMethods.closeTheKeyboard(parentActivity);
+        if (currentUserId != null) {
+            ((AddReportFragment) fragment).toggleButton(false);
+            MyCustomMethods.closeTheKeyboard(parentActivity);
 
-        if (selectedPhotoUri != null && currentUserId != null) {
-            MyCustomVariables.getFirebaseStorageReference()
-                    .child(currentUserId)
-                    .child("reportsList")
-                    .child(newReport.getReportId())
-                    .putFile(selectedPhotoUri)
-                    .addOnSuccessListener((final UploadTask.TaskSnapshot taskSnapshot) -> {
-                        final Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
+            if (selectedPhotoUri != null) {
+                MyCustomVariables.getFirebaseStorageReference()
+                        .child(currentUserId)
+                        .child("reportsList")
+                        .child(newReport.getReportId())
+                        .putFile(selectedPhotoUri)
+                        .addOnSuccessListener((final UploadTask.TaskSnapshot taskSnapshot) -> {
+                            final Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
 
-                        while (!uriTask.isComplete()) ;
+                            while (!uriTask.isComplete()) ;
 
-                        final Uri url = uriTask.getResult();
+                            final Uri url = uriTask.getResult();
 
-                        newReport.setPhotoURL(String.valueOf(url));
+                            newReport.setPhotoURL(String.valueOf(url));
+                            addReportToDatabase(parentActivity, currentUserId, newReport);
+                        })
+                        .addOnFailureListener((final Exception exception) ->
+                                MyCustomMethods.showShortMessage(parentActivity, exception.getMessage()));
 
-                        userLocationCall.enqueue(new Callback<UserLocation>() {
-                            @Override
-                            public void onResponse(@NonNull Call<UserLocation> call,
-                                                   @NonNull Response<UserLocation> response) {
-                                if (response.isSuccessful()) {
-                                    final UserLocation fetchedUserLocation = response.body();
+                setSelectedPhotoUri(null);
+            } else {
+                addReportToDatabase(parentActivity, currentUserId, newReport);
+            }
 
-                                    if (fetchedUserLocation != null) {
-                                        newReport.setLocation(fetchedUserLocation);
-                                    }
-                                } else {
-                                    MyCustomMethods.showShortMessage(parentActivity,
-                                            parentActivity.getResources().getString(R.string.response_unsuccessful_code) + response.code());
-                                }
-
-                                MyCustomVariables.getDatabaseReference()
-                                        .child("usersList")
-                                        .child(currentUserId)
-                                        .child("personalReports")
-                                        .child(newReport.getReportId())
-                                        .setValue(newReport)
-                                        .addOnSuccessListener((Void unused) -> {
-                                            MyCustomMethods.showShortMessage(parentActivity,
-                                                    parentActivity.getResources().getString(R.string.report_added_successfully));
-                                            parentActivity.onBackPressed();
-                                        })
-                                        .addOnFailureListener((Exception exception) ->
-                                                MyCustomMethods.showShortMessage(parentActivity,
-                                                        parentActivity.getResources().getString(R.string.could_not_add_report)));
-                            }
-
-                            @Override
-                            public void onFailure(@NonNull Call<UserLocation> call,
-                                                  @NonNull Throwable t) {
-                                MyCustomMethods.showShortMessage(parentActivity,
-                                        parentActivity.getResources().getString(R.string.could_not_add_location_to_report));
-                            }
-                        });
-                    })
-                    .addOnFailureListener((final Exception exception) ->
-                            MyCustomMethods.showShortMessage(parentActivity, exception.getMessage()));
-
-            setSelectedPhotoUri(null);
-        } else {
-            userLocationCall.enqueue(new Callback<UserLocation>() {
-                @Override
-                public void onResponse(@NonNull Call<UserLocation> call,
-                                       @NonNull Response<UserLocation> response) {
-                    if (response.isSuccessful()) {
-                        final UserLocation fetchedUserLocation = response.body();
-
-                        if (fetchedUserLocation != null) {
-                            newReport.setLocation(fetchedUserLocation);
-                        }
-                    } else {
-                        MyCustomMethods.showShortMessage(parentActivity,
-                                parentActivity.getResources().getString(R.string.response_unsuccessful_code) + response.code());
-                    }
-
-                    if (currentUserId != null) {
-                        MyCustomVariables.getDatabaseReference()
-                                .child("usersList")
-                                .child(currentUserId)
-                                .child("personalReports")
-                                .child(newReport.getReportId())
-                                .setValue(newReport)
-                                .addOnSuccessListener((Void unused) -> {
-                                    MyCustomMethods.showShortMessage(parentActivity,
-                                            parentActivity.getResources().getString(R.string.report_added_successfully));
-                                    parentActivity.onBackPressed();
-                                })
-                                .addOnFailureListener((Exception e) -> MyCustomMethods.showShortMessage(parentActivity,
-                                        parentActivity.getResources().getString(R.string.could_not_add_report)));
-                    }
-                }
-
-                @Override
-                public void onFailure(@NonNull Call<UserLocation> call,
-                                      @NonNull Throwable t) {
-                    MyCustomMethods.showShortMessage(parentActivity,
-                            parentActivity.getResources().getString(R.string.could_not_add_location_to_report));
-                }
-            });
+            ((AddReportFragment) fragment).toggleButton(true);
+            resetInputs();
         }
-
-        ((AddReportFragment) fragment).toggleButton(true);
-        resetInputs();
     }
 }

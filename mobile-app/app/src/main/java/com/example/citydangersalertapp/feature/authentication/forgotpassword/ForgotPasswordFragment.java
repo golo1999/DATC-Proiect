@@ -5,11 +5,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.example.citydangersalertapp.R;
+import com.example.citydangersalertapp.databinding.ForgotPasswordFragmentBinding;
+import com.example.citydangersalertapp.feature.authentication.AuthenticationActivity;
 
 public class ForgotPasswordFragment extends Fragment {
+    private ForgotPasswordFragmentBinding binding;
+    private ForgotPasswordViewModel viewModel;
 
     public ForgotPasswordFragment() {
         // Required empty public constructor
@@ -24,10 +31,24 @@ public class ForgotPasswordFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater,
+    public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.forgot_password_fragment, container, false);
+        setFragmentVariables(inflater, container);
+        setLayoutVariables();
+
+
+        return binding.getRoot();
+    }
+
+    private void setFragmentVariables(LayoutInflater inflater,
+                                      ViewGroup container) {
+        binding = DataBindingUtil.inflate(inflater, R.layout.forgot_password_fragment, container, false);
+        viewModel = new ViewModelProvider(requireActivity()).get(ForgotPasswordViewModel.class);
+    }
+
+    private void setLayoutVariables() {
+        binding.setActivity((AuthenticationActivity) requireActivity());
+        binding.setViewModel(viewModel);
     }
 }
