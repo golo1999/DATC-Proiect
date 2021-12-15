@@ -2,8 +2,9 @@ import { getAuth, sendPasswordResetEmail } from "firebase/auth";
 import React, { useRef, useState } from "react";
 import { useHistory } from "react-router";
 
-import { Alert, Container, Form } from "react-bootstrap";
+import { Container, Form } from "react-bootstrap";
 
+import CustomAlert from "../CustomAlert";
 import CustomButton from "../CustomButton";
 import CustomInput from "../CustomInput";
 import CustomText from "../CustomText";
@@ -85,13 +86,15 @@ const ForgotPassword = () => {
     <Container className={classes.container}>
       <Form className={classes.form}>
         {alertIsVisible && (
-          <Alert
+          <CustomAlert
+            message={message}
+            onClose={() => {
+              if (alertIsVisible) {
+                setAlertIsVisible((previousValue) => !previousValue);
+              }
+            }}
             variant={isSuccessful ? "primary" : "danger"}
-            onClose={() => setAlertIsVisible(false)}
-            dismissible
-          >
-            <Alert.Heading>{message}</Alert.Heading>
-          </Alert>
+          />
         )}
         <CustomInput
           id="email"

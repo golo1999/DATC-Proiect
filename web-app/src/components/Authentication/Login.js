@@ -1,17 +1,24 @@
+// NPM
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { getDatabase, ref, onValue } from "firebase/database";
 import { useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router";
 
-import { Alert, Container, Form } from "react-bootstrap";
+// Redux
+import { authActions } from "../../store/auth-slice";
 
+// Bootstrap
+import { Container, Form } from "react-bootstrap";
+
+// Custom components
+import CustomAlert from "../CustomAlert";
 import CustomButton from "../CustomButton";
 import CustomInput from "../CustomInput";
 import CustomText from "../CustomText";
 
+// CSS
 import classes from "./Login.module.css";
-import { authActions } from "../../store/auth-slice";
 
 const Login = () => {
   const auth = getAuth();
@@ -125,13 +132,15 @@ const Login = () => {
     <Container className={classes.container}>
       <Form className={classes.form}>
         {errorIsVisible && (
-          <Alert
+          <CustomAlert
+            message={errorMessage}
+            onClose={() => {
+              if (errorIsVisible) {
+                setErrorIsVisible((previousValue) => !previousValue);
+              }
+            }}
             variant="danger"
-            onClose={() => setErrorIsVisible(false)}
-            dismissible
-          >
-            <Alert.Heading>{errorMessage}</Alert.Heading>
-          </Alert>
+          />
         )}
         <CustomInput
           id="email"

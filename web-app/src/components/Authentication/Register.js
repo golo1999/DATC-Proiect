@@ -9,10 +9,11 @@ import {
 } from "firebase/auth";
 import { db } from "../../Firebase";
 
-import { Alert, Container, Form } from "react-bootstrap";
+import { Container, Form } from "react-bootstrap";
 
-import CustomInput from "../CustomInput";
+import CustomAlert from "../CustomAlert";
 import CustomButton from "../CustomButton";
+import CustomInput from "../CustomInput";
 import CustomText from "../CustomText";
 
 import classes from "./Register.module.css";
@@ -170,13 +171,15 @@ const Register = () => {
     <Container className={classes.container}>
       <Form className={classes.form}>
         {errorIsVisible && (
-          <Alert
+          <CustomAlert
+            message={errorMessage}
+            onClose={() => {
+              if (errorIsVisible) {
+                setErrorIsVisible((previousValue) => !previousValue);
+              }
+            }}
             variant="danger"
-            onClose={() => setErrorIsVisible(false)}
-            dismissible
-          >
-            <Alert.Heading>{errorMessage}</Alert.Heading>
-          </Alert>
+          />
         )}
         <CustomInput
           id="email"

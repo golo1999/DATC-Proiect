@@ -1,3 +1,4 @@
+// NPM
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { getDatabase, ref, onValue } from "firebase/database";
 import { Fragment, useCallback, useEffect, useState } from "react";
@@ -5,13 +6,16 @@ import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useLocation } from "react-router";
 import { Redirect, Route, Switch } from "react-router-dom";
 
+// Redux
 import { authActions } from "./store/auth-slice";
 import { locationActions } from "./store/location-slice";
 import { reportsListActions } from "./store/reports-list-slice";
 import { usersListActions } from "./store/users-list-slice";
 
+// APIs
 import { fetchCurrentLocation } from "./lib/api";
 
+// Custom components
 import AllReports from "./components/AllReports";
 import AllUsers from "./components/AllUsers";
 import ForgotPassword from "./components/Authentication/ForgotPassword";
@@ -25,6 +29,7 @@ import SplashScreen from "./components/SplashScreen";
 import TopBar from "./components/TopBar";
 import UserProfile from "./components/UserProfile";
 
+// Custom CSS
 import "./App.css";
 
 const App = () => {

@@ -1,0 +1,12 @@
+.alert-container {
+  flex: 1 !important;
+  width: 100% !important;
+  display: flex !important;
+  justify-content: center !important;
+}
+
+.message-container {
+  font-weight: 900 !important;
+  font-size: x-large !important;
+  user-select: none !important;
+}
