@@ -1,38 +1,37 @@
 .input-container {
-  padding: 0.5vmax 0;
+  padding: 0.5vmax 0 !important;
+  flex: 1 !important;
+  width: 100% !important;
+  display: flex !important;
+  justify-content: center !important;
 }
 
 .input {
-  background: #adefd1;
-  border-radius: 100vmax;
-  border: 0.25vmax solid #00203f;
-  color: #00203f;
-  font-size: x-large;
-  font-weight: bold;
-  padding: 1vmax;
+  background: #adefd1 !important;
+  border-radius: 100vmax !important;
+  border: 0.25vmax solid #00203f !important;
+  color: #00203f !important;
+  font-size: x-large !important;
+  font-weight: bold !important;
+  padding: 1vmax !important;
+  width: 100% !important;
 }
 
 .input:hover {
-  cursor: default;
+  cursor: default !important;
 }
 
-.input:not(input[type="checkbox"]) {
-  width: 100%;
-}
-
-input[type="checkbox"] {
-  border-radius: 0;
-}
-
-label {
-  padding: 0 0.5vmax;
-  color: #00203f;
-  font-size: x-large;
-  font-weight: bold;
+.checkbox {
+  border-radius: 0 !important;
 }
 
 .input::placeholder {
-  color: #00203f;
-  font-weight: bold;
-  font-size: x-large;
+  color: #00203f !important;
+}
+
+label {
+  padding: 0 0.5vmax !important;
+  color: #00203f !important;
+  font-size: x-large !important;
+  font-weight: bold !important;
 }

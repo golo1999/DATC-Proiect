@@ -1,10 +1,16 @@
+.button-container {
+  display: flex !important;
+  justify-content: center !important;
+  width: 100% !important;
+}
+
 .button {
-  background: #00203f;
-  border-radius: 100vmax;
-  color: #adefd1;
-  padding: 1vmax;
-  width: 100%;
-  font-size: x-large;
-  font-weight: bold;
-  margin: 0.5vmax 0;
+  background: #00203f !important;
+  border-radius: 100vmax !important;
+  color: #adefd1 !important;
+  padding: 1vmax !important;
+  width: 100% !important;
+  font-size: x-large !important;
+  font-weight: bold !important;
+  margin: 0.5vmax 0 !important;
 }

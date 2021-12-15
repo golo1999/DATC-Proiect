@@ -4,7 +4,7 @@ import { useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router";
 
-import { Alert } from "react-bootstrap";
+import { Alert, Container, Form } from "react-bootstrap";
 
 import CustomButton from "../CustomButton";
 import CustomInput from "../CustomInput";
@@ -113,40 +113,50 @@ const Login = () => {
     }
   };
 
+  const redirectToForgotPasswordPageHandler = () => {
+    history.push("/forgot-password");
+  };
+
   const redirectToRegisterPageHandler = () => {
     history.push("/register");
   };
 
   return (
-    <form className={classes.form}>
-      {errorIsVisible && (
-        <Alert
-          variant="danger"
-          onClose={() => setErrorIsVisible(false)}
-          dismissible
-        >
-          <Alert.Heading>{errorMessage}</Alert.Heading>
-        </Alert>
-      )}
-      <CustomInput
-        id="email"
-        placeholder="Email"
-        reference={emailRef}
-        type="email"
-      />
-      <CustomInput
-        id="psw"
-        placeholder="Password"
-        reference={passwordRef}
-        type="password"
-      />
-      <CustomInput id="check" type="checkbox" />
-      <CustomButton onClick={loginHandler} text="Log in" />
-      <CustomText
-        onClick={redirectToRegisterPageHandler}
-        text="Register here"
-      />
-    </form>
+    <Container className={classes.container}>
+      <Form className={classes.form}>
+        {errorIsVisible && (
+          <Alert
+            variant="danger"
+            onClose={() => setErrorIsVisible(false)}
+            dismissible
+          >
+            <Alert.Heading>{errorMessage}</Alert.Heading>
+          </Alert>
+        )}
+        <CustomInput
+          id="email"
+          placeholder="Email"
+          reference={emailRef}
+          type="email"
+        />
+        <CustomInput
+          id="psw"
+          placeholder="Password"
+          reference={passwordRef}
+          type="password"
+        />
+        <CustomInput id="check" label="Remember me" type="checkbox" />
+        <CustomButton onClick={loginHandler} text="Log in" />
+        <CustomText
+          onClick={redirectToRegisterPageHandler}
+          text="Register here"
+        />
+        <CustomText
+          onClick={redirectToForgotPasswordPageHandler}
+          text="Forgot password"
+        />
+      </Form>
+    </Container>
   );
 };
 

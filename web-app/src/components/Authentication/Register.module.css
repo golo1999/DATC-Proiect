@@ -1,7 +1,12 @@
+.container {
+  flex: 1 !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+}
+
 .form {
-  left: 50%;
-  position: absolute;
-  width: 25vw;
-  top: 50%;
-  transform: translate(-50%, -50%);
+  width: 100% !important;
+  display: flex !important;
+  flex-direction: column !important;
 }

@@ -14,6 +14,7 @@ import { fetchCurrentLocation } from "./lib/api";
 
 import AllReports from "./components/AllReports";
 import AllUsers from "./components/AllUsers";
+import ForgotPassword from "./components/Authentication/ForgotPassword";
 import Login from "./components/Authentication/Login";
 import Map from "./components/Map";
 import PageNotFound from "./components/PageNotFound";
@@ -193,6 +194,10 @@ const App = () => {
         <Route exact path="/register">
           {isAuthenticated && <Redirect to="/" />}
           {!isAuthenticated && <Register />}
+        </Route>
+        <Route exact path="/forgot-password">
+          {isAuthenticated && <Redirect to="/" />}
+          {!isAuthenticated && <ForgotPassword />}
         </Route>
         <Route
           exact

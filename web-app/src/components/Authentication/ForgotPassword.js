@@ -1,0 +1,109 @@
+import { getAuth, sendPasswordResetEmail } from "firebase/auth";
+import React, { useRef, useState } from "react";
+import { useHistory } from "react-router";
+
+import { Alert, Container, Form } from "react-bootstrap";
+
+import CustomButton from "../CustomButton";
+import CustomInput from "../CustomInput";
+import CustomText from "../CustomText";
+
+import classes from "./ForgotPassword.module.css";
+
+const ForgotPassword = () => {
+  const auth = getAuth();
+
+  const history = useHistory();
+
+  const emailRef = useRef();
+
+  const [alertIsVisible, setAlertIsVisible] = useState(false);
+
+  const [message, setMessage] = useState("");
+
+  const [isSuccessful, setIsSuccessful] = useState(false);
+
+  const emailIsValid = (email) => {
+    const expression =
+      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+    return expression.test(String(email).trim().toLowerCase());
+  };
+
+  const redirectToLoginPageHandler = () => {
+    history.push("/login");
+  };
+
+  const resetPasswordHandler = (event) => {
+    event.preventDefault();
+
+    const enteredEmail = emailRef.current.value;
+
+    if (emailIsValid(enteredEmail)) {
+      sendPasswordResetEmail(auth, enteredEmail)
+        .then(() => {
+          if (!isSuccessful) {
+            setIsSuccessful((previousValue) => !previousValue);
+          }
+
+          setMessage("Email sent");
+        })
+        .catch(() => {
+          if (isSuccessful) {
+            setIsSuccessful((previousValue) => !previousValue);
+          }
+
+          if (!alertIsVisible) {
+            setAlertIsVisible((previousValue) => !previousValue);
+          }
+
+          setMessage("Something went wrong");
+        });
+    } else {
+      let errMsg = "";
+
+      if (isSuccessful) {
+        setIsSuccessful((previousValue) => !previousValue);
+      }
+
+      if (alertIsVisible) {
+        setAlertIsVisible((previousValue) => !previousValue);
+      }
+
+      if (enteredEmail.length === 0) {
+        errMsg = "Email should not be empty";
+      } else {
+        errMsg = "Email is not valid";
+      }
+
+      setAlertIsVisible(true);
+      setMessage(errMsg);
+    }
+  };
+
+  return (
+    <Container className={classes.container}>
+      <Form className={classes.form}>
+        {alertIsVisible && (
+          <Alert
+            variant={isSuccessful ? "primary" : "danger"}
+            onClose={() => setAlertIsVisible(false)}
+            dismissible
+          >
+            <Alert.Heading>{message}</Alert.Heading>
+          </Alert>
+        )}
+        <CustomInput
+          id="email"
+          placeholder="Email"
+          reference={emailRef}
+          type="email"
+        />
+        <CustomButton onClick={resetPasswordHandler} text="Reset password" />
+        <CustomText onClick={redirectToLoginPageHandler} text="Log in here" />
+      </Form>
+    </Container>
+  );
+};
+
+export default ForgotPassword;

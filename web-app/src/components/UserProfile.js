@@ -20,17 +20,6 @@ const UserProfile = (props) => {
     console.log(report);
   });
 
-  /*
-
-  email
-  firstName
-  lastName
-  level
-  phoneNumber
-  totalReports
-
-  */
-
   return (
     <div className={classes["main-container"]}>
       <Card className={classes.card}>
@@ -42,6 +31,7 @@ const UserProfile = (props) => {
                 <img
                   className={classes.photo}
                   src={userPersonalInformation.photoURL}
+                  alt="Not available"
                 />
               ) : (
                 "No photo uploaded"

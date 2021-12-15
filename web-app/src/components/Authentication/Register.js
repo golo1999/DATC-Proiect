@@ -9,7 +9,7 @@ import {
 } from "firebase/auth";
 import { db } from "../../Firebase";
 
-import { Alert } from "react-bootstrap";
+import { Alert, Container, Form } from "react-bootstrap";
 
 import CustomInput from "../CustomInput";
 import CustomButton from "../CustomButton";
@@ -167,43 +167,45 @@ const Register = () => {
   };
 
   return (
-    <form className={classes.form}>
-      {errorIsVisible && (
-        <Alert
-          variant="danger"
-          onClose={() => setErrorIsVisible(false)}
-          dismissible
-        >
-          <Alert.Heading>{errorMessage}</Alert.Heading>
-        </Alert>
-      )}
-      <CustomInput
-        id="email"
-        placeholder="Email"
-        reference={emailRef}
-        type="email"
-      />
-      <CustomInput
-        id="psw"
-        placeholder="Password"
-        reference={passwordRef}
-        type="password"
-      />
-      <CustomInput
-        id="fname"
-        placeholder="First name"
-        reference={firstNameRef}
-        type="text"
-      />
-      <CustomInput
-        id="lname"
-        placeholder="Last name"
-        reference={lastNameRef}
-        type="text"
-      />
-      <CustomButton onClick={registerHandler} text="Register" />
-      <CustomText onClick={redirectToLoginPageHandler} text="Log in here" />
-    </form>
+    <Container className={classes.container}>
+      <Form className={classes.form}>
+        {errorIsVisible && (
+          <Alert
+            variant="danger"
+            onClose={() => setErrorIsVisible(false)}
+            dismissible
+          >
+            <Alert.Heading>{errorMessage}</Alert.Heading>
+          </Alert>
+        )}
+        <CustomInput
+          id="email"
+          placeholder="Email"
+          reference={emailRef}
+          type="email"
+        />
+        <CustomInput
+          id="psw"
+          placeholder="Password"
+          reference={passwordRef}
+          type="password"
+        />
+        <CustomInput
+          id="fname"
+          placeholder="First name"
+          reference={firstNameRef}
+          type="text"
+        />
+        <CustomInput
+          id="lname"
+          placeholder="Last name"
+          reference={lastNameRef}
+          type="text"
+        />
+        <CustomButton onClick={registerHandler} text="Register" />
+        <CustomText onClick={redirectToLoginPageHandler} text="Log in here" />
+      </Form>
+    </Container>
   );
 };
 
