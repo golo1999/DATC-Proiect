@@ -13,7 +13,7 @@ import { reportsListActions } from "./store/reports-list-slice";
 import { usersListActions } from "./store/users-list-slice";
 
 // APIs
-import { fetchCurrentLocation } from "./lib/api";
+import { fetchCurrentLocation, getReportDetails } from "./lib/api";
 
 // Custom components
 import AllReports from "./components/AllReports";
@@ -163,6 +163,20 @@ const App = () => {
       if (!topBarIsVisible) {
         setTopBarIsVisible((prevValue) => !prevValue);
       }
+    } else if (location.pathname.substring(0, 9) === "/reports/") {
+      const reportIdFromURL = location.pathname.substring(9);
+
+      const reportDetailsPromise = getReportDetails(reportIdFromURL);
+
+      reportDetailsPromise
+        .then((value) => {
+          if (value === {}) {
+            history.push("/page-not-found");
+          }
+        })
+        .catch((error) => {
+          console.log(error.message);
+        });
     } else if (topBarIsVisible) {
       setTopBarIsVisible((prevValue) => !prevValue);
     }

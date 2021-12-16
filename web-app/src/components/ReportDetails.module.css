@@ -27,6 +27,12 @@
   align-items: center;
 }
 
+.details-column{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
 .map-toggler {
   color: gold !important;
   font-weight: bold;

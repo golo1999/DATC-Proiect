@@ -12,7 +12,7 @@
   border: 0.25vmax solid #00203f !important;
   color: #00203f !important;
   font-size: x-large !important;
-  font-weight: bold !important;
+  font-weight: 900 !important;
   padding: 1vmax !important;
   width: 100% !important;
 }
@@ -33,5 +33,5 @@ label {
   padding: 0 0.5vmax !important;
   color: #00203f !important;
   font-size: x-large !important;
-  font-weight: bold !important;
+  font-weight: 900 !important;
 }

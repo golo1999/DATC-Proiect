@@ -10,6 +10,7 @@ import androidx.databinding.ObservableField;
 import androidx.lifecycle.ViewModel;
 
 import com.example.citydangersalertapp.HomeActivity;
+import com.example.citydangersalertapp.R;
 import com.example.citydangersalertapp.feature.authentication.AuthenticationActivity;
 import com.example.citydangersalertapp.feature.authentication.forgotpassword.ForgotPasswordFragment;
 import com.example.citydangersalertapp.feature.authentication.register.*;
@@ -92,7 +93,7 @@ public class LogInViewModel extends ViewModel {
                                                                     currentActivity.startActivity(new Intent(currentActivity, HomeActivity.class));
                                                                 } else {
                                                                     MyCustomMethods.showShortMessage(currentActivity,
-                                                                            "Please verify your email");
+                                                                            currentActivity.getResources().getString(R.string.please_verify_your_email));
                                                                     resetUserPassword();
                                                                 }
 
@@ -101,14 +102,15 @@ public class LogInViewModel extends ViewModel {
                                                             // showing message if the credentials don't match
                                                             else {
                                                                 MyCustomMethods.showShortMessage(currentActivity,
-                                                                        "Incorrect username or password");
+                                                                        currentActivity.getResources().getString(R.string.incorrect_username_password));
                                                                 resetUserPassword();
                                                             }
                                                         });
                                             }
                                             // if the entered email is admin
                                             else if (doesNotHaveAccess) {
-                                                MyCustomMethods.showShortMessage(currentActivity, "Access denied");
+                                                MyCustomMethods.showShortMessage(currentActivity,
+                                                        currentActivity.getResources().getString(R.string.access_denied));
                                             }
                                         }
                                     }
@@ -132,17 +134,31 @@ public class LogInViewModel extends ViewModel {
         if (Patterns.EMAIL_ADDRESS.matcher(email).matches() && password.length() >= 8) {
             return true;
         } else if (email.isEmpty() && password.isEmpty()) {
-            MyCustomMethods.showShortMessage(currentActivity, "Email and password should not be empty");
+            MyCustomMethods.showShortMessage(currentActivity,
+                    currentActivity.getResources().getString(R.string.input_should_not_be_empty,
+                            currentActivity.getResources().getString(R.string.email) +
+                                    currentActivity.getResources().getString(R.string.whitespace) +
+                                    currentActivity.getResources().getString(R.string.and) +
+                                    currentActivity.getResources().getString(R.string.whitespace) +
+                                    currentActivity.getResources().getString(R.string.password).toLowerCase() +
+                                    currentActivity.getResources().getString(R.string.whitespace)));
         } else if (email.isEmpty()) {
-            MyCustomMethods.showShortMessage(currentActivity, "Email should not be empty");
+            MyCustomMethods.showShortMessage(currentActivity,
+                    currentActivity.getResources().getString(R.string.input_should_not_be_empty,
+                            currentActivity.getResources().getString(R.string.email)));
         } else if (password.isEmpty()) {
-            MyCustomMethods.showShortMessage(currentActivity, "Password should not be empty");
+            MyCustomMethods.showShortMessage(currentActivity,
+                    currentActivity.getResources().getString(R.string.input_should_not_be_empty,
+                            currentActivity.getResources().getString(R.string.password)));
         } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches() && password.length() < 8) {
-            MyCustomMethods.showShortMessage(currentActivity, "Both email address and password are not valid");
+            MyCustomMethods.showShortMessage(currentActivity,
+                    currentActivity.getResources().getString(R.string.email_password_not_valid));
         } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            MyCustomMethods.showShortMessage(currentActivity, "Email address is not valid");
+            MyCustomMethods.showShortMessage(currentActivity,
+                    currentActivity.getResources().getString(R.string.email_not_valid));
         } else {
-            MyCustomMethods.showShortMessage(currentActivity, "Password should have at least 8 characters");
+            MyCustomMethods.showShortMessage(currentActivity,
+                    currentActivity.getResources().getString(R.string.password_minimum_characters, 8));
         }
 
         return false;

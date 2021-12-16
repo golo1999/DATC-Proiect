@@ -1,13 +1,13 @@
 package com.example.citydangersalertapp.feature.authentication.register;
 
 import android.app.Activity;
-import android.util.Log;
 import android.util.Patterns;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.ObservableField;
 import androidx.lifecycle.ViewModel;
 
+import com.example.citydangersalertapp.R;
 import com.example.citydangersalertapp.feature.authentication.AuthenticationActivity;
 import com.example.citydangersalertapp.feature.authentication.login.LogInFragment;
 import com.example.citydangersalertapp.model.UserPersonalInformation;
@@ -61,7 +61,7 @@ public class RegisterViewModel extends ViewModel {
                     .addOnCompleteListener(addUserToDatabaseTask -> {
                         if (!addUserToDatabaseTask.isSuccessful()) {
                             MyCustomMethods.showShortMessage(currentActivity,
-                                    "Please verify your email");
+                                    currentActivity.getResources().getString(R.string.please_verify_your_email));
                         }
                     });
         }
@@ -93,15 +93,25 @@ public class RegisterViewModel extends ViewModel {
         ) {
             MyCustomMethods.showShortMessage(currentActivity, "No input contains characters");
         } else if (enteredFirstName.isEmpty()) {
-            MyCustomMethods.showShortMessage(currentActivity, "First name should not be empty");
+            MyCustomMethods.showShortMessage(currentActivity,
+                    currentActivity.getResources().getString(R.string.input_should_not_be_empty,
+                            currentActivity.getResources().getString(R.string.first_name)));
         } else if (enteredLastName.isEmpty()) {
-            MyCustomMethods.showShortMessage(currentActivity, "Last name should not be empty");
+            MyCustomMethods.showShortMessage(currentActivity,
+                    currentActivity.getResources().getString(R.string.input_should_not_be_empty,
+                            currentActivity.getResources().getString(R.string.last_name)));
         } else if (enteredEmail.isEmpty()) {
-            MyCustomMethods.showShortMessage(currentActivity, "Email should not be empty");
+            MyCustomMethods.showShortMessage(currentActivity,
+                    currentActivity.getResources().getString(R.string.input_should_not_be_empty,
+                            currentActivity.getResources().getString(R.string.email)));
         } else if (enteredPassword.isEmpty()) {
-            MyCustomMethods.showShortMessage(currentActivity, "Password should not be empty");
+            MyCustomMethods.showShortMessage(currentActivity,
+                    currentActivity.getResources().getString(R.string.input_should_not_be_empty,
+                            currentActivity.getResources().getString(R.string.password)));
         } else if (enteredPIN.isEmpty()) {
-            MyCustomMethods.showShortMessage(currentActivity, "PIN should not be empty");
+            MyCustomMethods.showShortMessage(currentActivity,
+                    currentActivity.getResources().getString(R.string.input_should_not_be_empty,
+                            currentActivity.getResources().getString(R.string.pin)));
         } else {
             MyCustomMethods.showShortMessage(currentActivity, "Please complete all the inputs");
         }
@@ -134,7 +144,8 @@ public class RegisterViewModel extends ViewModel {
                                         });
                             }
                         } else {
-                            MyCustomMethods.showShortMessage(currentActivity, "Email already exists");
+                            MyCustomMethods.showShortMessage(currentActivity,
+                                    currentActivity.getResources().getString(R.string.email_already_exists));
                             resetUserPassword();
                         }
                     })

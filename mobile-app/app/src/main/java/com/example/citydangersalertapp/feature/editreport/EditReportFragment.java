@@ -102,10 +102,17 @@ public class EditReportFragment extends Fragment implements OnMapReadyCallback {
         super.onDestroy();
         removeCategoriesSpinnerListener();
         editReportViewModel.resetInputs();
-        editReportViewModel.setSelectedPhotoUri(null);
+
+        if (editReportViewModel.getSelectedPhotoUri() != null) {
+            editReportViewModel.setSelectedPhotoUri(null);
+        }
 
         if (editReportViewModel.isPhotoRemovable()) {
             editReportViewModel.setPhotoRemovable(false);
+        }
+
+        if (editReportViewModel.isPhotoRemoved()) {
+            editReportViewModel.setPhotoRemoved(false);
         }
     }
 
@@ -162,6 +169,10 @@ public class EditReportFragment extends Fragment implements OnMapReadyCallback {
 
                 if (!editReportViewModel.isPhotoRemovable()) {
                     editReportViewModel.setPhotoRemovable(true);
+                }
+
+                if (editReportViewModel.isPhotoRemoved()) {
+                    editReportViewModel.setPhotoRemoved(false);
                 }
 
                 setPhotoText();

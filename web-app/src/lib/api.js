@@ -52,6 +52,30 @@ export const getNumberOfSolvedReports = async (userId) => {
   return numberOfSolvedReports;
 };
 
+export const getReportDetails = async (reportId) => {
+  const usersListRef = ref(db, "usersList");
+
+  let reportDetails = {};
+
+  onValue(usersListRef, (snapshot) => {
+    const data = snapshot.val();
+
+    const usersList = Object.values(data);
+
+    usersList.forEach((user) => {
+      const personalReportsList = Object.values(user.personalReports);
+
+      personalReportsList.forEach((report) => {
+        if (report.reportId === reportId) {
+          reportDetails = report;
+        }
+      });
+    });
+  });
+
+  return reportDetails;
+};
+
 export const getUserPersonalInformation = async (userId) => {
   const userPersonalInformationRef = ref(
     db,

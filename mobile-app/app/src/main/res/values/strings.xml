@@ -1,9 +1,11 @@
 <resources>
+    <string name="access_denied">Access denied</string>
     <string name="action_settings">Settings</string>
     <string name="add">Add</string>
     <string name="add_location">Add location</string>
     <string name="add_photo">Add photo</string>
     <string name="add_report">Add report</string>
+    <string name="and">and</string>
     <string name="app_name">CityDangersAlertApp</string>
     <string name="birth_date">Birth date</string>
     <string name="cancel">Cancel</string>
@@ -17,10 +19,15 @@
     <string name="delete_report">Are you sure you want to delete this report?</string>
     <string name="edit_report">Edit report</string>
     <string name="email">Email</string>
+    <string name="email_already_exists">Email already exists</string>
+    <string name="email_not_valid">Email address is not valid</string>
+    <string name="email_password_not_valid">Email address and password are not valid</string>
     <string name="email_sent">Email sent</string>
     <string name="first_name">First name</string>
     <string name="forgot_password">Forgot password</string>
     <string name="go_back">Go back</string>
+    <string name="incorrect_username_password">Incorrect username or password</string>
+    <string name="input_should_not_be_empty">%s should not be empty</string>
     <string name="last_name">Last name</string>
     <string name="login">Login</string>
     <string name="login_here">Login here</string>
@@ -35,7 +42,9 @@
     <string name="note">Note</string>
     <string name="ok" translatable="false">OK</string>
     <string name="password">Password</string>
+    <string name="password_minimum_characters">Password should have at least %d characters</string>
     <string name="pin">PIN</string>
+    <string name="please_verify_your_email">Please verify your email</string>
     <string name="press_again_to_exit">Press again to exit</string>
     <string name="profile">Profile</string>
     <string name="register">Register</string>
@@ -56,6 +65,7 @@
     <string name="unknown">Unknown</string>
     <string name="upload">Upload</string>
     <string name="upload_successful">Upload successful</string>
+    <string name="whitespace">&#160;</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

@@ -86,7 +86,7 @@ const Login = () => {
             });
 
             history.push("/");
-          } else {
+          } else if (!admin.emailVerified) {
             setErrorIsVisible(true);
             setErrorMessage("Please verify your email");
           }

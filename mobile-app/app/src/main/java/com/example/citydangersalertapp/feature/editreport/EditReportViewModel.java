@@ -35,6 +35,7 @@ public class EditReportViewModel extends ViewModel {
     private LocalDate date = LocalDate.now();
     private LocalTime time = LocalTime.now();
     private boolean photoRemovable;
+    private boolean photoRemoved;
     private Uri selectedPhotoUri;
 
     public ObservableField<String> getNote() {
@@ -77,6 +78,14 @@ public class EditReportViewModel extends ViewModel {
         this.photoRemovable = photoRemovable;
     }
 
+    public boolean isPhotoRemoved() {
+        return photoRemoved;
+    }
+
+    public void setPhotoRemoved(boolean photoRemoved) {
+        this.photoRemoved = photoRemoved;
+    }
+
     public Uri getSelectedPhotoUri() {
         return selectedPhotoUri;
     }
@@ -87,10 +96,6 @@ public class EditReportViewModel extends ViewModel {
 
     public int getREQUEST_ID() {
         return 5;
-    }
-
-    public void resetInputs() {
-        setNote(null);
     }
 
     public void cancelHandler(@NonNull Activity parentActivity) {
@@ -106,6 +111,11 @@ public class EditReportViewModel extends ViewModel {
         if (isPhotoRemovable()) {
             setPhotoRemovable(false);
             setSelectedPhotoUri(null);
+
+            if (!isPhotoRemoved()) {
+                setPhotoRemoved(true);
+            }
+
             ((EditReportFragment) parentFragment).setPhotoText();
         } else {
             MyCustomMethods.openFileChooser(parentActivity, getREQUEST_ID());
@@ -122,6 +132,10 @@ public class EditReportViewModel extends ViewModel {
         final DialogFragment timePickerFragment = new TimePickerFragment(time);
 
         timePickerFragment.show(fragmentManager, "time_picker");
+    }
+
+    public void resetInputs() {
+        setNote(null);
     }
 
     public Report retrieveReportFromSharedPreferences(@NonNull Activity parentActivity) {
@@ -178,83 +192,190 @@ public class EditReportViewModel extends ViewModel {
                 report.getDateTime().setSecond(time.getSecond());
             }
 
-            if (selectedPhotoUri != null) {
-                MyCustomVariables.getFirebaseStorageReference()
-                        .child(currentUserId)
-                        .child("reportsList")
-                        .child(report.getReportId())
-                        .putFile(selectedPhotoUri)
-                        .addOnSuccessListener((final UploadTask.TaskSnapshot taskSnapshot) -> {
-                            final Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
+            // if the report does NOT have a photo and the user has NOT selected one
+            if (report.getPhotoURL() == null && selectedPhotoUri == null) {
+                MyCustomMethods.showShortMessage(parentActivity, "REPORT NO PHOTO : USER NO PHOTO");
 
-                            while (!uriTask.isComplete()) ;
-
-                            final Uri url = uriTask.getResult();
-
-                            report.setPhotoURL(String.valueOf(url));
-                            updateReportInDatabase(parentActivity, currentUserId, report, isPhotoRemovable());
-
-//                            final Report retrievedReport = retrieveReportFromSharedPreferences(parentActivity);
-//
-//                            // if the report has been modified
-//                            if (!report.equals(retrievedReport)) {
-//                                MyCustomVariables.getDatabaseReference()
-//                                        .child("usersList")
-//                                        .child(currentUserId)
-//                                        .child("personalReports")
-//                                        .child(report.getReportId())
-//                                        .setValue(report)
-//                                        .addOnCompleteListener((Task<Void> task) -> {
-//                                            if (task.isSuccessful()) {
-//                                                MyCustomMethods.showShortMessage(parentActivity,
-//                                                        parentActivity.getResources().getString(R.string.report_updated));
-//                                                parentActivity.onBackPressed();
-//                                            }
-//                                        });
-//                            }
-//                            // if the report has NOT been modified
-//                            else {
-//                                MyCustomMethods.showShortMessage(parentActivity,
-//                                        parentActivity.getResources().getString(R.string.no_changes_have_been_made));
-//                            }
-//
-//                            setSelectedPhotoUri(null);
-//                            setNote(null);
-                        })
-                        .addOnFailureListener((final Exception exception) ->
-                                MyCustomMethods.showShortMessage(parentActivity, exception.getMessage()));
-            } else {
-                final Report retrievedReport = retrieveReportFromSharedPreferences(parentActivity);
-
-                if (report.getPhotoURL() != null) {
-                    report.setPhotoURL(null);
-                }
-
-                // if the report has been modified
-                if (!report.equals(retrievedReport)) {
-                    MyCustomVariables.getDatabaseReference()
-                            .child("usersList")
-                            .child(currentUserId)
-                            .child("personalReports")
-                            .child(report.getReportId())
-                            .setValue(report)
-                            .addOnCompleteListener((Task<Void> task) -> {
-                                if (task.isSuccessful()) {
-                                    MyCustomMethods.showShortMessage(parentActivity,
-                                            parentActivity.getResources().getString(R.string.report_updated));
-                                    parentActivity.onBackPressed();
-                                }
-                            });
-
-                }
-                // if the report has NOT been modified
-                else {
-                    MyCustomMethods.showShortMessage(parentActivity,
-                            parentActivity.getResources().getString(R.string.no_changes_have_been_made));
-                }
-
-                setNote(null);
+                updateReportInDatabase(parentActivity, currentUserId, report);
             }
+            // if the report does NOT have a photo and the user has selected one
+            else if (report.getPhotoURL() == null && selectedPhotoUri != null) {
+                MyCustomMethods.showShortMessage(parentActivity, "REPORT NO PHOTO : USER YES PHOTO");
+
+//                MyCustomVariables.getFirebaseStorageReference()
+//                        .child(currentUserId)
+//                        .child("reportsList")
+//                        .child(report.getReportId())
+//                        .putFile(selectedPhotoUri)
+//                        .addOnSuccessListener((UploadTask.TaskSnapshot taskSnapshot) -> {
+//                            final Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
+//
+//                            while (!uriTask.isComplete()) ;
+//
+//                            final Uri url = uriTask.getResult();
+//
+//                            report.setPhotoURL(String.valueOf(url));
+//                            updateReportInDatabase(parentActivity, currentUserId, report);
+//                        })
+//                        .addOnFailureListener((Exception exception) ->
+//                                MyCustomMethods.showShortMessage(parentActivity, exception.getMessage()));
+
+                updateReportInDatabaseAndAddPhotoInStorage(parentActivity, currentUserId, report);
+            }
+            // if the report does have a photo and the user has removed it
+            else if (report.getPhotoURL() != null && isPhotoRemoved()) {
+                MyCustomMethods.showShortMessage(parentActivity, "REPORT YES PHOTO : USER DELETED PHOTO");
+
+//                MyCustomVariables.getFirebaseStorageReference()
+//                        .child(currentUserId)
+//                        .child("reportsList")
+//                        .child(report.getReportId())
+//                        .delete()
+//                        .addOnSuccessListener((Void command) -> {
+//                            if (report.getPhotoURL() != null) {
+//                                report.setPhotoURL(null);
+//                            }
+//
+//                            updateReportInDatabase(parentActivity, currentUserId, report);
+//                        })
+//                        .addOnFailureListener(exception ->
+//                                MyCustomMethods.showShortMessage(parentActivity, exception.getMessage()));
+
+                updateReportInDatabaseAndRemovePhotoFromStorage(parentActivity, currentUserId, report);
+            }
+            // if the report does have a photo and the user has NOT selected one
+            else if (report.getPhotoURL() != null && selectedPhotoUri == null) {
+                MyCustomMethods.showShortMessage(parentActivity, "REPORT YES PHOTO : USER NO PHOTO");
+
+                updateReportInDatabase(parentActivity, currentUserId, report);
+            }
+            // if the report does have a photo and the user has selected one
+            else if (report.getPhotoURL() != null && selectedPhotoUri != null) {
+                MyCustomMethods.showShortMessage(parentActivity, "REPORT YES PHOTO : USER YES PHOTO");
+
+//                MyCustomVariables.getFirebaseStorageReference()
+//                        .child(currentUserId)
+//                        .child("reportsList")
+//                        .child(report.getReportId())
+//                        .putFile(selectedPhotoUri)
+//                        .addOnSuccessListener((UploadTask.TaskSnapshot taskSnapshot) -> {
+//                            final Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
+//
+//                            while (!uriTask.isComplete()) ;
+//
+//                            final Uri url = uriTask.getResult();
+//
+//                            report.setPhotoURL(String.valueOf(url));
+//                            updateReportInDatabase(parentActivity, currentUserId, report);
+//                        })
+//                        .addOnFailureListener((Exception exception) ->
+//                                MyCustomMethods.showShortMessage(parentActivity, exception.getMessage()));
+
+                updateReportInDatabaseAndAddPhotoInStorage(parentActivity, currentUserId, report);
+            }
+
+//            // if the user has selected a photo now
+//            if (selectedPhotoUri != null) {
+//                MyCustomVariables.getFirebaseStorageReference()
+//                        .child(currentUserId)
+//                        .child("reportsList")
+//                        .child(report.getReportId())
+//                        .putFile(selectedPhotoUri)
+//                        .addOnSuccessListener((final UploadTask.TaskSnapshot taskSnapshot) -> {
+//                            final Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
+//
+//                            while (!uriTask.isComplete()) ;
+//
+//                            final Uri url = uriTask.getResult();
+//
+//                            report.setPhotoURL(String.valueOf(url));
+//                            updateReportInDatabase(parentActivity, currentUserId, report);
+//
+////                            final Report retrievedReport = retrieveReportFromSharedPreferences(parentActivity);
+////
+////                            // if the report has been modified
+////                            if (!report.equals(retrievedReport)) {
+////                                MyCustomVariables.getDatabaseReference()
+////                                        .child("usersList")
+////                                        .child(currentUserId)
+////                                        .child("personalReports")
+////                                        .child(report.getReportId())
+////                                        .setValue(report)
+////                                        .addOnCompleteListener((Task<Void> task) -> {
+////                                            if (task.isSuccessful()) {
+////                                                MyCustomMethods.showShortMessage(parentActivity,
+////                                                        parentActivity.getResources().getString(R.string.report_updated));
+////                                                parentActivity.onBackPressed();
+////                                            }
+////                                        });
+////                            }
+////                            // if the report has NOT been modified
+////                            else {
+////                                MyCustomMethods.showShortMessage(parentActivity,
+////                                        parentActivity.getResources().getString(R.string.no_changes_have_been_made));
+////                            }
+////
+////                            setSelectedPhotoUri(null);
+////                            setNote(null);
+//                        })
+//                        .addOnFailureListener((final Exception exception) ->
+//                                MyCustomMethods.showShortMessage(parentActivity, exception.getMessage()));
+//            }
+//            // if the user has NOT selected a photo, but
+//            else if (report.getPhotoURL() != null) {
+//                updateReportInDatabase(parentActivity, currentUserId, report);
+//            }
+//            // if the user has removed the photo
+//            else {
+//                MyCustomVariables.getFirebaseStorageReference()
+//                        .child(currentUserId)
+//                        .child("reportsList")
+//                        .child(report.getReportId())
+//                        .delete()
+//                        .addOnSuccessListener((Void command) -> {
+//                            if (report.getPhotoURL() != null) {
+//                                report.setPhotoURL(null);
+//                            }
+//
+//                            updateReportInDatabase(parentActivity, currentUserId, report);
+//                        });
+//
+////                final Report retrievedReport = retrieveReportFromSharedPreferences(parentActivity);
+////
+////                if (report.getPhotoURL() != null) {
+////                    report.setPhotoURL(null);
+////                }
+////
+////                // if the report has been modified
+////                if (!report.equals(retrievedReport)) {
+////                    MyCustomVariables.getDatabaseReference()
+////                            .child("usersList")
+////                            .child(currentUserId)
+////                            .child("personalReports")
+////                            .child(report.getReportId())
+////                            .setValue(report)
+////                            .addOnCompleteListener((Task<Void> task) -> {
+////                                if (task.isSuccessful()) {
+////                                    MyCustomMethods.showShortMessage(parentActivity,
+////                                            parentActivity.getResources().getString(R.string.report_updated));
+////                                    parentActivity.onBackPressed();
+////                                }
+////                            });
+////                }
+////                // if the report has NOT been modified
+////                else {
+////                    MyCustomMethods.showShortMessage(parentActivity,
+////                            parentActivity.getResources().getString(R.string.no_changes_have_been_made));
+////                }
+//            }
+//
+//            if (note.get() != null) {
+//                setNote(null);
+//            }
+//
+//            if (selectedPhotoUri != null) {
+//                setSelectedPhotoUri(null);
+//            }
         }
     }
 
@@ -270,8 +391,7 @@ public class EditReportViewModel extends ViewModel {
 
     private void updateReportInDatabase(@NonNull Activity parentActivity,
                                         final String currentUserId,
-                                        final Report report,
-                                        final boolean hasPhoto) {
+                                        final Report report) {
         final Report retrievedReport = retrieveReportFromSharedPreferences(parentActivity);
 
         // if the report has been modified
@@ -289,17 +409,52 @@ public class EditReportViewModel extends ViewModel {
                             parentActivity.onBackPressed();
                         }
                     });
-
-            setNote(null);
         }
         // if the report has NOT been modified
         else {
             MyCustomMethods.showShortMessage(parentActivity,
                     parentActivity.getResources().getString(R.string.no_changes_have_been_made));
         }
+    }
 
-        if (hasPhoto) {
-            setSelectedPhotoUri(null);
-        }
+    private void updateReportInDatabaseAndAddPhotoInStorage(@NonNull Activity parentActivity,
+                                                            final String currentUserId,
+                                                            final Report report) {
+        MyCustomVariables.getFirebaseStorageReference()
+                .child(currentUserId)
+                .child("reportsList")
+                .child(report.getReportId())
+                .putFile(selectedPhotoUri)
+                .addOnSuccessListener((UploadTask.TaskSnapshot taskSnapshot) -> {
+                    final Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
+
+                    while (!uriTask.isComplete()) ;
+
+                    final Uri url = uriTask.getResult();
+
+                    report.setPhotoURL(String.valueOf(url));
+                    updateReportInDatabase(parentActivity, currentUserId, report);
+                })
+                .addOnFailureListener((Exception exception) ->
+                        MyCustomMethods.showShortMessage(parentActivity, exception.getMessage()));
+    }
+
+    private void updateReportInDatabaseAndRemovePhotoFromStorage(@NonNull Activity parentActivity,
+                                                                 final String currentUserId,
+                                                                 final Report report) {
+        MyCustomVariables.getFirebaseStorageReference()
+                .child(currentUserId)
+                .child("reportsList")
+                .child(report.getReportId())
+                .delete()
+                .addOnSuccessListener((Void command) -> {
+                    if (report.getPhotoURL() != null) {
+                        report.setPhotoURL(null);
+                    }
+
+                    updateReportInDatabase(parentActivity, currentUserId, report);
+                })
+                .addOnFailureListener(exception ->
+                        MyCustomMethods.showShortMessage(parentActivity, exception.getMessage()));
     }
 }

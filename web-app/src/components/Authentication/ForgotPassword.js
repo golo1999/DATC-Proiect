@@ -49,7 +49,7 @@ const ForgotPassword = () => {
 
           setMessage("Email sent");
         })
-        .catch(() => {
+        .catch((error) => {
           if (isSuccessful) {
             setIsSuccessful((previousValue) => !previousValue);
           }
@@ -58,7 +58,7 @@ const ForgotPassword = () => {
             setAlertIsVisible((previousValue) => !previousValue);
           }
 
-          setMessage("Something went wrong");
+          setMessage(error.message);
         });
     } else {
       let errMsg = "";

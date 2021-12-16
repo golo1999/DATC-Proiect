@@ -1,11 +1,18 @@
+// NPM
 import { getDatabase, ref, onValue } from "firebase/database";
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 
+// APIs
+import { getReportDetails } from "../lib/api";
+
+// Bootstrap
 import { Card, Col, Container, Row } from "react-bootstrap";
 
+// Custom components
 import Map from "./Map";
 
+// CSS
 import classes from "./ReportDetails.module.css";
 
 const ReportDetails = (props) => {
@@ -81,7 +88,7 @@ const ReportDetails = (props) => {
                 "No photo uploaded"
               )}
             </Col>
-            <Col lg={6} md={12}>
+            <Col className={classes["details-column"]} lg={6} md={12}>
               <Row>
                 <h1 className={classes["about-heading"]}>About</h1>
               </Row>
