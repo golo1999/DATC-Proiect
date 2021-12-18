@@ -139,8 +139,9 @@ public class HomeViewModel extends ViewModel {
     public void logOutHandler(@NonNull Activity parentActivity) {
         MyCustomVariables.getFirebaseAuth().signOut();
         MyCustomMethods.saveRememberMeToSharedPreferences(parentActivity, false, "rememberMeChecked");
-        parentActivity.startActivity(new Intent(parentActivity, AuthenticationActivity.class));
         parentActivity.finishAffinity();
+        parentActivity.startActivity(new Intent(parentActivity, AuthenticationActivity.class));
+//        parentActivity.overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
 //        parentActivity.overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
     }
 

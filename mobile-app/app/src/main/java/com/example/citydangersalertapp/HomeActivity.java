@@ -229,6 +229,17 @@ public class HomeActivity
         return viewModel.getSelectPhotoFragmentInstance();
     }
 
+    private void initializeDrawer() {
+        final ActionBarDrawerToggle drawerToggle =
+                new ActionBarDrawerToggle(this, homeActivityBinding.drawer, homeActivityBinding.toolbar,
+                        R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+
+        homeActivityBinding.drawer.addDrawerListener(drawerToggle);
+        homeActivityBinding.navigationView.setCheckedItem(R.id.drawer_menu_my_reports);
+        drawerToggle.syncState();
+        drawerToggle.getDrawerArrowDrawable().setColor(Color.parseColor("#ADEFD1"));
+    }
+
     private void setToolbarTitle() {
         if (viewModel.getCurrentFragment() instanceof AddReportFragment &&
                 !String.valueOf(homeActivityBinding.toolbar.getTitle()).trim().equals(getResources().getString(R.string.add_report))) {
@@ -252,17 +263,6 @@ public class HomeActivity
                 !String.valueOf(homeActivityBinding.toolbar.getTitle()).trim().equals(getResources().getString(R.string.select_photo))) {
             homeActivityBinding.toolbar.setTitle(getResources().getString(R.string.select_photo));
         }
-    }
-
-    private void initializeDrawer() {
-        final ActionBarDrawerToggle drawerToggle =
-                new ActionBarDrawerToggle(this, homeActivityBinding.drawer, homeActivityBinding.toolbar,
-                        R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-
-        homeActivityBinding.drawer.addDrawerListener(drawerToggle);
-        homeActivityBinding.navigationView.setCheckedItem(R.id.drawer_menu_my_reports);
-        drawerToggle.syncState();
-        drawerToggle.getDrawerArrowDrawable().setColor(Color.parseColor("#ADEFD1"));
     }
 
     public void setFragment(Fragment newFragment) {

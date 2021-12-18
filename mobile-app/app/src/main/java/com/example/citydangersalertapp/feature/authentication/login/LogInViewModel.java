@@ -91,6 +91,7 @@ public class LogInViewModel extends ViewModel {
 
                                                                     currentActivity.finish();
                                                                     currentActivity.startActivity(new Intent(currentActivity, HomeActivity.class));
+//                                                                    currentActivity.overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                                                                 } else {
                                                                     MyCustomMethods.showShortMessage(currentActivity,
                                                                             currentActivity.getResources().getString(R.string.please_verify_your_email));

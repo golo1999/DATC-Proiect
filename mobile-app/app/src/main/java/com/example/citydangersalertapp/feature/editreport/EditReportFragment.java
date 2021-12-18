@@ -1,5 +1,9 @@
 package com.example.citydangersalertapp.feature.editreport;
 
+import static android.content.Context.MODE_PRIVATE;
+
+import android.app.Activity;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +22,8 @@ import com.example.citydangersalertapp.feature.HomeViewModel;
 import com.example.citydangersalertapp.model.AdminPersonalInformation;
 import com.example.citydangersalertapp.model.MyCustomDateTime;
 import com.example.citydangersalertapp.model.Report;
+import com.example.citydangersalertapp.model.UserLocation;
+import com.example.citydangersalertapp.utility.JsonPlaceHolderAPI;
 import com.example.citydangersalertapp.utility.MyCustomMethods;
 import com.example.citydangersalertapp.utility.MyCustomVariables;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -30,9 +36,13 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
+import com.google.gson.Gson;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class EditReportFragment extends Fragment implements OnMapReadyCallback {
     private EditReportFragmentBinding binding;
@@ -82,6 +92,7 @@ public class EditReportFragment extends Fragment implements OnMapReadyCallback {
                              ViewGroup container,
                              Bundle savedInstanceState) {
         setFragmentVariables(inflater, container);
+        setAPI();
         setLayoutVariables();
         setEditReportPhotoCallback();
         showPhoto();
@@ -114,6 +125,10 @@ public class EditReportFragment extends Fragment implements OnMapReadyCallback {
         if (editReportViewModel.isPhotoRemoved()) {
             editReportViewModel.setPhotoRemoved(false);
         }
+
+        if (editReportViewModel.isLocationChanged()) {
+            editReportViewModel.setLocationChanged(false);
+        }
     }
 
     @Override
@@ -144,7 +159,13 @@ public class EditReportFragment extends Fragment implements OnMapReadyCallback {
         }
     }
 
-    private void initializeMap() {
+    public void hideLocationText() {
+        if (binding.locationText.getVisibility() == View.VISIBLE) {
+            binding.locationText.setVisibility(View.GONE);
+        }
+    }
+
+    public void initializeMap() {
         SupportMapFragment mapFragment =
                 (SupportMapFragment) getChildFragmentManager().findFragmentById(binding.map.getId());
 
@@ -155,6 +176,36 @@ public class EditReportFragment extends Fragment implements OnMapReadyCallback {
 
     private void removeCategoriesSpinnerListener() {
         binding.categoriesSpinner.setOnItemSelectedListener(null);
+    }
+
+    public void saveReportToSharedPreferences(@NonNull Activity parentActivity) {
+        final Report selectedReport = homeViewModel.getSelectedReport();
+
+        if (selectedReport != null) {
+            SharedPreferences preferences =
+                    parentActivity.getSharedPreferences("CITY_DANGERS_ALERT_APP_DATA", MODE_PRIVATE);
+
+            SharedPreferences.Editor editor = preferences.edit();
+            Gson gson = new Gson();
+            String json = gson.toJson(selectedReport);
+
+            editor.putString("selectedReport", json);
+            editor.apply();
+        }
+    }
+
+    private void setAPI() {
+        final Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(MyCustomVariables.getLocationApiBaseUrl())
+                .addConverterFactory(GsonConverterFactory.create()).build();
+
+        final JsonPlaceHolderAPI api = retrofit.create(JsonPlaceHolderAPI.class);
+
+        editReportViewModel.setApi(api);
+    }
+
+    private void setCategoriesSpinnerListener() {
+        binding.categoriesSpinner.setOnItemSelectedListener(itemSelectedListener);
     }
 
     private void setEditReportPhotoCallback() {
@@ -177,8 +228,6 @@ public class EditReportFragment extends Fragment implements OnMapReadyCallback {
 
                 setPhotoText();
             }
-//            setPhotoText();
-//            binding.photoText.setText(requireActivity().getResources().getString(R.string.change_photo));
         });
     }
 
@@ -241,35 +290,11 @@ public class EditReportFragment extends Fragment implements OnMapReadyCallback {
             setReportDateText(reportFormattedDate);
             setReportTimeText(reportFormattedTime);
 
-//            if (selectedReport.getPhotoURL() != null) {
-//                if (!editReportViewModel.isPhotoRemovable()) {
-//                    editReportViewModel.setPhotoRemovable(true);
-//                }
-//
-//                Picasso.get()
-//                        .load(selectedReport.getPhotoURL())
-//                        .placeholder(R.color.cardview_dark_background)
-//                        .fit()
-//                        .into(binding.photo);
-//
-//                binding.photoLayout.setVisibility(View.VISIBLE);
-//            } else {
-////                if (editReportViewModel.isPhotoRemovable()) {
-////                    editReportViewModel.setPhotoRemovable(false);
-////                }
-//            }
-
-//            setPhotoText();
-
-//            else if (binding.photoLayout.getVisibility() == View.VISIBLE) {
-//                binding.photoLayout.setVisibility(View.GONE);
-//            }
-
             binding.mapContainer.setVisibility(selectedReport.getLocation() != null ? View.VISIBLE : View.GONE);
 
             if (selectedReport.getLocation() != null) {
                 initializeMap();
-                binding.locationText.setText(requireActivity().getResources().getString(R.string.change_location));
+                hideLocationText();
             } else {
                 binding.locationText.setText(requireActivity().getResources().getString(R.string.add_location));
             }
@@ -317,8 +342,14 @@ public class EditReportFragment extends Fragment implements OnMapReadyCallback {
         binding.timeText.setText(formattedTime);
     }
 
-    private void setCategoriesSpinnerListener() {
-        binding.categoriesSpinner.setOnItemSelectedListener(itemSelectedListener);
+    public void setUserLocation(final UserLocation location) {
+        homeViewModel.getSelectedReport().setLocation(location);
+    }
+
+    public void showMapContainer() {
+        if (binding.mapContainer.getVisibility() == View.GONE) {
+            binding.mapContainer.setVisibility(View.VISIBLE);
+        }
     }
 
     public void showPhoto() {
