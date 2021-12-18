@@ -1,0 +1,29 @@
+.modal-header {
+  background: gold !important;
+  user-select: none !important;
+  border: none !important;
+}
+
+.title {
+  font-weight: 900 !important;
+}
+
+.modal-body {
+  background: #00203f !important;
+  color: gold !important;
+  font-size: large !important;
+  user-select: none !important;
+}
+
+.modal-footer {
+  background: #00203f !important;
+  border: none !important;
+}
+
+.button {
+  background: gold !important;
+  border: 0 !important;
+  color: #00203f !important;
+  font-size: large !important;
+  font-weight: 900 !important;
+}

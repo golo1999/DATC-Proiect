@@ -103,6 +103,7 @@ const App = () => {
             dispatch(
               locationActions.addReportLocation({
                 newReportLocation: {
+                  id: report.reportId,
                   category: report.category,
                   name: report.note ? report.note : "No note provided",
                   position: {
@@ -247,6 +248,7 @@ const App = () => {
                 lat: adminLocation.latitude,
                 lng: adminLocation.longitude,
               }}
+              reports={reportsList}
               reportsLocation={reportsLocationList}
               // isMarkerShown // for showing a marker
               googleMapURL={googleMapURL}

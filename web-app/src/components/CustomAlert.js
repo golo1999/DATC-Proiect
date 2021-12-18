@@ -5,7 +5,7 @@ import { Alert, Col, Row } from "react-bootstrap";
 import classes from "./CustomAlert.module.css";
 
 const CustomAlert = (props) => {
-console.log(props);
+  console.log(props);
 
   return (
     <Row className={classes["alert-container"]}>
