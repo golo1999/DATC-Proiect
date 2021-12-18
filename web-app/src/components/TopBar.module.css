@@ -4,18 +4,6 @@
   user-select: none !important;
 }
 
-.logo {
-  color: #adefd1 !important;
-  font-size: x-large !important;
-  transition: 0.6s ease !important;
-  font-weight: bold !important;
-}
-
-.logo:hover {
-  transition: 0.6s ease !important;
-  color: gold !important;
-}
-
 .nav-link,
 .nav-link-centered {
   color: #adefd1 !important;

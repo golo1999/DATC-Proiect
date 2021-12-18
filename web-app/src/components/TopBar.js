@@ -7,6 +7,7 @@ import { useHistory } from "react-router";
 import { useLocation } from "react-router-dom";
 import { authActions } from "../store/auth-slice";
 
+import Logo from "./Logo";
 import ProfileIcon from "./ProfileIcon";
 
 import classes from "./TopBar.module.css";
@@ -192,7 +193,9 @@ const TopBar = () => {
       variant="dark"
     >
       <Container>
-        <Navbar.Brand className={classes.logo}>CityDangersAlert</Navbar.Brand>
+        <Navbar.Brand>
+          <Logo />
+        </Navbar.Brand>
         {isAuthenticated && (
           <Navbar.Toggle
             aria-controls="responsive-navbar-nav"

@@ -1,0 +1,23 @@
+.container {
+  display: flex;
+  transition: 0.6s ease !important;
+}
+
+.container:hover > .logo-icon,
+.container:hover > .logo-name {
+  color: gold !important;
+  transition: 0.6s ease !important;
+}
+
+.logo-icon {
+  color: #adefd1 !important;
+  font-size: xx-large !important;
+  transition: 0.6s ease !important;
+}
+
+.logo-name {
+  color: #adefd1 !important;
+  font-size: x-large !important;
+  font-weight: bold !important;
+  transition: 0.6s ease !important;
+}
