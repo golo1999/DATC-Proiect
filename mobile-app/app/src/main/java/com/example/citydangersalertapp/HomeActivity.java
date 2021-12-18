@@ -25,7 +25,6 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.citydangersalertapp.databinding.HomeActivityBinding;
 import com.example.citydangersalertapp.databinding.NavigationDrawerHeaderBinding;
 import com.example.citydangersalertapp.feature.HomeViewModel;
-import com.example.citydangersalertapp.feature.SettingsFragment;
 import com.example.citydangersalertapp.feature.addreport.AddReportFragment;
 import com.example.citydangersalertapp.feature.editprofile.ProfileFragment;
 import com.example.citydangersalertapp.feature.editreport.EditReportFragment;
@@ -256,9 +255,6 @@ public class HomeActivity
         } else if (viewModel.getCurrentFragment() instanceof ProfileFragment &&
                 !String.valueOf(homeActivityBinding.toolbar.getTitle()).trim().equals(getResources().getString(R.string.profile))) {
             homeActivityBinding.toolbar.setTitle(getResources().getString(R.string.profile));
-        } else if (viewModel.getCurrentFragment() instanceof SettingsFragment &&
-                !String.valueOf(homeActivityBinding.toolbar.getTitle()).trim().equals(getResources().getString(R.string.settings))) {
-            homeActivityBinding.toolbar.setTitle(getResources().getString(R.string.settings));
         } else if (viewModel.getCurrentFragment() instanceof SelectPhotoFragment &&
                 !String.valueOf(homeActivityBinding.toolbar.getTitle()).trim().equals(getResources().getString(R.string.select_photo))) {
             homeActivityBinding.toolbar.setTitle(getResources().getString(R.string.select_photo));
@@ -278,9 +274,7 @@ public class HomeActivity
                             newFragment instanceof NearbyDangersMapFragment ?
                                     R.id.drawer_menu_nearby_dangers :
                                     newFragment instanceof ProfileFragment ?
-                                            R.id.drawer_menu_profile :
-                                            newFragment instanceof SettingsFragment ?
-                                                    R.id.drawer_menu_settings : R.id.drawer_menu_add_report;
+                                            R.id.drawer_menu_profile : R.id.drawer_menu_add_report;
 
             viewModel.setLastFragment(viewModel.getCurrentFragment());
             viewModel.setCurrentFragment(newFragment);

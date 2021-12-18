@@ -43,7 +43,6 @@ public class HomeViewModel extends ViewModel {
     private final MyReportsFragment myReportsFragmentInstance = new MyReportsFragment(this);
     private final NearbyDangersMapFragment nearbyDangersMapFragmentInstance = new NearbyDangersMapFragment();
     private final ProfileFragment profileFragmentInstance = new ProfileFragment();
-    private final SettingsFragment settingsFragmentInstance = new SettingsFragment();
     private final SelectPhotoFragment selectPhotoFragmentInstance = new SelectPhotoFragment();
     private Fragment currentFragment;
     private Fragment lastFragment = currentFragment;
@@ -69,10 +68,6 @@ public class HomeViewModel extends ViewModel {
 
     public ProfileFragment getProfileFragmentInstance() {
         return profileFragmentInstance;
-    }
-
-    public SettingsFragment getSettingsFragmentInstance() {
-        return settingsFragmentInstance;
     }
 
     public SelectPhotoFragment getSelectPhotoFragmentInstance() {
@@ -176,8 +171,6 @@ public class HomeViewModel extends ViewModel {
             parentActivity.setFragment(nearbyDangersMapFragmentInstance);
         } else if (item.getItemId() == R.id.drawer_menu_profile && !(currentFragment instanceof ProfileFragment)) {
             parentActivity.setFragment(profileFragmentInstance);
-        } else if (item.getItemId() == R.id.drawer_menu_settings && !(currentFragment instanceof SettingsFragment)) {
-            parentActivity.setFragment(settingsFragmentInstance);
         } else if (item.getItemId() == R.id.drawer_menu_log_out) {
             logOutHandler(parentActivity);
         }

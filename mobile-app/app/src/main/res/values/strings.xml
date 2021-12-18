@@ -1,6 +1,5 @@
 <resources>
     <string name="access_denied">Access denied</string>
-    <string name="action_settings">Settings</string>
     <string name="add">Add</string>
     <string name="add_location">Add location</string>
     <string name="add_photo">Add photo</string>
@@ -31,6 +30,7 @@
     <string name="last_name">Last name</string>
     <string name="login">Login</string>
     <string name="login_here">Login here</string>
+    <string name="logout">Log out</string>
     <string name="my_reports">My reports</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -58,7 +58,6 @@
     <string name="save">Save</string>
     <string name="select_file_first">Please select a file first</string>
     <string name="select_photo">Select photo</string>
-    <string name="settings">Settings</string>
     <string name="solved_by">Solved by</string>
     <string name="something_went_wrong">Something went wrong</string>
     <string name="time">Time</string>

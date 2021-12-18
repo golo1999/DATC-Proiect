@@ -1,35 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-
     <group
         android:id="@+id/drawer_menu_group"
         android:checkableBehavior="single">
-
         <item
             android:id="@+id/drawer_menu_my_reports"
-            android:title="My reports" />
-
+            android:title="@string/my_reports" />
         <item
             android:id="@+id/drawer_menu_add_report"
-            android:title="Add report" />
-
+            android:title="@string/add_report" />
         <item
             android:id="@+id/drawer_menu_nearby_dangers"
-            android:title="Nearby dangers" />
-
+            android:title="@string/nearby_dangers" />
         <item
             android:id="@+id/drawer_menu_profile"
-            android:title="Profile" />
-
-        <item
-            android:id="@+id/drawer_menu_settings"
-            android:title="Settings" />
-
+            android:title="@string/profile" />
         <item
             android:id="@+id/drawer_menu_log_out"
-            android:title="Log out" />
-
+            android:title="@string/logout" />
     </group>
-
 </menu>
