@@ -12,6 +12,7 @@
     <string name="change_location">Change location</string>
     <string name="change_photo">Change photo</string>
     <string name="choose">Choose</string>
+    <string name="colon">&#58;</string>
     <string name="could_not_add_location_to_report">Could not add location to the report</string>
     <string name="could_not_add_report">Could not add the report. Please try again</string>
     <string name="date">Date</string>
@@ -43,6 +44,7 @@
     <string name="ok" translatable="false">OK</string>
     <string name="password">Password</string>
     <string name="password_minimum_characters">Password should have at least %d characters</string>
+    <string name="percentage">&#37;</string>
     <string name="pin">PIN</string>
     <string name="please_verify_your_email">Please verify your email</string>
     <string name="press_again_to_exit">Press again to exit</string>
@@ -60,6 +62,7 @@
     <string name="select_photo">Select photo</string>
     <string name="solved_by">Solved by</string>
     <string name="something_went_wrong">Something went wrong</string>
+    <string name="tax_reduction">Tax reduction</string>
     <string name="time">Time</string>
     <string name="unknown">Unknown</string>
     <string name="upload">Upload</string>

@@ -69,6 +69,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="20sp"
+                    android:layout_marginBottom="10sp"
                     android:background="@drawable/ic_view_blue_border"
                     android:drawableStart="@drawable/ic_email"
                     android:drawablePadding="10sp"
@@ -80,13 +81,14 @@
                     android:textColorHint="?attr/colorPrimary"
                     android:textSize="18sp"
                     android:textStyle="bold"
-                    tools:text="Email" />
+                    tools:text="@string/email" />
 
                 <EditText
                     android:id="@+id/firstNameField"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="20sp"
+                    android:layout_marginHorizontal="20sp"
+                    android:layout_marginVertical="10sp"
                     android:background="@drawable/ic_view_blue_border"
                     android:drawableStart="@drawable/ic_user"
                     android:drawablePadding="10sp"
@@ -98,13 +100,14 @@
                     android:textColorHint="?attr/colorPrimary"
                     android:textSize="18sp"
                     android:textStyle="bold"
-                    tools:text="First name" />
+                    tools:text="@string/first_name" />
 
                 <EditText
                     android:id="@+id/lastNameField"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="20sp"
+                    android:layout_marginVertical="10sp"
                     android:background="@drawable/ic_view_blue_border"
                     android:drawableStart="@drawable/ic_user"
                     android:drawablePadding="10sp"
@@ -116,14 +119,14 @@
                     android:textColorHint="?attr/colorPrimary"
                     android:textSize="18sp"
                     android:textStyle="bold"
-                    tools:text="Last name" />
+                    tools:text="@string/last_name" />
 
                 <EditText
                     android:id="@+id/pinField"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="20sp"
-                    android:layout_marginTop="20sp"
+                    android:layout_marginVertical="10sp"
                     android:background="@drawable/ic_view_blue_border"
                     android:drawableStart="@drawable/ic_pin"
                     android:drawablePadding="10sp"
@@ -136,13 +139,14 @@
                     android:textColorHint="?attr/colorPrimary"
                     android:textSize="18sp"
                     android:textStyle="bold"
-                    tools:text="PIN" />
+                    tools:text="@string/pin" />
 
                 <TextView
                     android:id="@+id/birthDateText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="20sp"
+                    android:layout_marginHorizontal="20sp"
+                    android:layout_marginVertical="10sp"
                     android:drawablePadding="10sp"
                     android:ellipsize="end"
                     android:hint="@string/birth_date"
@@ -154,13 +158,32 @@
                     android:textSize="18sp"
                     android:textStyle="bold"
                     app:drawableStartCompat="@drawable/ic_birth_date"
-                    tools:text="Birth date" />
+                    tools:text="@string/birth_date" />
+
+                <TextView
+                    android:id="@+id/taxReductionText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="20sp"
+                    android:layout_marginVertical="10sp"
+                    android:drawablePadding="10sp"
+                    android:ellipsize="end"
+                    android:hint="@string/tax_reduction"
+                    android:maxLines="1"
+                    android:padding="10sp"
+                    android:textColor="?attr/colorPrimary"
+                    android:textColorHint="?attr/colorPrimary"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    app:drawableStartCompat="@drawable/ic_money"
+                    tools:text="@string/tax_reduction" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/buttonsLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="20sp">
+                    android:layout_marginHorizontal="20sp"
+                    android:layout_marginTop="10sp">
 
                     <Button
                         android:id="@+id/chooseButton"

@@ -245,7 +245,7 @@ const App = () => {
               reports={reportsList}
               reportsLocation={reportsLocationList}
               // isMarkerShown // for showing a marker
-              googleMapURL={getGoogleMapsURL}
+              googleMapURL={getGoogleMapsURL()}
               loadingElement={<div style={{ height: "100%" }} />}
               containerElement={<div style={{ flex: "1", height: "100%" }} />}
               mapElement={<div style={{ height: "100%" }} />}

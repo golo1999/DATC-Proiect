@@ -16,9 +16,44 @@ public class UserPersonalInformation {
     private int level = 1;
     private String pin;
     private String photoURL;
+    private double taxReduction = 0d;
 
     public UserPersonalInformation() {
         // Required empty public constructor
+    }
+
+    public UserPersonalInformation(String id,
+                                   MyCustomDate birthDate,
+                                   String email,
+                                   String firstName,
+                                   String lastName,
+                                   int level,
+                                   String pin,
+                                   String photoURL,
+                                   double taxReduction) {
+        this.id = id;
+        this.birthDate = birthDate;
+        this.email = email;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.level = level;
+        this.pin = pin;
+        this.photoURL = photoURL;
+        this.taxReduction = taxReduction;
+    }
+
+    public UserPersonalInformation(String id,
+                                   String email,
+                                   String firstName,
+                                   String lastName,
+                                   String pin,
+                                   double taxReduction) {
+        this.id = id;
+        this.email = email;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.pin = pin;
+        this.taxReduction = taxReduction;
     }
 
     public UserPersonalInformation(String id,
@@ -143,6 +178,14 @@ public class UserPersonalInformation {
         this.photoURL = photoURL;
     }
 
+    public double getTaxReduction() {
+        return taxReduction;
+    }
+
+    public void setTaxReduction(double taxReduction) {
+        this.taxReduction = taxReduction;
+    }
+
     @NonNull
     @Override
     public String toString() {
@@ -156,6 +199,7 @@ public class UserPersonalInformation {
                 ", level=" + level +
                 ", pin='" + pin + '\'' +
                 ", photoURL='" + photoURL + '\'' +
+                ", taxReduction=" + taxReduction +
                 '}';
     }
 }

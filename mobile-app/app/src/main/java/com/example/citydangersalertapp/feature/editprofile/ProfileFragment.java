@@ -87,6 +87,12 @@ public class ProfileFragment extends Fragment {
 
                                 if (personalInformation != null) {
                                     final MyCustomDate birthDate = personalInformation.getBirthDate();
+                                    final String taxReductionText =
+                                            requireActivity().getResources().getString(R.string.tax_reduction) +
+                                                    requireActivity().getResources().getString(R.string.colon) +
+                                                    requireActivity().getResources().getString(R.string.whitespace) +
+                                                    personalInformation.getTaxReduction() +
+                                                    requireActivity().getResources().getString(R.string.percentage);
 
                                     binding.emailField.setHint(personalInformation.getEmail());
                                     binding.firstNameField.setHint(personalInformation.getFirstName());
@@ -95,6 +101,7 @@ public class ProfileFragment extends Fragment {
                                     binding.lastNameField.setText(personalInformation.getLastName());
                                     binding.pinField.setHint(personalInformation.getPin());
                                     binding.pinField.setText(personalInformation.getPin());
+                                    binding.taxReductionText.setText(taxReductionText);
 
                                     setBirthDateText(LocalDate.of(birthDate.getYear(), birthDate.getMonth(), birthDate.getDay()));
                                 }

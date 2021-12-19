@@ -109,16 +109,21 @@ const ReportItem = (props) => {
 
       const newUserLevel = parseInt(result / 5) + 1;
 
+      const newUserTaxReduction = 0.25 * (newUserLevel - 1);
+
       const userPersonalInformationPromise = getUserPersonalInformation(userId);
 
       userPersonalInformationPromise.then((result) => {
         const personalInformation = result;
 
-        if (
-          personalInformation !== {} &&
-          personalInformation.level !== newUserLevel
-        ) {
-          personalInformation.level = newUserLevel;
+        if (personalInformation !== {}) {
+          if (personalInformation.level !== newUserLevel) {
+            personalInformation.level = newUserLevel;
+          }
+
+          if (personalInformation.taxReduction !== newUserTaxReduction) {
+            personalInformation.taxReduction = newUserTaxReduction;
+          }
 
           set(userPersonalInformationRef, personalInformation);
         }

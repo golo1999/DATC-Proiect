@@ -43,7 +43,7 @@ export const getNumberOfSolvedReports = async (userId) => {
     const personalReportsList = Object.values(data);
 
     personalReportsList.forEach((report) => {
-      if (report.checkedStatus) {
+      if (report.checkStatus) {
         ++numberOfSolvedReports;
       }
     });
