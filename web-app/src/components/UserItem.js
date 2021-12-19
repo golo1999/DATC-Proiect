@@ -1,12 +1,16 @@
+// NPM
 import React from "react";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router";
 
+// Redux
 import { userActions } from "../store/user-slice";
 
+// Bootstrap
 import { Card, Col, Container, Row } from "react-bootstrap";
 import { FaAngleRight } from "react-icons/fa";
 
+// CSS
 import classes from "./UserItem.module.css";
 
 const UserItem = (props) => {

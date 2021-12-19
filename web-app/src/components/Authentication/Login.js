@@ -8,6 +8,7 @@ import { useHistory } from "react-router";
 // Redux
 import { authActions } from "../../store/auth-slice";
 
+// Utility
 import {
   emailIsValid,
   loginIsValid,
@@ -23,7 +24,7 @@ import CustomButton from "../CustomButton";
 import CustomInput from "../CustomInput";
 import CustomText from "../CustomText";
 
-// CSS
+// Custom CSS
 import classes from "./Login.module.css";
 
 const Login = () => {

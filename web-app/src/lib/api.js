@@ -1,6 +1,6 @@
 import { onValue, ref } from "firebase/database";
 
-import { db } from "../Firebase";
+import { db } from "../utility/firebase";
 
 const { REACT_APP_REALTIME_DATABASE_URL: FIREBASE_DOMAIN } = process.env;
 

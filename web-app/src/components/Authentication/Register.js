@@ -1,3 +1,4 @@
+// NPM
 import { set } from "firebase/database";
 import React, { useRef, useState } from "react";
 import { useHistory } from "react-router";
@@ -7,22 +8,26 @@ import {
   signOut,
   sendEmailVerification,
 } from "firebase/auth";
-import { db } from "../../Firebase";
 
+// Utility
 import {
   emailIsValid,
   nameIsValid,
   passwordIsValid,
   registrationIsValid,
 } from "../../utility/custom-methods";
+import { db } from "../../utility/firebase";
 
+// Bootstrap
 import { Container, Form } from "react-bootstrap";
 
+// Custom components
 import CustomAlert from "../CustomAlert";
 import CustomButton from "../CustomButton";
 import CustomInput from "../CustomInput";
 import CustomText from "../CustomText";
 
+// Custom CSS
 import classes from "./Register.module.css";
 
 const Register = () => {

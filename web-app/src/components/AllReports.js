@@ -1,21 +1,14 @@
+// NPM
 import { useEffect, useState } from "react";
 import { Container, Spinner } from "react-bootstrap";
-// import { useSelector } from "react-redux";
-// import { useHistory } from "react-router";
 
+// Custom components
 import ReportItem from "./ReportItem";
 
+// Custom CSS
 import classes from "./AllReports.module.css";
 
 const AllReports = (props) => {
-  // const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
-
-  // const history = useHistory();
-
-  // if (!isAuthenticated) {
-  //   history.replace("/login");
-  // }
-
   const [isLoading, setIsLoading] = useState(true);
 
   const reportsList = props.reports;

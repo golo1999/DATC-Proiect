@@ -3,7 +3,7 @@ import { getDatabase, ref, onValue } from "firebase/database";
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 
-// Custom methods
+// Utility
 import {
   getFormattedCategoryName,
   getFormattedDateTime,
@@ -65,7 +65,7 @@ const ReportDetails = (props) => {
           <Row>
             <Col className={classes["photo-column"]} lg={6} md={12}>
               {selectedReport.photoURL ? (
-                <img src={selectedReport.photoURL} />
+                <img src={selectedReport.photoURL} alt="report" />
               ) : (
                 "No photo uploaded"
               )}

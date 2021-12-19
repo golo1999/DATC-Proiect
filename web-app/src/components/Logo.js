@@ -1,7 +1,10 @@
+// NPM
 import React from "react";
 
+// Bootstrap
 import { MdLocationCity } from "react-icons/md";
 
+// Custom CSS
 import classes from "./Logo.module.css";
 
 const Logo = () => {

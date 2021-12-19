@@ -1,3 +1,4 @@
+// Custom CSS
 import classes from "./ProfileIcon.module.css";
 
 const ProfileIcon = (props) => {

@@ -1,3 +1,4 @@
+// NPM
 import {
   getAuth,
   deleteUser,
@@ -11,10 +12,13 @@ import React, { useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router";
 
+// Redux
 import { authActions } from "../store/auth-slice";
 
+// Utility
 import { emailIsValid } from "../utility/custom-methods";
 
+// Bootstrap
 import {
   Alert,
   Button,
@@ -26,6 +30,7 @@ import {
   Row,
 } from "react-bootstrap";
 
+// Custom CSS
 import classes from "./Profile.module.css";
 
 const Profile = (props) => {

@@ -152,43 +152,13 @@ const TopBar = () => {
       });
   };
 
-  const redirectToReportsPageHandler = () => {
+  const redirectHandler = (route) => {
     if (navbarIsExpanded) {
       toggleNavbarHandler();
     }
 
-    if (location.pathname !== "/reports") {
-      history.push("/reports");
-    }
-  };
-
-  const redirectToMapPageHandler = () => {
-    if (navbarIsExpanded) {
-      toggleNavbarHandler();
-    }
-
-    if (location.pathname !== "/map") {
-      history.push("/map");
-    }
-  };
-
-  const redirectToProfilePageHandler = () => {
-    if (navbarIsExpanded) {
-      toggleNavbarHandler();
-    }
-
-    if (location.pathname !== "/profile") {
-      history.push("/profile");
-    }
-  };
-
-  const redirectToUsersPageHandler = () => {
-    if (navbarIsExpanded) {
-      toggleNavbarHandler();
-    }
-
-    if (location.pathname !== "/users") {
-      history.push("/users");
+    if (location.pathname !== route) {
+      history.push(route);
     }
   };
 
@@ -224,7 +194,9 @@ const TopBar = () => {
               <CustomNavLink
                 active={reportsLinkIsActive}
                 navbarIsExpanded={navbarIsExpanded}
-                onClick={redirectToReportsPageHandler}
+                onClick={() => {
+                  redirectHandler("/reports");
+                }}
               >
                 Reports
               </CustomNavLink>
@@ -232,7 +204,9 @@ const TopBar = () => {
               <CustomNavLink
                 active={usersLinkIsActive}
                 navbarIsExpanded={navbarIsExpanded}
-                onClick={redirectToUsersPageHandler}
+                onClick={() => {
+                  redirectHandler("/users");
+                }}
               >
                 Users
               </CustomNavLink>
@@ -240,7 +214,9 @@ const TopBar = () => {
               <CustomNavLink
                 active={mapLinkIsActive}
                 navbarIsExpanded={navbarIsExpanded}
-                onClick={redirectToMapPageHandler}
+                onClick={() => {
+                  redirectHandler("/map");
+                }}
               >
                 Map
               </CustomNavLink>
@@ -250,7 +226,9 @@ const TopBar = () => {
               <CustomNavLink
                 active={profileLinkIsActive}
                 navbarIsExpanded={navbarIsExpanded}
-                onClick={redirectToProfilePageHandler}
+                onClick={() => {
+                  redirectHandler("/profile");
+                }}
               >
                 {!navbarIsExpanded && (
                   <ProfileIcon admin={authenticatedAdmin} />

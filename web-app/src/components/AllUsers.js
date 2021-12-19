@@ -1,8 +1,11 @@
+// NPM
 import { useEffect, useState } from "react";
 import { Container, Spinner } from "react-bootstrap";
 
+// Custom components
 import UserItem from "./UserItem";
 
+// Custom CSS
 import classes from "./AllUsers.module.css";
 
 const AllUsers = (props) => {

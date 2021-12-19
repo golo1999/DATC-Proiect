@@ -1,8 +1,11 @@
+// NPM
 import React from "react";
 import { useSelector } from "react-redux";
 
+// Bootstrap
 import { Card, Col, Container, Row } from "react-bootstrap";
 
+// Custom CSS
 import classes from "./UserProfile.module.css";
 
 const UserProfile = (props) => {

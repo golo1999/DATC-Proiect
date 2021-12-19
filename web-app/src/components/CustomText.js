@@ -1,3 +1,4 @@
+// Custom CSS
 import classes from "./CustomText.module.css";
 
 const CustomText = (props) => {

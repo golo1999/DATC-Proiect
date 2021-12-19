@@ -1,24 +1,30 @@
+// NPM
 import { getDatabase, ref, set } from "firebase/database";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router";
 
+// Redux
 import { reportActions } from "../store/report-slice";
 import { reportsListActions } from "../store/reports-list-slice";
 
-import {
-  getFormattedCategoryName,
-  getFormattedDateTime,
-} from "../utility/custom-methods";
-
+// APIs
 import {
   getNumberOfSolvedReports,
   getUserPersonalInformation,
 } from "../lib/api";
 
+// Utility
+import {
+  getFormattedCategoryName,
+  getFormattedDateTime,
+} from "../utility/custom-methods";
+
+// Bootstrap
 import { Button, Card, Col, Container, Modal, Row } from "react-bootstrap";
 import { FaAngleRight, FaCheck } from "react-icons/fa";
 
+// Custom CSS
 import classes from "./ReportItem.module.css";
 
 const ReportItem = (props) => {

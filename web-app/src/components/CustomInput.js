@@ -1,5 +1,7 @@
+// Bootstrap
 import { Col, Form, Row } from "react-bootstrap";
 
+// Custom CSS
 import classes from "./CustomInput.module.css";
 
 const CustomInput = (props) => {

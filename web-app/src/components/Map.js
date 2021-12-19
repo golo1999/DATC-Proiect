@@ -1,3 +1,4 @@
+// NPM
 import React, { useState } from "react";
 import {
   GoogleMap,
@@ -6,13 +7,16 @@ import {
   withScriptjs,
 } from "react-google-maps";
 
+// APIs
 import { getReportDetails, getUserPersonalInformation } from "../lib/api";
 
+// Utility
 import {
   getFormattedCategoryName,
   getFormattedDateTime,
 } from "../utility/custom-methods";
 
+// Custom components
 import CustomModal from "./CustomModal";
 
 const Map = withScriptjs(

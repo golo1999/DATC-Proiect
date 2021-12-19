@@ -15,6 +15,9 @@ import { usersListActions } from "./store/users-list-slice";
 // APIs
 import { fetchCurrentLocation, getReportDetails } from "./lib/api";
 
+// Utility
+import { getGoogleMapsURL } from "./utility/custom-methods";
+
 // Custom components
 import AllReports from "./components/AllReports";
 import AllUsers from "./components/AllUsers";
@@ -39,10 +42,6 @@ const App = () => {
   const dispatch = useDispatch();
 
   const location = useLocation();
-
-  const { REACT_APP_GOOGLE_KEY: GOOGLE_KEY } = process.env;
-
-  const googleMapURL = `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_KEY}&v=3.exp&libraries=geometry,drawing,places`;
 
   const history = useHistory();
 
@@ -246,7 +245,7 @@ const App = () => {
               reports={reportsList}
               reportsLocation={reportsLocationList}
               // isMarkerShown // for showing a marker
-              googleMapURL={googleMapURL}
+              googleMapURL={getGoogleMapsURL}
               loadingElement={<div style={{ height: "100%" }} />}
               containerElement={<div style={{ flex: "1", height: "100%" }} />}
               mapElement={<div style={{ height: "100%" }} />}

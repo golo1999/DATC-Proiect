@@ -1,7 +1,10 @@
+// NPM
 import React from "react";
 
+// Bootstrap
 import { Button } from "react-bootstrap";
 
+// Custom CSS
 import classes from "./PageNotFound.module.css";
 
 const PageNotFound = (props) => {

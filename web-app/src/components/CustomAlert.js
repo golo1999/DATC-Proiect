@@ -1,12 +1,13 @@
+// NPM
 import React from "react";
 
+// Bootstrap
 import { Alert, Col, Row } from "react-bootstrap";
 
+// Custom CSS
 import classes from "./CustomAlert.module.css";
 
 const CustomAlert = (props) => {
-  console.log(props);
-
   return (
     <Row className={classes["alert-container"]}>
       <Col xl={6} lg={6} md={9} sm={9} xs={9}>

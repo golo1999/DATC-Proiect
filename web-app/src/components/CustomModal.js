@@ -1,13 +1,17 @@
+// NPM
 import React from "react";
 
-import { Button, Col, Container, Modal, Row } from "react-bootstrap";
-
+// Utility
 import {
   getFormattedCategoryName,
   getFormattedLocation,
   getFormattedName,
 } from "../utility/custom-methods";
 
+// Bootstrap
+import { Button, Col, Container, Modal, Row } from "react-bootstrap";
+
+// Custom CSS
 import classes from "./CustomModal.module.css";
 
 const CustomModal = (props) => {

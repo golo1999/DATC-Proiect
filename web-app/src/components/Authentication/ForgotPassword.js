@@ -1,16 +1,21 @@
+// NPM
 import { getAuth, sendPasswordResetEmail } from "firebase/auth";
 import React, { useRef, useState } from "react";
 import { useHistory } from "react-router";
 
+// Utility
 import { emailIsValid } from "../../utility/custom-methods";
 
+// Bootstrap
 import { Container, Form } from "react-bootstrap";
 
+// Custom components
 import CustomAlert from "../CustomAlert";
 import CustomButton from "../CustomButton";
 import CustomInput from "../CustomInput";
 import CustomText from "../CustomText";
 
+// Custom CSS
 import classes from "./ForgotPassword.module.css";
 
 const ForgotPassword = () => {

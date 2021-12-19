@@ -1,5 +1,7 @@
+// Bootstrap
 import { Button, Col, Row } from "react-bootstrap";
 
+// Custom CSS
 import classes from "./CustomButton.module.css";
 
 const CustomButton = (props) => {

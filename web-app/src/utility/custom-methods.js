@@ -44,6 +44,12 @@ export const getFormattedName = (personalInformation) => {
     : "Unknown";
 };
 
+export const getGoogleMapsURL = () => {
+  const { REACT_APP_GOOGLE_KEY: GOOGLE_KEY } = process.env;
+
+  return `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_KEY}&v=3.exp&libraries=geometry,drawing,places`;
+};
+
 export const loginIsValid = (email, password) => {
   return emailIsValid(email) && passwordIsValid(password);
 };

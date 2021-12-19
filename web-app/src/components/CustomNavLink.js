@@ -1,7 +1,10 @@
+// NPM
 import React from "react";
 
+// Bootstrap
 import { Nav } from "react-bootstrap";
 
+// Custom CSS
 import classes from "./CustomNavLink.module.css";
 
 const CustomNavLink = (props) => {
