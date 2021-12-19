@@ -1,3 +1,4 @@
+// NPM
 import { getAuth, signOut } from "firebase/auth";
 import { useState } from "react";
 import { Container, Nav, Navbar } from "react-bootstrap";
@@ -6,12 +7,16 @@ import { useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router";
 import { useLocation } from "react-router-dom";
+
+// Redux
 import { authActions } from "../store/auth-slice";
 
+// Custom components
 import CustomNavLink from "./CustomNavLink";
 import Logo from "./Logo";
 import ProfileIcon from "./ProfileIcon";
 
+// Custom CSS
 import classes from "./TopBar.module.css";
 
 const TopBar = () => {

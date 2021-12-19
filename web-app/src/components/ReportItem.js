@@ -1,10 +1,15 @@
-import { getDatabase, onValue, ref, set } from "firebase/database";
-import React, { useCallback, useState } from "react";
+import { getDatabase, ref, set } from "firebase/database";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router";
 
 import { reportActions } from "../store/report-slice";
 import { reportsListActions } from "../store/reports-list-slice";
+
+import {
+  getFormattedCategoryName,
+  getFormattedDateTime,
+} from "../utility/custom-methods";
 
 import {
   getNumberOfSolvedReports,
@@ -40,26 +45,7 @@ const ReportItem = (props) => {
 
   const reportDateTime = report.dateTime;
 
-  const reportParsedDateTime =
-    (reportDateTime.day < 10 ? "0" + reportDateTime.day : reportDateTime.day) +
-    "/" +
-    (reportDateTime.month < 10
-      ? "0" + reportDateTime.month
-      : reportDateTime.month) +
-    "/" +
-    reportDateTime.year +
-    " " +
-    (reportDateTime.hour < 10
-      ? "0" + reportDateTime.hour
-      : reportDateTime.hour) +
-    ":" +
-    (reportDateTime.minute < 10
-      ? "0" + reportDateTime.minute
-      : reportDateTime.minute) +
-    ":" +
-    (reportDateTime.second < 10
-      ? "0" + reportDateTime.second
-      : reportDateTime.second);
+  const reportParsedDateTime = getFormattedDateTime(reportDateTime);
 
   const checkReportHandler = () => {
     showModalHandler();
@@ -168,13 +154,7 @@ const ReportItem = (props) => {
             {/* XL, LG, MD LAYOUT */}
             <Row className="d-none d-md-flex">
               <Col className={classes["report-category-container"]}>
-                {report.category === 0
-                  ? "Danger"
-                  : report.category === 1
-                  ? "Garbage"
-                  : report.category === 2
-                  ? "Pothole"
-                  : "Vandalism"}
+                {getFormattedCategoryName(report.category)}
               </Col>
               <Col className={classes["report-date-time-container"]}>
                 {reportParsedDateTime}
@@ -199,13 +179,7 @@ const ReportItem = (props) => {
               <Col>
                 <Row>
                   <Col className={classes["report-category-container"]}>
-                    {report.category === 0
-                      ? "Danger"
-                      : report.category === 1
-                      ? "Garbage"
-                      : report.category === 2
-                      ? "Pothole"
-                      : "Vandalism"}
+                    {getFormattedCategoryName(report.category)}
                   </Col>
                 </Row>
                 <Row>

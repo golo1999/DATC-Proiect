@@ -2,6 +2,8 @@ import { getAuth, sendPasswordResetEmail } from "firebase/auth";
 import React, { useRef, useState } from "react";
 import { useHistory } from "react-router";
 
+import { emailIsValid } from "../../utility/custom-methods";
+
 import { Container, Form } from "react-bootstrap";
 
 import CustomAlert from "../CustomAlert";
@@ -23,13 +25,6 @@ const ForgotPassword = () => {
   const [message, setMessage] = useState("");
 
   const [isSuccessful, setIsSuccessful] = useState(false);
-
-  const emailIsValid = (email) => {
-    const expression =
-      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-
-    return expression.test(String(email).trim().toLowerCase());
-  };
 
   const redirectToLoginPageHandler = () => {
     history.push("/login");
@@ -71,11 +66,10 @@ const ForgotPassword = () => {
         setAlertIsVisible((previousValue) => !previousValue);
       }
 
-      if (enteredEmail.length === 0) {
-        errMsg = "Email should not be empty";
-      } else {
-        errMsg = "Email is not valid";
-      }
+      errMsg =
+        enteredEmail.length === 0
+          ? "Email should not be empty"
+          : "Email is not valid";
 
       setAlertIsVisible(true);
       setMessage(errMsg);

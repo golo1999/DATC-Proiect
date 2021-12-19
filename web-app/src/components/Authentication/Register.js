@@ -9,6 +9,13 @@ import {
 } from "firebase/auth";
 import { db } from "../../Firebase";
 
+import {
+  emailIsValid,
+  nameIsValid,
+  passwordIsValid,
+  registrationIsValid,
+} from "../../utility/custom-methods";
+
 import { Container, Form } from "react-bootstrap";
 
 import CustomAlert from "../CustomAlert";
@@ -34,7 +41,7 @@ const Register = () => {
   const [errorMessage, setErrorMessage] = useState("");
 
   const createPersonalInformationPath = (personalInformation) => {
-    if (personalInformation != null) {
+    if (personalInformation) {
       const adminsListRef = db.ref(
         "adminsList/" + personalInformation.id + "/personalInformation"
       );
@@ -43,38 +50,8 @@ const Register = () => {
     }
   };
 
-  const emailIsValid = (email) => {
-    const expression =
-      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-
-    return expression.test(String(email).trim().toLowerCase());
-  };
-
-  const nameIsValid = (name) => {
-    const expression = /^[a-zA-Z]+$/;
-
-    if (String(name).trim().length < 2) {
-      return false;
-    }
-
-    return expression.test(String(name).trim());
-  };
-
-  const passwordIsValid = (password) => {
-    return password.length >= 8;
-  };
-
   const redirectToLoginPageHandler = () => {
     history.push("/login");
-  };
-
-  const registrationIsValid = (email, password, firstName, lastName) => {
-    return (
-      emailIsValid(email) &&
-      passwordIsValid(password) &&
-      nameIsValid(firstName) &&
-      nameIsValid(lastName)
-    );
   };
 
   const registerHandler = (event) => {

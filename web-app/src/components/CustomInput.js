@@ -25,31 +25,8 @@ const CustomInput = (props) => {
           />
         )}
       </Col>
-      {/* <input
-        autoComplete="off"
-        className={classes.input}
-        id={props.id}
-        placeholder={props.placeholder}
-        ref={props.reference}
-        type={props.type}
-      />
-      {props.type === "checkbox" && <label htmlFor="check">Remember me</label>} */}
     </Row>
   );
 };
 
 export default CustomInput;
-
-/*
-
-<Row>
-        <Col xl={6} lg={6} md={9} sm={9} xs={9}>
-          <Form.Control
-            className={classes.email}
-            type="email"
-            placeholder="Email"
-          />
-        </Col>
-      </Row>
-
-*/

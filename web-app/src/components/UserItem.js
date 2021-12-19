@@ -4,7 +4,7 @@ import { useHistory } from "react-router";
 
 import { userActions } from "../store/user-slice";
 
-import { Button, Card, Col, Container, Modal, Row } from "react-bootstrap";
+import { Card, Col, Container, Row } from "react-bootstrap";
 import { FaAngleRight } from "react-icons/fa";
 
 import classes from "./UserItem.module.css";
@@ -32,7 +32,7 @@ const UserItem = (props) => {
             {/* XL, LG, MD LAYOUT */}
             <Row className="d-none d-md-flex">
               <Col className={classes["user-name-container"]}>
-              {`${userPersonalInformation.firstName} ${userPersonalInformation.lastName}`}
+                {`${userPersonalInformation.firstName} ${userPersonalInformation.lastName}`}
               </Col>
               <Col className={classes["user-level-container"]}>
                 {`Level ` + userPersonalInformation.level}

@@ -25,7 +25,6 @@ import PageNotFound from "./components/PageNotFound";
 import Profile from "./components/Profile";
 import Register from "./components/Authentication/Register";
 import ReportDetails from "./components/ReportDetails";
-import SplashScreen from "./components/SplashScreen";
 import TopBar from "./components/TopBar";
 import UserProfile from "./components/UserProfile";
 
@@ -181,7 +180,7 @@ const App = () => {
     } else if (topBarIsVisible) {
       setTopBarIsVisible((prevValue) => !prevValue);
     }
-  }, [location.pathname, topBarIsVisible]);
+  }, [history, location.pathname, topBarIsVisible]);
 
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
 
@@ -199,11 +198,7 @@ const App = () => {
     <Fragment>
       {!topBarIsVisible && <TopBar />}
       <Switch>
-        <Route
-          exact
-          path="/"
-          // component={() => <SplashScreen isAuthenticated={isAuthenticated} />}
-        >
+        <Route exact path="/">
           {isAuthenticated && <Redirect to="/reports" />}
           {!isAuthenticated && <Redirect to="/login" />}
         </Route>

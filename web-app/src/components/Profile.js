@@ -11,6 +11,10 @@ import React, { useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router";
 
+import { authActions } from "../store/auth-slice";
+
+import { emailIsValid } from "../utility/custom-methods";
+
 import {
   Alert,
   Button,
@@ -21,8 +25,6 @@ import {
   Modal,
   Row,
 } from "react-bootstrap";
-
-import { authActions } from "../store/auth-slice";
 
 import classes from "./Profile.module.css";
 
@@ -80,13 +82,6 @@ const Profile = (props) => {
     db,
     "adminsList/" + currentAdmin.uid + "/personalInformation"
   );
-
-  const emailIsValid = (email) => {
-    const expression =
-      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-
-    return expression.test(String(email).trim().toLowerCase());
-  };
 
   const closeModalHandler = () => {
     if (modalIsVisible && modalMessage !== "") {

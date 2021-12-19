@@ -8,6 +8,11 @@ import {
 
 import { getReportDetails, getUserPersonalInformation } from "../lib/api";
 
+import {
+  getFormattedCategoryName,
+  getFormattedDateTime,
+} from "../utility/custom-methods";
+
 import CustomModal from "./CustomModal";
 
 const Map = withScriptjs(
@@ -43,14 +48,10 @@ const Map = withScriptjs(
                 color: "gold",
                 fontSize: "large",
                 fontWeight: "bold",
-                text:
-                  location.category === 0
-                    ? "D"
-                    : location.category === 1
-                    ? "G"
-                    : location.category === 2
-                    ? "P"
-                    : "V",
+                text: getFormattedCategoryName(location.category).substring(
+                  0,
+                  1
+                ),
               }}
               onClick={() => {
                 if (!modalIsVisible) {
@@ -79,30 +80,8 @@ const Map = withScriptjs(
 
                         setSelectedReport(reportDetails);
 
-                        const reportDetailsDateTime = reportDetails.dateTime;
-
                         const selectedReportParsedDateTime =
-                          (reportDetailsDateTime.day < 10
-                            ? "0" + reportDetailsDateTime.day
-                            : reportDetailsDateTime.day) +
-                          "/" +
-                          (reportDetailsDateTime.month < 10
-                            ? "0" + reportDetailsDateTime.month
-                            : reportDetailsDateTime.month) +
-                          "/" +
-                          reportDetailsDateTime.year +
-                          " " +
-                          (reportDetailsDateTime.hour < 10
-                            ? "0" + reportDetailsDateTime.hour
-                            : reportDetailsDateTime.hour) +
-                          ":" +
-                          (reportDetailsDateTime.minute < 10
-                            ? "0" + reportDetailsDateTime.minute
-                            : reportDetailsDateTime.minute) +
-                          ":" +
-                          (reportDetailsDateTime.second < 10
-                            ? "0" + reportDetailsDateTime.second
-                            : reportDetailsDateTime.second);
+                          getFormattedDateTime(reportDetails.dateTime);
 
                         setSelectedReportDateTime(selectedReportParsedDateTime);
                       }

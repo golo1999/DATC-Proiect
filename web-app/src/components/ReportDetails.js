@@ -3,8 +3,13 @@ import { getDatabase, ref, onValue } from "firebase/database";
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 
-// APIs
-import { getReportDetails } from "../lib/api";
+// Custom methods
+import {
+  getFormattedCategoryName,
+  getFormattedDateTime,
+  getFormattedLocation,
+  getFormattedName,
+} from "../utility/custom-methods";
 
 // Bootstrap
 import { Card, Col, Container, Row } from "react-bootstrap";
@@ -12,7 +17,7 @@ import { Card, Col, Container, Row } from "react-bootstrap";
 // Custom components
 import Map from "./Map";
 
-// CSS
+// Custom CSS
 import classes from "./ReportDetails.module.css";
 
 const ReportDetails = (props) => {
@@ -49,29 +54,6 @@ const ReportDetails = (props) => {
 
   const [mapIsVisible, setMapIsVisible] = useState(true);
 
-  const selectedReportParsedDateTime =
-    (selectedReportDateTime.day < 10
-      ? "0" + selectedReportDateTime.day
-      : selectedReportDateTime.day) +
-    "/" +
-    (selectedReportDateTime.month < 10
-      ? "0" + selectedReportDateTime.month
-      : selectedReportDateTime.month) +
-    "/" +
-    selectedReportDateTime.year +
-    " " +
-    (selectedReportDateTime.hour < 10
-      ? "0" + selectedReportDateTime.hour
-      : selectedReportDateTime.hour) +
-    ":" +
-    (selectedReportDateTime.minute < 10
-      ? "0" + selectedReportDateTime.minute
-      : selectedReportDateTime.minute) +
-    ":" +
-    (selectedReportDateTime.second < 10
-      ? "0" + selectedReportDateTime.second
-      : selectedReportDateTime.second);
-
   const toggleMapHandler = () => {
     setMapIsVisible((prevValue) => !prevValue);
   };
@@ -106,13 +88,7 @@ const ReportDetails = (props) => {
                       </p>
                     </Col>
                     <Col>
-                      {selectedReport.category === 0
-                        ? "Danger"
-                        : selectedReport.category === 1
-                        ? "Garbage"
-                        : selectedReport.category === 2
-                        ? "Pothole"
-                        : "Vandalism"}
+                      {getFormattedCategoryName(selectedReport.category)}
                     </Col>
                   </Row>
                   <Row>
@@ -129,7 +105,7 @@ const ReportDetails = (props) => {
                         <b>Date & Time</b>
                       </p>
                     </Col>
-                    <Col>{selectedReportParsedDateTime}</Col>
+                    <Col>{getFormattedDateTime(selectedReportDateTime)}</Col>
                   </Row>
                   <Row>
                     <Col>
@@ -137,14 +113,7 @@ const ReportDetails = (props) => {
                         <b>Principal</b>
                       </p>
                     </Col>
-                    <Col>
-                      {retrievedPersonalInformation.firstName != null &&
-                      retrievedPersonalInformation.lastName != null
-                        ? retrievedPersonalInformation.firstName +
-                          " " +
-                          retrievedPersonalInformation.lastName
-                        : "Unknown"}
-                    </Col>
+                    <Col>{getFormattedName(retrievedPersonalInformation)}</Col>
                   </Row>
                   <Row>
                     <Col>
@@ -152,15 +121,7 @@ const ReportDetails = (props) => {
                         <b>Location</b>
                       </p>
                     </Col>
-                    <Col>
-                      {selectedReportLocation
-                        ? selectedReportLocation.city +
-                          " | " +
-                          selectedReportLocation.regionName +
-                          " | " +
-                          selectedReportLocation.country
-                        : "Unknown"}
-                    </Col>
+                    <Col>{getFormattedLocation(selectedReportLocation)}</Col>
                   </Row>
                 </Col>
               </Row>

@@ -8,6 +8,12 @@ import { useHistory } from "react-router";
 // Redux
 import { authActions } from "../../store/auth-slice";
 
+import {
+  emailIsValid,
+  loginIsValid,
+  passwordIsValid,
+} from "../../utility/custom-methods";
+
 // Bootstrap
 import { Container, Form } from "react-bootstrap";
 
@@ -34,21 +40,6 @@ const Login = () => {
   const [errorIsVisible, setErrorIsVisible] = useState(false);
 
   const [errorMessage, setErrorMessage] = useState("");
-
-  const emailIsValid = (email) => {
-    const expression =
-      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-
-    return expression.test(String(email).trim().toLowerCase());
-  };
-
-  const passwordIsValid = (password) => {
-    return password.length >= 8;
-  };
-
-  const loginIsValid = (email, password) => {
-    return emailIsValid(email) && passwordIsValid(password);
-  };
 
   const loginHandler = (event) => {
     event.preventDefault();

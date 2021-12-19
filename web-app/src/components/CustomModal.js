@@ -2,6 +2,12 @@ import React from "react";
 
 import { Button, Col, Container, Modal, Row } from "react-bootstrap";
 
+import {
+  getFormattedCategoryName,
+  getFormattedLocation,
+  getFormattedName,
+} from "../utility/custom-methods";
+
 import classes from "./CustomModal.module.css";
 
 const CustomModal = (props) => {
@@ -49,15 +55,7 @@ const CustomModal = (props) => {
             </Col>
             <Col>
               <Row>
-                <i>
-                  {selectedReport.category === 0
-                    ? "Danger"
-                    : selectedReport.category === 1
-                    ? "Garbage"
-                    : selectedReport.category === 2
-                    ? "Pothole"
-                    : "Vandalism"}
-                </i>
+                <i>{getFormattedCategoryName(selectedReport.category)}</i>
               </Row>
               <Row>
                 <i>{selectedReport.checkStatus ? "Yes" : "No"}</i>
@@ -66,24 +64,10 @@ const CustomModal = (props) => {
                 <i>{selectedReportDateTime}</i>
               </Row>
               <Row>
-                <i>
-                  {selectedUserDetails.firstName && selectedUserDetails.lastName
-                    ? selectedUserDetails.firstName +
-                      " " +
-                      selectedUserDetails.lastName
-                    : "Unknown"}
-                </i>
+                <i>{getFormattedName(selectedUserDetails)}</i>
               </Row>
               <Row>
-                <i>
-                  {selectedReportLocation
-                    ? selectedReportLocation.city +
-                      " | " +
-                      selectedReportLocation.regionName +
-                      " | " +
-                      selectedReportLocation.country
-                    : "Unknown"}
-                </i>
+                <i>{getFormattedLocation(selectedReportLocation)}</i>
               </Row>
             </Col>
           </Row>

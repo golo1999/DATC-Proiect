@@ -14,8 +14,6 @@ const UserProfile = (props) => {
 
   console.log(selectedUser);
 
-  // console.log(userPersonalReports);
-
   userPersonalReports.forEach((report) => {
     console.log(report);
   });
