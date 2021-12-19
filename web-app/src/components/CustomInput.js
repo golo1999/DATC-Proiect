@@ -23,6 +23,7 @@ const CustomInput = (props) => {
             className={classes.checkbox}
             id={props.id}
             label={props.label}
+            onChange={props.onChange}
             type={props.type}
           />
         )}

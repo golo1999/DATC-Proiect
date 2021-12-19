@@ -2,6 +2,9 @@
 import React from "react";
 import { useSelector } from "react-redux";
 
+// Utility
+import { getFormattedTaxReduction } from "../utility/custom-methods";
+
 // Bootstrap
 import { Card, Col, Container, Row } from "react-bootstrap";
 
@@ -104,6 +107,16 @@ const UserProfile = (props) => {
                       </p>
                     </Col>
                     <Col>{userPersonalReports.length}</Col>
+                  </Row>
+                  <Row>
+                    <Col>
+                      <p>
+                        <b>Tax reduction</b>
+                      </p>
+                    </Col>
+                    <Col>
+                      {getFormattedTaxReduction(userPersonalInformation)}
+                    </Col>
                   </Row>
                 </Col>
               </Row>

@@ -44,6 +44,12 @@ export const getFormattedName = (personalInformation) => {
     : "Unknown";
 };
 
+export const getFormattedTaxReduction = (personalInformation) => {
+  return personalInformation.taxReduction != null
+    ? `${personalInformation.taxReduction}%`
+    : `Unknown`;
+};
+
 export const getGoogleMapsURL = () => {
   const { REACT_APP_GOOGLE_KEY: GOOGLE_KEY } = process.env;
 

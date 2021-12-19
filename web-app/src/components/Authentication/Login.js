@@ -1,5 +1,11 @@
 // NPM
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import {
+  browserLocalPersistence,
+  browserSessionPersistence,
+  getAuth,
+  setPersistence,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
 import { getDatabase, ref, onValue } from "firebase/database";
 import { useRef, useState } from "react";
 import { useDispatch } from "react-redux";
@@ -38,6 +44,8 @@ const Login = () => {
 
   const passwordRef = useRef();
 
+  const [rememberMeIsChecked, setRememberMeIsChecked] = useState(false);
+
   const [errorIsVisible, setErrorIsVisible] = useState(false);
 
   const [errorMessage, setErrorMessage] = useState("");
@@ -50,42 +58,54 @@ const Login = () => {
     const enteredPassword = passwordRef.current.value;
 
     if (loginIsValid(enteredEmail, enteredPassword)) {
-      signInWithEmailAndPassword(auth, enteredEmail, enteredPassword)
-        .then((userCredential) => {
-          const admin = userCredential.user;
+      setPersistence(
+        auth,
+        rememberMeIsChecked
+          ? browserLocalPersistence
+          : browserSessionPersistence
+      )
+        .then(() => {
+          signInWithEmailAndPassword(auth, enteredEmail, enteredPassword)
+            .then((userCredential) => {
+              const admin = userCredential.user;
 
-          if (admin.emailVerified) {
-            const db = getDatabase();
+              if (admin.emailVerified) {
+                const db = getDatabase();
 
-            const personalInformationRef = ref(
-              db,
-              "adminsList/" + admin.uid + "/personalInformation"
-            );
+                const personalInformationRef = ref(
+                  db,
+                  "adminsList/" + admin.uid + "/personalInformation"
+                );
 
-            onValue(personalInformationRef, (snapshot) => {
-              const personalInformation = snapshot.val();
+                onValue(personalInformationRef, (snapshot) => {
+                  const personalInformation = snapshot.val();
 
-              dispatch(
-                authActions.authenticateAdmin({
-                  authenticatedAdmin: {
-                    email: admin.email,
-                    firstName: personalInformation.firstName,
-                    id: admin.uid,
-                    lastName: personalInformation.lastName,
-                  },
-                })
-              );
+                  dispatch(
+                    authActions.authenticateAdmin({
+                      authenticatedAdmin: {
+                        email: admin.email,
+                        firstName: personalInformation.firstName,
+                        id: admin.uid,
+                        lastName: personalInformation.lastName,
+                      },
+                    })
+                  );
+                });
+
+                history.push("/");
+              } else if (!admin.emailVerified) {
+                setErrorIsVisible(true);
+                setErrorMessage("Please verify your email");
+              }
+            })
+            .catch(() => {
+              setErrorIsVisible(true);
+              setErrorMessage("Incorrect username or password");
             });
-
-            history.push("/");
-          } else if (!admin.emailVerified) {
-            setErrorIsVisible(true);
-            setErrorMessage("Please verify your email");
-          }
         })
-        .catch(() => {
+        .catch((error) => {
           setErrorIsVisible(true);
-          setErrorMessage("Incorrect username or password");
+          setErrorMessage(error.message);
         });
     } else {
       let errMsg = "";
@@ -120,6 +140,14 @@ const Login = () => {
     history.push("/register");
   };
 
+  const rememberMeHandler = (event) => {
+    const checked = event.target.checked;
+
+    if (rememberMeIsChecked !== checked) {
+      setRememberMeIsChecked(checked);
+    }
+  };
+
   return (
     <Container className={classes.container}>
       <Form className={classes.form}>
@@ -146,7 +174,12 @@ const Login = () => {
           reference={passwordRef}
           type="password"
         />
-        <CustomInput id="check" label="Remember me" type="checkbox" />
+        <CustomInput
+          id="check"
+          label="Remember me"
+          onChange={rememberMeHandler}
+          type="checkbox"
+        />
         <CustomButton onClick={loginHandler} text="Log in" />
         <CustomText
           onClick={redirectToRegisterPageHandler}
