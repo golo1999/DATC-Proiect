@@ -26,4 +26,11 @@
   color: #00203f !important;
   font-size: large !important;
   font-weight: 900 !important;
+  transition: 0.6s ease !important;
+}
+
+.button:hover {
+  background: #800020 !important;
+  color: gold !important;
+  transition: 0.6s ease !important;
 }

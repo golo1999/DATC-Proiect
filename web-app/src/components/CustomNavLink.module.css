@@ -1,0 +1,22 @@
+.nav-link,
+.nav-link-centered {
+  color: #adefd1 !important;
+  transition: 0.6s ease !important;
+}
+
+.nav-link-active,
+.nav-link-active-centered {
+  color: gold !important;
+}
+
+.nav-link,
+.nav-link-active {
+  font-size: large !important;
+}
+
+.nav-link-centered,
+.nav-link-active-centered {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+}

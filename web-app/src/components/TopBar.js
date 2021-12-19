@@ -2,11 +2,13 @@ import { getAuth, signOut } from "firebase/auth";
 import { useState } from "react";
 import { Container, Nav, Navbar } from "react-bootstrap";
 import { FaSignOutAlt } from "react-icons/fa";
+import { useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router";
 import { useLocation } from "react-router-dom";
 import { authActions } from "../store/auth-slice";
 
+import CustomNavLink from "./CustomNavLink";
 import Logo from "./Logo";
 import ProfileIcon from "./ProfileIcon";
 
@@ -35,7 +37,7 @@ const TopBar = () => {
 
   const location = useLocation();
 
-  const currentPathHandler = () => {
+  const currentPathHandler = useCallback(() => {
     if (location.pathname === "/reports") {
       if (!reportsLinkIsActive) {
         setReportsLinkIsActive((prevState) => !prevState);
@@ -117,9 +119,13 @@ const TopBar = () => {
         setProfileLinkIsActive((prevState) => !prevState);
       }
     }
-  };
-
-  currentPathHandler();
+  }, [
+    location.pathname,
+    mapLinkIsActive,
+    profileLinkIsActive,
+    reportsLinkIsActive,
+    usersLinkIsActive,
+  ]);
 
   const logoutHandler = () => {
     signOut(auth)
@@ -137,6 +143,7 @@ const TopBar = () => {
       })
       .catch((error) => {
         // An error occurred
+        console.log(error.message);
       });
   };
 
@@ -184,6 +191,10 @@ const TopBar = () => {
     setNavbarIsExpanded((prevState) => !prevState);
   };
 
+  useEffect(() => {
+    currentPathHandler();
+  }, [currentPathHandler]);
+
   return (
     <Navbar
       collapseOnSelect
@@ -205,85 +216,52 @@ const TopBar = () => {
         {isAuthenticated && (
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav className="me-auto">
-              <Nav.Link
+              <CustomNavLink
                 active={reportsLinkIsActive}
-                className={
-                  navbarIsExpanded && reportsLinkIsActive
-                    ? classes["nav-link-active"]
-                    : navbarIsExpanded && !reportsLinkIsActive
-                    ? classes["nav-link"]
-                    : !navbarIsExpanded && reportsLinkIsActive
-                    ? classes["nav-link-active-centered"]
-                    : classes["nav-link-centered"]
-                }
+                navbarIsExpanded={navbarIsExpanded}
                 onClick={redirectToReportsPageHandler}
               >
                 Reports
-              </Nav.Link>
-              <Nav.Link
+              </CustomNavLink>
+
+              <CustomNavLink
                 active={usersLinkIsActive}
-                className={
-                  navbarIsExpanded && usersLinkIsActive
-                    ? classes["nav-link-active"]
-                    : navbarIsExpanded && !usersLinkIsActive
-                    ? classes["nav-link"]
-                    : !navbarIsExpanded && usersLinkIsActive
-                    ? classes["nav-link-active-centered"]
-                    : classes["nav-link-centered"]
-                }
+                navbarIsExpanded={navbarIsExpanded}
                 onClick={redirectToUsersPageHandler}
               >
                 Users
-              </Nav.Link>
-              <Nav.Link
+              </CustomNavLink>
+
+              <CustomNavLink
                 active={mapLinkIsActive}
-                className={
-                  navbarIsExpanded && mapLinkIsActive
-                    ? classes["nav-link-active"]
-                    : navbarIsExpanded && !mapLinkIsActive
-                    ? classes["nav-link"]
-                    : !navbarIsExpanded && mapLinkIsActive
-                    ? classes["nav-link-active-centered"]
-                    : classes["nav-link-centered"]
-                }
+                navbarIsExpanded={navbarIsExpanded}
                 onClick={redirectToMapPageHandler}
               >
                 Map
-              </Nav.Link>
+              </CustomNavLink>
             </Nav>
 
             <Nav>
-              <Nav.Link
+              <CustomNavLink
                 active={profileLinkIsActive}
-                className={
-                  navbarIsExpanded && profileLinkIsActive
-                    ? classes["nav-link-active"]
-                    : navbarIsExpanded && !profileLinkIsActive
-                    ? classes["nav-link"]
-                    : !navbarIsExpanded && profileLinkIsActive
-                    ? classes["nav-link-active-centered"]
-                    : classes["nav-link-centered"]
-                }
+                navbarIsExpanded={navbarIsExpanded}
                 onClick={redirectToProfilePageHandler}
               >
                 {!navbarIsExpanded && (
                   <ProfileIcon admin={authenticatedAdmin} />
                 )}
-                {navbarIsExpanded && "Profile"}
-              </Nav.Link>
-              <Nav.Link
-                className={
-                  navbarIsExpanded
-                    ? classes["nav-link"]
-                    : classes["nav-link-centered"]
-                }
+                {navbarIsExpanded && `Profile`}
+              </CustomNavLink>
+
+              <CustomNavLink
+                navbarIsExpanded={navbarIsExpanded}
                 onClick={logoutHandler}
               >
                 {!navbarIsExpanded && (
                   <FaSignOutAlt className={classes["sign-out-icon"]} />
                 )}
-                {navbarIsExpanded && "Sign out"}
-              </Nav.Link>
+                {navbarIsExpanded && `Sign out`}
+              </CustomNavLink>
             </Nav>
           </Navbar.Collapse>
         )}

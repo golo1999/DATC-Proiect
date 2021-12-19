@@ -1,37 +1,14 @@
 .navbar {
   background: #00203f !important;
-  color: red;
   user-select: none !important;
-}
-
-.nav-link,
-.nav-link-centered {
-  color: #adefd1 !important;
-}
-
-.nav-link-active,
-.nav-link-active-centered {
-  color: gold !important;
-}
-
-.nav-link,
-.nav-link-active {
-  font-size: large !important;
-}
-
-.nav-link-centered,
-.nav-link-active-centered {
-  display: flex !important;
-  justify-content: center !important;
-  align-items: center !important;
 }
 
 .sign-out-icon {
   font-size: xx-large !important;
-  transition: 0.6s ease;
+  transition: 0.6s ease !important;
 }
 
 .sign-out-icon:hover {
   color: gold !important;
-  transition: 0.6s ease;
+  transition: 0.6s ease !important;
 }
