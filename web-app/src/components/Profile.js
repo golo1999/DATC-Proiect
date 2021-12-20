@@ -90,38 +90,38 @@ const Profile = (props) => {
 
   const closeModalHandler = () => {
     if (modalIsVisible && modalMessage !== "") {
-      setModalIsVisible(false);
+      setModalIsVisible((previousValue) => !previousValue);
       setModalMessage("");
     }
   };
 
   const closeConfirmationModalHandler = () => {
     if (errorIsVisible && errorMessage !== "") {
-      setErrorIsVisible(false);
+      setErrorIsVisible((previousValue) => !previousValue);
       setErrorMessage("");
     }
 
     if (confirmationModalIsVisible && confirmationModalMessage !== "") {
-      setConfirmationModalIsVisible(false);
+      setConfirmationModalIsVisible((previousValue) => !previousValue);
       setConfirmationModalMessage("");
     }
   };
 
   const closeAlertHandler = () => {
     if (successIsVisible && successMessage !== "") {
-      setSuccessIsVisible(false);
+      setSuccessIsVisible((previousValue) => !previousValue);
       setSuccessMessage("");
     }
 
     if (failIsVisible && failMessage !== "") {
-      setFailIsVisible(false);
+      setFailIsVisible((previousValue) => !previousValue);
       setFailMessage("");
     }
   };
 
   const resetErrorHandler = () => {
     if (errorIsVisible && errorMessage !== "") {
-      setErrorIsVisible(false);
+      setErrorIsVisible((previousValue) => !previousValue);
       setErrorMessage("");
     }
   };
@@ -392,15 +392,15 @@ const Profile = (props) => {
         .catch((error) => {
           console.log(error.message);
         });
-    } else if (enteredFirstName.length === 0 || enteredLastName.length === 0) {
-      setFail("The names should not be empty");
-    } else if (
-      enteredFirstName === adminPersonalInformation.firstName &&
-      enteredLastName === adminPersonalInformation.lastName
-    ) {
-      setFail("The names are the same");
     } else {
-      setFail("Changing names failed");
+      setFail(
+        enteredFirstName.length === 0 || enteredLastName.length === 0
+          ? "The names should not be empty"
+          : enteredFirstName === adminPersonalInformation.firstName &&
+            enteredLastName === adminPersonalInformation.lastName
+          ? "The names are the same"
+          : "Changing names failed"
+      );
     }
   };
 

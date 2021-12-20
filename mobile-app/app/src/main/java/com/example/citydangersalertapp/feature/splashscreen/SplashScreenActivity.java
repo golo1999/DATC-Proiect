@@ -8,7 +8,6 @@ import androidx.databinding.DataBindingUtil;
 
 import com.example.citydangersalertapp.HomeActivity;
 import com.example.citydangersalertapp.R;
-import com.example.citydangersalertapp.databinding.SplashScreenActivityBinding;
 import com.example.citydangersalertapp.feature.authentication.AuthenticationActivity;
 import com.example.citydangersalertapp.model.UserLocation;
 import com.example.citydangersalertapp.model.UserPersonalInformation;
@@ -26,13 +25,13 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class SplashScreenActivity extends AppCompatActivity {
-    private SplashScreenActivityBinding binding;
     private JsonPlaceHolderAPI api;
     private final LogoLauncher launcher = new LogoLauncher();
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView();
         setActivityVariables();
         startSplashScreen();
     }
@@ -40,11 +39,14 @@ public class SplashScreenActivity extends AppCompatActivity {
     private void setActivityVariables() {
         Retrofit retrofit;
 
-        binding = DataBindingUtil.setContentView(this, R.layout.splash_screen_activity);
         retrofit = new Retrofit.Builder()
                 .baseUrl(MyCustomVariables.getLocationApiBaseUrl())
                 .addConverterFactory(GsonConverterFactory.create()).build();
         api = retrofit.create(JsonPlaceHolderAPI.class);
+    }
+
+    private void setContentView() {
+        DataBindingUtil.setContentView(this, R.layout.splash_screen_activity);
     }
 
     private void startSplashScreen() {

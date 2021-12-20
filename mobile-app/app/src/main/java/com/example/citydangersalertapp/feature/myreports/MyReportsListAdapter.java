@@ -60,7 +60,8 @@ public class MyReportsListAdapter extends RecyclerView.Adapter<MyReportsListAdap
         final Report report = reportsList.get(position);
 
         holder.reportCategory.setText(categoryNamesList[report.getCategory()]);
-        holder.reportNote.setText(report.getNote() != null ? report.getNote() : "No note found");
+        holder.reportNote.setText(report.getNote() != null ?
+                report.getNote() : homeActivity.getResources().getString(R.string.no_note_provided));
         holder.reportDate.setText(report.getDateTime().toString());
     }
 

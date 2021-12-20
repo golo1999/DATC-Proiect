@@ -34,6 +34,7 @@ import com.example.citydangersalertapp.feature.nearbydangersmap.NearbyDangersMap
 import com.example.citydangersalertapp.feature.selectphoto.SelectPhotoFragment;
 import com.example.citydangersalertapp.model.Report;
 import com.example.citydangersalertapp.utility.DeleteReportCustomDialog;
+import com.example.citydangersalertapp.utility.MyCustomMethods;
 import com.example.citydangersalertapp.utility.MyCustomVariables;
 import com.google.android.material.navigation.NavigationView;
 
@@ -53,9 +54,6 @@ public class HomeActivity
     private NavigationDrawerHeaderBinding drawerHeaderBinding;
     private HomeViewModel viewModel;
     private Toast backToast;
-    private final int profileSelectPhotoRequestId = 2;
-    private final int addReportPhotoRequestId = 3;
-    private final int editReportPhotoRequestId = 5;
     private GetSelectedPhotoUriCallback selectedPhotoUriCallback;
     private GetAddReportPhotoUriCallback addReportPhotoUriCallback;
     private GetEditReportPhotoUriCallback editReportPhotoUriCallback;
@@ -128,13 +126,13 @@ public class HomeActivity
         super.onActivityResult(requestCode, resultCode, data);
 
         if (data != null && data.getData() != null) {
-            if (requestCode == profileSelectPhotoRequestId) {
+            if (requestCode == viewModel.getProfileSelectPhotoRequestId()) {
                 viewModel.setImageUri(data.getData());
                 selectedPhotoUriCallback.getSelectedPhotoUri(viewModel.getImageUri());
-            } else if (requestCode == addReportPhotoRequestId) {
+            } else if (requestCode == viewModel.getAddReportPhotoRequestId()) {
                 viewModel.setImageUri(data.getData());
                 addReportPhotoUriCallback.getAddReportPhotoUri(viewModel.getImageUri());
-            } else if (requestCode == editReportPhotoRequestId) {
+            } else if (requestCode == viewModel.getEditReportPhotoRequestId()) {
                 viewModel.setImageUri(data.getData());
                 editReportPhotoUriCallback.getEditReportPhotoUri(viewModel.getImageUri());
             }
@@ -262,6 +260,8 @@ public class HomeActivity
     }
 
     public void setFragment(Fragment newFragment) {
+        MyCustomMethods.showShortMessage(this, newFragment.getClass().toString());
+
         if (viewModel.getCurrentFragment() == null
                 || !newFragment.getClass().toString().equals(viewModel.getCurrentFragment().getClass().toString())) {
             final int addReportButtonVisibility =

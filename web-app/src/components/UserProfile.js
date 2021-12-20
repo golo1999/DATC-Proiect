@@ -27,7 +27,6 @@ const UserProfile = (props) => {
   return (
     <div className={classes["main-container"]}>
       <Card className={classes.card}>
-        {" "}
         <Container>
           <Row>
             <Col className={classes["photo-column"]} lg={6} md={12}>

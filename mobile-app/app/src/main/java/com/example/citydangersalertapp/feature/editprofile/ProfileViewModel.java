@@ -54,43 +54,6 @@ public class ProfileViewModel extends ViewModel {
         final DialogFragment datePickerFragment = new DatePickerFragment(birthDate);
 
         datePickerFragment.show(fragmentManager, "date_picker");
-
-//        final String currentUserID = MyCustomVariables.getFirebaseAuth().getUid();
-//
-//        if (currentUserID != null) {
-//            MyCustomVariables.getDatabaseReference()
-//                    .child("usersList")
-//                    .child(currentUserID)
-//                    .addListenerForSingleValueEvent(new ValueEventListener() {
-//                        @Override
-//                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                            if (snapshot.exists() &&
-//                                    snapshot.hasChild("personalInformation") &&
-//                                    snapshot.child("personalInformation").hasChild("birthDate")) {
-//                                final MyCustomDate birthDate =
-//                                        snapshot.child("personalInformation").child("birthDate").getValue(MyCustomDate.class);
-//
-//                                if (birthDate != null) {
-//                                    final LocalDate parsedBirthDate =
-//                                            LocalDate.of(birthDate.getYear(), birthDate.getMonth(), birthDate.getDay());
-//
-//                                    final DialogFragment datePickerFragment = new DatePickerFragment(parsedBirthDate);
-//
-//                                    datePickerFragment.show(fragmentManager, "date_picker");
-//                                }
-//                            }
-//                        }
-//
-//                        @Override
-//                        public void onCancelled(@NonNull DatabaseError error) {
-//
-//                        }
-//                    });
-//        }
-    }
-
-    public void changePhotoHandler() {
-
     }
 
     public void onPhotoClickHandler(@NonNull Activity parentActivity) {
@@ -193,7 +156,7 @@ public class ProfileViewModel extends ViewModel {
                                                     .setValue(personalInformation)
                                                     .addOnCompleteListener((Task<Void> task) -> {
                                                         MyCustomMethods.showShortMessage(parentActivity,
-                                                                "Profile updated");
+                                                                parentActivity.getResources().getString(R.string.profile_updated));
                                                         parentActivity.onBackPressed();
                                                     });
 
@@ -210,17 +173,29 @@ public class ProfileViewModel extends ViewModel {
             } else if (enteredFirstName.trim().isEmpty() &&
                     enteredLastName.trim().isEmpty() &&
                     enteredPIN.isEmpty()) {
-                MyCustomMethods.showShortMessage(parentActivity, "Please fill in all fields");
+                MyCustomMethods.showShortMessage(parentActivity,
+                        parentActivity.getResources().getString(R.string.please_fill_all_fields));
             } else if ((enteredFirstName.trim().isEmpty() || enteredLastName.trim().isEmpty() ||
                     (!MyCustomMethods.nameIsValid(enteredFirstName.trim()) || !MyCustomMethods.nameIsValid(enteredLastName.trim())))) {
-                MyCustomMethods.showShortMessage(parentActivity, "All names should have at least 2 characters");
+                MyCustomMethods.showShortMessage(parentActivity,
+                        parentActivity.getResources().getString(R.string.minimum_characters,
+                                parentActivity.getResources().getString(R.string.names), 2));
             } else if (enteredPIN.isEmpty() || !MyCustomMethods.pinIsValid(enteredPIN)) {
-                MyCustomMethods.showShortMessage(parentActivity, "PIN should have 13 characters");
+                MyCustomMethods.showShortMessage(parentActivity,
+                        parentActivity.getResources().getString(R.string.should_have_characters,
+                                parentActivity.getResources().getString(R.string.pin), 13));
             } else if (!MyCustomMethods.nameIsValid(enteredFirstName.trim()) &&
                     !MyCustomMethods.nameIsValid(enteredLastName.trim()) &&
                     !MyCustomMethods.pinIsValid(enteredPIN)) {
-                MyCustomMethods.showShortMessage(parentActivity,
-                        "All names should have at least 2 characters and PIN should have 13");
+                final String message = parentActivity.getResources().getString(R.string.minimum_characters,
+                        parentActivity.getResources().getString(R.string.names), 2) +
+                        parentActivity.getResources().getString(R.string.whitespace) +
+                        parentActivity.getResources().getString(R.string.and) +
+                        parentActivity.getResources().getString(R.string.whitespace) +
+                        parentActivity.getResources().getString(R.string.should_have_characters,
+                                parentActivity.getResources().getString(R.string.pin), 13);
+
+                MyCustomMethods.showShortMessage(parentActivity, message);
             }
         }
     }

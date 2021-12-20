@@ -39,13 +39,15 @@ const ReportDetails = (props) => {
     "/usersList/" + selectedReport.userId + "/personalInformation"
   );
 
-  let retrievedPersonalInformation = { firstName: null, lastName: null };
+  let retrievedPersonalInformation = { firstName: "", lastName: "" };
 
   onValue(userPersonalInformationRef, (snapshot) => {
     const personalInformation = snapshot.val();
 
-    retrievedPersonalInformation.firstName = personalInformation.firstName;
-    retrievedPersonalInformation.lastName = personalInformation.lastName;
+    if (personalInformation) {
+      retrievedPersonalInformation.firstName = personalInformation.firstName;
+      retrievedPersonalInformation.lastName = personalInformation.lastName;
+    }
   });
 
   const selectedReportDateTime = selectedReport.dateTime;

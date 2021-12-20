@@ -105,7 +105,6 @@ public class EditReportFragment extends Fragment implements OnMapReadyCallback {
     public void onStart() {
         super.onStart();
         setFieldHints();
-//        setPhotoText();
     }
 
     @Override
@@ -183,7 +182,7 @@ public class EditReportFragment extends Fragment implements OnMapReadyCallback {
 
         if (selectedReport != null) {
             SharedPreferences preferences =
-                    parentActivity.getSharedPreferences("CITY_DANGERS_ALERT_APP_DATA", MODE_PRIVATE);
+                    parentActivity.getSharedPreferences(MyCustomVariables.getSharedPreferencesAppData(), MODE_PRIVATE);
 
             SharedPreferences.Editor editor = preferences.edit();
             Gson gson = new Gson();

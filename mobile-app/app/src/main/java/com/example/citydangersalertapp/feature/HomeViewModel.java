@@ -50,24 +50,20 @@ public class HomeViewModel extends ViewModel {
     private long backPressedTime;
     private Uri imageUri;
 
-    public AddReportFragment getAddReportFragmentInstance() {
-        return addReportFragmentInstance;
+    public int getProfileSelectPhotoRequestId() {
+        return 2;
     }
 
-    public EditReportFragment getEditReportFragmentInstance() {
-        return editReportFragmentInstance;
+    public int getAddReportPhotoRequestId() {
+        return 3;
+    }
+
+    public int getEditReportPhotoRequestId() {
+        return 5;
     }
 
     public MyReportsFragment getMyReportsFragmentInstance() {
         return myReportsFragmentInstance;
-    }
-
-    public NearbyDangersMapFragment getNearbyDangersMapFragmentInstance() {
-        return nearbyDangersMapFragmentInstance;
-    }
-
-    public ProfileFragment getProfileFragmentInstance() {
-        return profileFragmentInstance;
     }
 
     public SelectPhotoFragment getSelectPhotoFragmentInstance() {
@@ -114,11 +110,6 @@ public class HomeViewModel extends ViewModel {
         this.imageUri = imageUri;
     }
 
-    public void setFragmentHandler(@NonNull Activity parentActivity,
-                                   @NonNull Fragment newFragment) {
-
-    }
-
     public void addReportHandler(@NonNull Activity parentActivity) {
         if (!(getCurrentFragment() instanceof AddReportFragment)) {
             ((HomeActivity) parentActivity).setFragment(addReportFragmentInstance);
@@ -136,8 +127,6 @@ public class HomeViewModel extends ViewModel {
         MyCustomMethods.saveRememberMeToSharedPreferences(parentActivity, false, "rememberMeChecked");
         parentActivity.finishAffinity();
         parentActivity.startActivity(new Intent(parentActivity, AuthenticationActivity.class));
-//        parentActivity.overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
-//        parentActivity.overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
     }
 
     public void saveReportDetailsHandler(@NonNull Activity parentActivity) {
@@ -149,7 +138,7 @@ public class HomeViewModel extends ViewModel {
     public void saveReportToSharedPreferences(@NonNull Activity parentActivity) {
         if (selectedReport != null) {
             SharedPreferences preferences =
-                    parentActivity.getSharedPreferences("CITY_DANGERS_ALERT_APP_DATA", MODE_PRIVATE);
+                    parentActivity.getSharedPreferences(MyCustomVariables.getSharedPreferencesAppData(), MODE_PRIVATE);
 
             SharedPreferences.Editor editor = preferences.edit();
             Gson gson = new Gson();

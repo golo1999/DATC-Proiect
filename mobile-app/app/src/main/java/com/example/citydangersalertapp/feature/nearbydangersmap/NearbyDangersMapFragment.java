@@ -106,7 +106,8 @@ public class NearbyDangersMapFragment extends Fragment implements OnMapReadyCall
                                                         .position(new LatLng(report.getLocation().getLatitude(),
                                                                 report.getLocation().getLongitude()))
                                                         .title(report.getNote() != null ?
-                                                                report.getNote() : "No note provided"));
+                                                                report.getNote() :
+                                                                requireActivity().getResources().getString(R.string.no_note_provided)));
                                             }
                                         }
                                     }

@@ -202,7 +202,7 @@ public class EditReportViewModel extends ViewModel {
 
     public Report retrieveReportFromSharedPreferences(@NonNull Activity parentActivity) {
         SharedPreferences preferences =
-                parentActivity.getSharedPreferences("CITY_DANGERS_ALERT_APP_DATA", MODE_PRIVATE);
+                parentActivity.getSharedPreferences(MyCustomVariables.getSharedPreferencesAppData(), MODE_PRIVATE);
         Gson gson = new Gson();
         String json = preferences.getString("selectedReport", "");
 

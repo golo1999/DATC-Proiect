@@ -20,17 +20,6 @@
         android:layout_height="match_parent"
         tools:background="?attr/colorSecondary">
 
-        <!--        <ImageView-->
-        <!--            android:id="@+id/loginLogo"-->
-        <!--            android:layout_width="0sp"-->
-        <!--            android:layout_height="0sp"-->
-        <!--            android:src="@mipmap/ic_launcher_round"-->
-        <!--            app:layout_constraintDimensionRatio="630:248"-->
-        <!--            app:layout_constraintLeft_toLeftOf="parent"-->
-        <!--            app:layout_constraintRight_toRightOf="parent"-->
-        <!--            app:layout_constraintTop_toTopOf="parent"-->
-        <!--            app:tint="#fff" />-->
-
         <LinearLayout
             android:id="@+id/loginCenterLayout"
             android:layout_width="0sp"

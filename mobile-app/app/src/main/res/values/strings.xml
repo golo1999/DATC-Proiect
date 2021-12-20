@@ -32,7 +32,9 @@
     <string name="login">Login</string>
     <string name="login_here">Login here</string>
     <string name="logout">Log out</string>
+    <string name="minimum_characters">%s should have at least %d characters</string>
     <string name="my_reports">My reports</string>
+    <string name="names">Names</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nearby_dangers">Nearby dangers</string>
@@ -43,12 +45,13 @@
     <string name="note">Note</string>
     <string name="ok" translatable="false">OK</string>
     <string name="password">Password</string>
-    <string name="password_minimum_characters">Password should have at least %d characters</string>
     <string name="percentage">&#37;</string>
     <string name="pin">PIN</string>
+    <string name="please_fill_all_fields">Please fill in all fields</string>
     <string name="please_verify_your_email">Please verify your email</string>
     <string name="press_again_to_exit">Press again to exit</string>
     <string name="profile">Profile</string>
+    <string name="profile_updated">Profile updated</string>
     <string name="register">Register</string>
     <string name="register_here">Register here</string>
     <string name="remember_me">Remember me</string>
@@ -60,6 +63,7 @@
     <string name="save">Save</string>
     <string name="select_file_first">Please select a file first</string>
     <string name="select_photo">Select photo</string>
+    <string name="should_have_characters">%s should have %d characters</string>
     <string name="solved_by">Solved by</string>
     <string name="something_went_wrong">Something went wrong</string>
     <string name="tax_reduction">Tax reduction</string>

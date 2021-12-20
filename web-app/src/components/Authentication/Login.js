@@ -58,12 +58,11 @@ const Login = () => {
     const enteredPassword = passwordRef.current.value;
 
     if (loginIsValid(enteredEmail, enteredPassword)) {
-      setPersistence(
-        auth,
-        rememberMeIsChecked
-          ? browserLocalPersistence
-          : browserSessionPersistence
-      )
+      const persistence = rememberMeIsChecked
+        ? browserLocalPersistence
+        : browserSessionPersistence;
+
+      setPersistence(auth, persistence)
         .then(() => {
           signInWithEmailAndPassword(auth, enteredEmail, enteredPassword)
             .then((userCredential) => {
@@ -94,50 +93,38 @@ const Login = () => {
 
                 history.push("/");
               } else if (!admin.emailVerified) {
-                setErrorIsVisible(true);
-                setErrorMessage("Please verify your email");
+                showError("Please verify your email");
               }
             })
             .catch(() => {
-              setErrorIsVisible(true);
-              setErrorMessage("Incorrect username or password");
+              showError("Incorrect username or password");
             });
         })
         .catch((error) => {
-          setErrorIsVisible(true);
-          setErrorMessage(error.message);
+          showError(error.message);
         });
     } else {
-      let errMsg = "";
+      const errMsg =
+        enteredEmail.length === 0 && enteredPassword.length === 0
+          ? "Email and password should not be empty"
+          : enteredEmail.length === 0
+          ? "Email should not be empty"
+          : enteredPassword.length === 0
+          ? "Password should not be empty"
+          : !emailIsValid(enteredEmail) && !passwordIsValid(enteredPassword)
+          ? "Email and password are not valid"
+          : !emailIsValid(enteredEmail)
+          ? "Email is not valid"
+          : !passwordIsValid(enteredPassword)
+          ? "Password should have at least 8 characters"
+          : "";
 
-      if (enteredEmail.length === 0 && enteredPassword.length === 0) {
-        errMsg = "Email and password should not be empty";
-      } else if (enteredEmail.length === 0) {
-        errMsg = "Email should not be empty";
-      } else if (enteredPassword.length === 0) {
-        errMsg = "Password should not be empty";
-      } else if (
-        !emailIsValid(enteredEmail) &&
-        !passwordIsValid(enteredPassword)
-      ) {
-        errMsg = "Email and password are not valid";
-      } else if (!emailIsValid(enteredEmail)) {
-        errMsg = "Email is not valid";
-      } else if (!passwordIsValid(enteredPassword)) {
-        errMsg = "Password should have at least 8 characters";
-      }
-
-      setErrorIsVisible(true);
-      setErrorMessage(errMsg);
+      showError(errMsg);
     }
   };
 
-  const redirectToForgotPasswordPageHandler = () => {
-    history.push("/forgot-password");
-  };
-
-  const redirectToRegisterPageHandler = () => {
-    history.push("/register");
+  const redirectHandler = (route) => {
+    history.push(route);
   };
 
   const rememberMeHandler = (event) => {
@@ -145,6 +132,16 @@ const Login = () => {
 
     if (rememberMeIsChecked !== checked) {
       setRememberMeIsChecked(checked);
+    }
+  };
+
+  const showError = (message) => {
+    if (!errorIsVisible) {
+      setErrorIsVisible((previousValue) => !previousValue);
+    }
+
+    if (errorMessage !== message) {
+      setErrorMessage(message);
     }
   };
 
@@ -182,11 +179,11 @@ const Login = () => {
         />
         <CustomButton onClick={loginHandler} text="Log in" />
         <CustomText
-          onClick={redirectToRegisterPageHandler}
+          onClick={() => redirectHandler("/register")}
           text="Register here"
         />
         <CustomText
-          onClick={redirectToForgotPasswordPageHandler}
+          onClick={() => redirectHandler("/forgot-password")}
           text="Forgot password"
         />
       </Form>

@@ -67,34 +67,6 @@ public final class MyCustomMethods {
         return null;
     }
 
-//    public static void finishActivityWithFadeTransition(final @NonNull Activity currentActivity) {
-//        currentActivity.finish();
-//        currentActivity.overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
-//    }
-
-    /**
-     * Method for finishing the current activity with sliding transition into a direction
-     * Direction: 0 (left), 1 (right)
-     */
-//    public static void finishActivityWithSlideTransition(final @NonNull Activity currentActivity,
-//                                                         final int direction) {
-//        currentActivity.finish();
-//        currentActivity.overridePendingTransition(direction == 0 ?
-//                        R.anim.slide_in_left : R.anim.slide_in_right,
-//                direction == 0 ? R.anim.slide_out_right : R.anim.slide_out_left);
-//    }
-
-//    public static String getCurrencySymbol() {
-//        final String displayLanguage = Locale.getDefault().getDisplayLanguage();
-//
-//        return displayLanguage.equals(Languages.getGermanLanguage()) ||
-//                displayLanguage.equals(Languages.getSpanishLanguage()) ||
-//                displayLanguage.equals(Languages.getFrenchLanguage()) ||
-//                displayLanguage.equals(Languages.getItalianLanguage()) ||
-//                displayLanguage.equals(Languages.getPortugueseLanguage()) ?
-//                "€" : displayLanguage.equals(Languages.getRomanianLanguage()) ?
-//                "RON" : "£";
-//    }
     public static String getFormattedDate(final LocalDate date) {
         final String dayName = date.getDayOfWeek().name().charAt(0) +
                 date.getDayOfWeek().name().substring(1).toLowerCase();
@@ -146,37 +118,6 @@ public final class MyCustomMethods {
         return String.valueOf(transactionTime);
     }
 
-    public static float getRoundedNumberToNDecimalPlaces(final float number,
-                                                         final int scale) {
-        int pow = 10;
-
-        for (int i = 1; i < scale; i++) {
-            pow *= 10;
-        }
-
-        float tmp = number * pow;
-
-        return ((float) ((int) ((tmp - (int) tmp) >= 0.5f ? tmp + 1 : tmp))) / pow;
-    }
-
-//    public static void goToActivityWithFadeTransition(final @NonNull Activity currentActivity,
-//                                                      final @NonNull Class<? extends Activity> nextActivity) {
-//        currentActivity.startActivity(new Intent(currentActivity, nextActivity));
-//        currentActivity.overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
-//    }
-
-    /**
-     * Method for navigating to another activity with sliding transition into a direction
-     * Direction: 0 (left), 1 (right)
-     */
-//    public static void goToActivityWithSlideTransition(final @NonNull Activity currentActivity,
-//                                                       final @NonNull Class<? extends Activity> nextActivity,
-//                                                       final int direction) {
-//        currentActivity.startActivity(new Intent(currentActivity, nextActivity));
-//        currentActivity.overridePendingTransition(direction == 0 ?
-//                        R.anim.slide_in_left : R.anim.slide_in_right,
-//                direction == 0 ? R.anim.slide_out_right : R.anim.slide_out_left);
-//    }
     public static void goToActivityWithoutTransition(final @NonNull Activity currentActivity,
                                                      final @NonNull Class<? extends Activity> nextActivity) {
         currentActivity.startActivity(new Intent(currentActivity, nextActivity));
@@ -231,12 +172,6 @@ public final class MyCustomMethods {
         }
     }
 
-    public static void restartCurrentActivity(final Activity activity) {
-        activity.startActivity(activity.getIntent());
-        activity.finish();
-        activity.overridePendingTransition(0, 0);
-    }
-
     public static UserLocation retrieveLocationFromSharedPreferences(@NonNull Activity parentActivity,
                                                                      @NonNull String key) {
         SharedPreferences preferences =
@@ -289,24 +224,7 @@ public final class MyCustomMethods {
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
     }
 
-    public static void showLongMessage(final Context context, final String message) {
-        Toast.makeText(context, message, Toast.LENGTH_LONG).show();
-    }
-
     public static boolean yearIsLeap(int year) {
         return ((year % 4 == 0) && (year % 100 != 0)) || (year % 400 == 0);
     }
-
-//    public static void signInWithFadeTransition(final @NonNull Activity currentActivity,
-//                                                final @NonNull Class<? extends Activity> nextActivity) {
-//        currentActivity.finishAffinity();
-//        currentActivity.startActivity(new Intent(currentActivity, nextActivity));
-//        currentActivity.overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
-//    }
-
-//    public static void signOutWithFadeTransition(final @NonNull Activity activity) {
-//        activity.finishAffinity();
-//        activity.startActivity(new Intent(activity, LogInActivity.class));
-//        activity.overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
-//    }
 }

@@ -159,7 +159,8 @@ public class LogInViewModel extends ViewModel {
                     currentActivity.getResources().getString(R.string.email_not_valid));
         } else {
             MyCustomMethods.showShortMessage(currentActivity,
-                    currentActivity.getResources().getString(R.string.password_minimum_characters, 8));
+                    currentActivity.getResources().getString(R.string.minimum_characters,
+                            currentActivity.getResources().getString(R.string.password), 8));
         }
 
         return false;

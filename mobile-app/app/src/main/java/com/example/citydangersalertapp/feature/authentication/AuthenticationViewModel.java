@@ -39,14 +39,6 @@ public class AuthenticationViewModel extends ViewModel {
     }
 
     public void onLogInButtonClickHandler(@NonNull Activity currentActivity) {
-//        final Fragment mountedFragment = currentActivity.getFragmentManager().findFragmentById();
-//
-//        if () {
-//
-//        } else {
-//
-//        }
-
         currentActivity.finish();
         currentActivity.startActivity(new Intent(currentActivity, HomeActivity.class));
     }
