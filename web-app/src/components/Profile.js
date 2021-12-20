@@ -341,31 +341,11 @@ const Profile = (props) => {
     setConfirmationModalIsVisible(true);
   };
 
-  const changeEmailHandler = () => {
+  const actionHandler = (option) => {
     closeModalHandler();
 
-    if (confirmationModalAction !== 0) {
-      setConfirmationModalAction(0);
-    }
-
-    openConfirmationModalHandler();
-  };
-
-  const changePasswordHandler = () => {
-    closeModalHandler();
-
-    if (confirmationModalAction !== 1) {
-      setConfirmationModalAction(1);
-    }
-
-    openConfirmationModalHandler();
-  };
-
-  const deleteAccountHandler = () => {
-    closeModalHandler();
-
-    if (confirmationModalAction !== 2) {
-      setConfirmationModalAction(2);
+    if (confirmationModalAction !== option) {
+      setConfirmationModalAction(option);
     }
 
     openConfirmationModalHandler();
@@ -438,16 +418,7 @@ const Profile = (props) => {
           <Button variant="secondary" onClick={closeModalHandler}>
             No
           </Button>
-          <Button
-            variant="dark"
-            onClick={
-              modalAction === 0
-                ? changeEmailHandler
-                : modalAction === 1
-                ? changePasswordHandler
-                : deleteAccountHandler
-            }
-          >
+          <Button variant="dark" onClick={() => actionHandler(modalAction)}>
             Yes
           </Button>
         </Modal.Footer>

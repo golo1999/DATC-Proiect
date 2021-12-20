@@ -1,5 +1,7 @@
-import { onValue, ref } from "firebase/database";
+// NPM
+import { onValue, ref, set } from "firebase/database";
 
+// Utility
 import { db } from "../utility/firebase";
 
 const { REACT_APP_REALTIME_DATABASE_URL: FIREBASE_DOMAIN } = process.env;
@@ -91,4 +93,37 @@ export const getUserPersonalInformation = async (userId) => {
   });
 
   return personalInformation;
+};
+
+export const updateUserLevel = (userId) => {
+  const numberOfSolvedReportsPromise = getNumberOfSolvedReports(userId);
+
+  numberOfSolvedReportsPromise.then((result) => {
+    const userPersonalInformationRef = ref(
+      db,
+      `usersList/${userId}/personalInformation`
+    );
+
+    const newUserLevel = parseInt(result / 5) + 1;
+
+    const newUserTaxReduction = 0.25 * (newUserLevel - 1);
+
+    const userPersonalInformationPromise = getUserPersonalInformation(userId);
+
+    userPersonalInformationPromise.then((result) => {
+      const personalInformation = result;
+
+      if (personalInformation !== {}) {
+        if (personalInformation.level !== newUserLevel) {
+          personalInformation.level = newUserLevel;
+        }
+
+        if (personalInformation.taxReduction !== newUserTaxReduction) {
+          personalInformation.taxReduction = newUserTaxReduction;
+        }
+
+        set(userPersonalInformationRef, personalInformation);
+      }
+    });
+  });
 };

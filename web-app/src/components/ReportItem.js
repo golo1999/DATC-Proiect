@@ -9,10 +9,7 @@ import { reportActions } from "../store/report-slice";
 import { reportsListActions } from "../store/reports-list-slice";
 
 // APIs
-import {
-  getNumberOfSolvedReports,
-  getUserPersonalInformation,
-} from "../lib/api";
+import { updateUserLevel } from "../lib/api";
 
 // Utility
 import {
@@ -92,51 +89,14 @@ const ReportItem = (props) => {
     set(reportDetailsRef, editedReport);
     setIsChecked((previousValue) => !previousValue);
     dispatch(reportsListActions.updateReport({ updatedReport: editedReport }));
-
-    modifyUserLevel(editedReport.userId);
-
+    updateUserLevel(editedReport.userId);
     closeModalHandler();
-  };
-
-  const modifyUserLevel = (userId) => {
-    const numberOfSolvedReportsPromise = getNumberOfSolvedReports(userId);
-
-    numberOfSolvedReportsPromise.then((result) => {
-      const userPersonalInformationRef = ref(
-        db,
-        `usersList/${userId}/personalInformation`
-      );
-
-      const newUserLevel = parseInt(result / 5) + 1;
-
-      const newUserTaxReduction = 0.25 * (newUserLevel - 1);
-
-      const userPersonalInformationPromise = getUserPersonalInformation(userId);
-
-      userPersonalInformationPromise.then((result) => {
-        const personalInformation = result;
-
-        if (personalInformation !== {}) {
-          if (personalInformation.level !== newUserLevel) {
-            personalInformation.level = newUserLevel;
-          }
-
-          if (personalInformation.taxReduction !== newUserTaxReduction) {
-            personalInformation.taxReduction = newUserTaxReduction;
-          }
-
-          set(userPersonalInformationRef, personalInformation);
-        }
-      });
-    });
   };
 
   const showModalHandler = () => {
     const action = isChecked ? "unsolved" : "solved";
 
-    setModalMessage(
-      "Are you sure you want to mark the report as " + action + "?"
-    );
+    setModalMessage(`Are you sure you want to mark the report as ${action}?`);
     setModalIsVisible(true);
   };
 
@@ -219,32 +179,6 @@ const ReportItem = (props) => {
               </Col>
             </Row>
           </Container>
-          {/* <div className={classes["report-category-container"]}>
-            {report.category === 0
-              ? "Danger"
-              : report.category === 1
-              ? "Garbage"
-              : report.category === 2
-              ? "Pothole"
-              : "Vandalism"}
-          </div> */}
-          {/* <div className={classes["report-date-time-container"]}>
-            {reportParsedDateTime}
-          </div> */}
-          {/* <div className={classes["icons-container"]}>
-            <FaCheck
-              className={
-                isChecked
-                  ? classes["report-status-icon"]
-                  : classes["report-status-icon-unchecked"]
-              }
-              onClick={checkReportHandler}
-            />
-            <FaAngleRight
-              className={classes["report-details-icon"]}
-              onClick={checkReportDetailsHandler}
-            />
-          </div> */}
         </Card.Body>
       </Card>
     </li>
