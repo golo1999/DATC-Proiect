@@ -1,6 +1,3 @@
-// NPM
-import React from "react";
-
 // Bootstrap
 import { MdLocationCity } from "react-icons/md";
 

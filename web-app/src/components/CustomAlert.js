@@ -1,6 +1,3 @@
-// NPM
-import React from "react";
-
 // Bootstrap
 import { Alert, Col, Row } from "react-bootstrap";
 

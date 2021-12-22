@@ -260,8 +260,6 @@ public class HomeActivity
     }
 
     public void setFragment(Fragment newFragment) {
-        MyCustomMethods.showShortMessage(this, newFragment.getClass().toString());
-
         if (viewModel.getCurrentFragment() == null
                 || !newFragment.getClass().toString().equals(viewModel.getCurrentFragment().getClass().toString())) {
             final int addReportButtonVisibility =

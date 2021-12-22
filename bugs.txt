@@ -1,0 +1,854 @@
+web
+
+trebuie sa verificam daca merge delete account
+* suntem redirectionati din nou catre radacina atunci cand dam refresh la pagina
+asigurare ca forgot password functioneaza cum trebuie
+* de adaugat padding bottom pentru poza de profile pentru ecran MD, SM, XS
+
+mobile
+
+? sa primim notificare pe telefon cand un admin modifica starea unui raport (optional)
+? (optional) stilizare spinnere
+? animatii (am incercat intre login si home si merge foarte dubios: apare black screen)
+pe telefon sunt culori dubioase: mov cu albastru deschis
+
+merge sa dam click de 2 ori la rand pe acelasi raport daca am modificat ceva la el si am dat save
+se sterge nota adaugata si se reseteaza daca adaugam o poza
+
+! nu merge sa deschidem edit report fragment de 2 ori consecutiv pentru acelasi raport
+
+! de avut grija la billing la proiect cu google console cloud
+
+
+!! de terminat Profile.js (am scris doar descrierea - primul alineat) + de continuat
+
+
+
+https://freefrontend.com/assets/img/bootstrap-profiles/about-me.png
+
+https://stackoverflow.com/questions/47602091/how-to-use-react-router-4-0-to-refresh-current-route-not-reload-the-whole-page
+
+https://www.geeksforgeeks.org/how-to-add-custom-marker-to-google-maps-in-android/
+
+http://ip-api.com/json/?fields=223
+
+https://firebase.google.com/docs/auth/web/manage-users
+
+https://stackoverflow.com/questions/42936703/react-firebase-duplicates-data-on-first-load-but-loads-without-duplicates-on-ref
+
+https://stackoverflow.com/questions/49812141/firebase-multiple-apps-connected-to-single-firestore
+
+https://stackoverflow.com/questions/65977264/react-router-redirects-to-root-on-refresh-how-to-change-my-logic-so-it-does
+
+https://coderedirect.com/questions/556458/react-router-stay-at-the-same-page-after-refresh
+
+https://stackoverflow.com/questions/44943920/react-router-stay-at-the-same-page-after-refresh
+
+https://stackoverflow.com/questions/27864720/react-router-pass-props-to-handler-component
+
+https://stackoverflow.com/questions/46842117/conditional-rendering-with-react-router
+
+https://www.mapmyindia.com/api/advanced-maps/doc/live-location
+
+https://stackoverflow.com/questions/47847694/how-to-return-datasnapshot-value-as-a-result-of-a-method
+
+https://morioh.com/p/beef0ef3c212
+
+https://www.youtube.com/watch?v=Pf7g32CwX_s
+
+https://developers.google.com/maps/documentation/javascript/adding-a-google-map#key
+
+https://stackoverflow.com/questions/41405343/adding-marker-to-google-maps-in-google-map-react?rq=1
+
+https://tomchentw.github.io/react-google-maps/
+
+https://dev.to/jessicabetts/how-to-use-google-maps-api-and-react-js-26c2
+
+https://stackoverflow.com/questions/6002563/android-how-do-i-set-the-zoom-level-of-map-view-to-1-km-radius-around-my-curren
+
+https://stackoverflow.com/questions/16202077/high-accuracy-geolocation-html5
+
+https://www.pluralsight.com/guides/how-to-use-geolocation-call-in-reactjs
+
+https://geekflare.com/geocoding-maps-api-solution/
+
+https://stackoverflow.com/questions/40998113/implement-request-as-json-for-google-geolocation-api
+
+https://stackoverflow.com/questions/49819183/react-what-is-the-best-way-to-handle-login-and-authentication/49819545
+
+https://enappd.com/blog/firebase-push-notifications-in-react-native/81/
+
+https://rnfirebase.io/messaging/usage
+
+https://stackoverflow.com/questions/37435750/how-to-send-device-to-device-messages-using-firebase-cloud-messaging
+
+https://stackoverflow.com/questions/37990140/how-to-send-one-to-one-message-using-firebase-messaging
+
+https://stackoverflow.com/questions/18425141/android-google-maps-api-v2-zoom-to-current-location
+
+https://developers.google.com/maps/documentation/android-sdk/marker
+
+https://stackoverflow.com/questions/35722617/retrofit-post-using-firebase
+
+https://firebase.google.com/docs/reference/rest/database
+
+http://sushildlh-retro-firebase.blogspot.com/
+
+https://www.geeksforgeeks.org/how-to-save-data-to-the-firebase-realtime-database-in-android/
+
+https://stackoverflow.com/questions/18932325/android-how-to-focus-on-current-position
+
+
+
+------ Inainte de adaugarea fetchReportsList() in AllReports.js (metoda era in App.js: merge totul ok, dar dupa ce unui utilizator i se modifica nivelul se randeaza din nou lista de rapoarte si scrollbarul revine sus)
+
+App.js:
+
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { getDatabase, ref, onValue } from "firebase/database";
+import { Fragment, useCallback, useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useHistory, useLocation } from "react-router";
+import { Redirect, Route, Switch } from "react-router-dom";
+
+import { authActions } from "./store/auth-slice";
+import { locationActions } from "./store/location-slice";
+import { reportsListActions } from "./store/reports-list-slice";
+import { usersListActions } from "./store/users-list-slice";
+
+import AllReports from "./components/AllReports";
+import AllUsers from "./components/AllUsers";
+import Login from "./components/Authentication/Login";
+import Map from "./components/Map";
+import PageNotFound from "./components/PageNotFound";
+import Profile from "./components/Profile";
+import Register from "./components/Authentication/Register";
+import ReportDetails from "./components/ReportDetails";
+import SplashScreen from "./components/SplashScreen";
+import TopBar from "./components/TopBar";
+import UserProfile from "./components/UserProfile";
+
+import "./App.css";
+
+const App = () => {
+  const auth = getAuth();
+
+  const db = getDatabase();
+
+  const dispatch = useDispatch();
+
+  const location = useLocation();
+
+  const { REACT_APP_GOOGLE_KEY: GOOGLE_KEY } = process.env;
+
+  const googleMapURL =
+    "https://maps.googleapis.com/maps/api/js?key=" +
+    GOOGLE_KEY +
+    "&v=3.exp&libraries=geometry,drawing,places";
+
+  const history = useHistory();
+
+  const [topBarIsVisible, setTopBarIsVisible] = useState(false);
+
+  const fetchCurrentLocation = useCallback(async () => {
+    try {
+      // const details = {
+      //   headers: { "Content-Type": "application/json" },
+      //   method: "POST",
+      // };
+
+      const response = await fetch("http://ip-api.com/json/?fields=223");
+
+      if (!response.ok) {
+        throw new Error("Something went wrong!");
+      }
+
+      const data = await response.json();
+
+      dispatch(
+        locationActions.setAdminLocation({
+          newLocation: { latitude: data.lat, longitude: data.lon },
+        })
+      );
+
+      // setMovies(loadedMovies);
+    } catch (error) {
+      // setError(error.message);
+    }
+  }, [dispatch]);
+
+  const fetchAuthenticatedAdmin = useCallback(async () => {
+    onAuthStateChanged(auth, (admin) => {
+      if (admin) {
+        const personalInformationRef = ref(
+          db,
+          "adminsList/" + admin.uid + "/personalInformation"
+        );
+
+        onValue(personalInformationRef, (snapshot) => {
+          const personalInformation = snapshot.val();
+
+          if (personalInformation) {
+            dispatch(
+              authActions.authenticateAdmin({
+                authenticatedAdmin: {
+                  email: admin.email,
+                  firstName: personalInformation.firstName,
+                  id: admin.uid,
+                  lastName: personalInformation.lastName,
+                },
+              })
+            );
+          }
+        });
+      }
+    });
+  }, [auth, db, dispatch]);
+
+  const fetchReportsList = useCallback(async () => {
+    const usersListRef = ref(db, "usersList");
+
+    onValue(usersListRef, (snapshot) => {
+      const data = snapshot.val();
+
+      const usersList = Object.values(data);
+
+      dispatch(reportsListActions.clearReportsList());
+
+      dispatch(locationActions.clearReportsLocationList());
+
+      usersList.forEach((userDetails) => {
+        const userData = userDetails;
+
+        const userPersonalReportsList = Object.values(userData.personalReports);
+
+        userPersonalReportsList.forEach((report) => {
+          const reportLocation = report.location;
+
+          dispatch(reportsListActions.addReport({ report }));
+
+          if (reportLocation) {
+            dispatch(
+              locationActions.addReportLocation({
+                newReportLocation: {
+                  category: report.category,
+                  name: report.note ? report.note : "No note provided",
+                  position: {
+                    lat: reportLocation.latitude,
+                    lng: reportLocation.longitude,
+                  },
+                },
+              })
+            );
+          }
+        });
+      });
+    });
+  }, [db, dispatch]);
+
+  const fetchUsersList = useCallback(async () => {
+    const usersListRef = ref(db, "usersList");
+
+    onValue(usersListRef, (snapshot) => {
+      const data = snapshot.val();
+
+      const usersList = Object.values(data);
+
+      dispatch(usersListActions.clearUsersList());
+
+      usersList.forEach((user) => {
+        dispatch(usersListActions.addUser({ user }));
+      });
+    });
+  }, [db, dispatch]);
+
+  useEffect(() => {
+    fetchAuthenticatedAdmin();
+    fetchCurrentLocation();
+    fetchReportsList();
+    fetchUsersList();
+  }, [
+    dispatch,
+    fetchAuthenticatedAdmin,
+    fetchCurrentLocation,
+    fetchReportsList,
+    fetchUsersList,
+  ]);
+
+  useEffect(() => {
+    if (location.pathname === "/page-not-found" || location.pathname === "/") {
+      if (!topBarIsVisible) {
+        setTopBarIsVisible((prevValue) => !prevValue);
+      }
+    } else if (topBarIsVisible) {
+      setTopBarIsVisible((prevValue) => !prevValue);
+    }
+  }, [location.pathname]);
+
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+
+  const adminLocation = useSelector((state) => state.location.adminLocation);
+
+  const reportsList = useSelector((state) => state.reportsList.reportsList);
+
+  const reportsLocationList = useSelector(
+    (state) => state.location.reportsLocationList
+  );
+
+  const usersList = useSelector((state) => state.usersList.usersList);
+
+  // navigator.geolocation.getCurrentPosition((position) => {
+  //   console.log("CURRENT POSITION");
+  //   console.log(position.coords.latitude + " " + position.coords.longitude);
+  // });
+
+  return (
+    <Fragment>
+      {!topBarIsVisible && <TopBar />}
+      <Switch>
+        <Route
+          exact
+          path="/"
+          // component={() => <SplashScreen isAuthenticated={isAuthenticated} />}
+        >
+          {isAuthenticated && <Redirect to="/reports" />}
+          {!isAuthenticated && <Redirect to="/login" />}
+        </Route>
+        <Route exact path="/login">
+          {isAuthenticated && <Redirect to="/" />}
+          {!isAuthenticated && <Login />}
+        </Route>
+        <Route exact path="/register">
+          {isAuthenticated && <Redirect to="/" />}
+          {!isAuthenticated && <Register />}
+        </Route>
+        <Route
+          exact
+          path="/reports"
+          component={() => <AllReports reports={reportsList} />}
+        >
+          {/* {!isAuthenticated && <Redirect to="/login" />} */}
+        </Route>
+        <Route path="/reports/:reportId">
+          {!isAuthenticated && <Redirect to="/login" />}
+          {isAuthenticated && <ReportDetails />}
+        </Route>
+        <Route exact path="/users">
+          {!isAuthenticated && <Redirect to="/login" />}
+          {isAuthenticated && <AllUsers users={usersList} />}
+        </Route>
+        <Route path="/users/:userId">
+          {!isAuthenticated && <Redirect to="/login" />}
+          {isAuthenticated && <UserProfile />}
+        </Route>
+        <Route
+          exact
+          path="/map"
+          component={() => (
+            <Map
+              isMarkerShown={false}
+              centerCoordinates={{
+                lat: adminLocation.latitude,
+                lng: adminLocation.longitude,
+              }}
+              reportsLocation={reportsLocationList}
+              // isMarkerShown // for showing a marker
+              googleMapURL={googleMapURL}
+              loadingElement={<div style={{ height: "100%" }} />}
+              containerElement={<div style={{ flex: "1", height: "100%" }} />}
+              mapElement={<div style={{ height: "100%" }} />}
+            />
+          )}
+        ></Route>
+        <Route exact path="/profile">
+          {!isAuthenticated && <Redirect to="/login" />}
+          {isAuthenticated && <Profile />}
+        </Route>
+        <Route exact path="/logout">
+          <Redirect to="/" />
+        </Route>
+        <Route
+          exact
+          path="/page-not-found"
+          component={() => <PageNotFound history={history} />}
+        />
+        <Route path="*">
+          <Redirect to="/page-not-found" />
+        </Route>
+      </Switch>
+    </Fragment>
+  );
+};
+
+export default App;
+
+
+AllReports.js:
+
+import { useEffect, useState } from "react";
+import { Container, Spinner } from "react-bootstrap";
+import { useSelector } from "react-redux";
+import { useHistory } from "react-router";
+
+import ReportItem from "./ReportItem";
+
+import classes from "./AllReports.module.css";
+
+const AllReports = (props) => {
+  // const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+
+  // const history = useHistory();
+
+  // if (!isAuthenticated) {
+  //   history.replace("/login");
+  // }
+
+  const [isLoading, setIsLoading] = useState(true);
+
+  const reportsList = props.reports;
+
+  useEffect(() => {
+    setIsLoading((previousValue) => !previousValue);
+  }, []);
+
+  return (
+    <div
+      className={
+        !isLoading && reportsList.length !== 0
+          ? classes.container
+          : classes["empty-container"]
+      }
+    >
+      {isLoading && (
+        <Container className={classes["spinner-container"]}>
+          <Spinner className={classes.spinner} animation="border" role="status">
+            <span className="visually-hidden">Loading...</span>
+          </Spinner>
+        </Container>
+      )}
+      {!isLoading && reportsList.length > 0 && (
+        <ul>
+          {reportsList.map((report, index) => (
+            <ReportItem key={`report` + index} report={report} />
+          ))}
+        </ul>
+      )}
+      {!isLoading && reportsList.length === 0 && <h2>No reports found</h2>}
+    </div>
+  );
+};
+
+export default AllReports;
+
+
+------ Dupa adaugarea fetchReportsList() in AllReports.js (merge, dar foarte greu si nu e ok)
+
+App.js:
+
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { getDatabase, ref, onValue } from "firebase/database";
+import { Fragment, useCallback, useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useHistory, useLocation } from "react-router";
+import { Redirect, Route, Switch } from "react-router-dom";
+
+import { authActions } from "./store/auth-slice";
+import { locationActions } from "./store/location-slice";
+import { reportsListActions } from "./store/reports-list-slice";
+import { usersListActions } from "./store/users-list-slice";
+
+import AllReports from "./components/AllReports";
+import AllUsers from "./components/AllUsers";
+import Login from "./components/Authentication/Login";
+import Map from "./components/Map";
+import PageNotFound from "./components/PageNotFound";
+import Profile from "./components/Profile";
+import Register from "./components/Authentication/Register";
+import ReportDetails from "./components/ReportDetails";
+import SplashScreen from "./components/SplashScreen";
+import TopBar from "./components/TopBar";
+import UserProfile from "./components/UserProfile";
+
+import "./App.css";
+
+const App = () => {
+  const auth = getAuth();
+
+  const db = getDatabase();
+
+  const dispatch = useDispatch();
+
+  const location = useLocation();
+
+  const { REACT_APP_GOOGLE_KEY: GOOGLE_KEY } = process.env;
+
+  const googleMapURL =
+    "https://maps.googleapis.com/maps/api/js?key=" +
+    GOOGLE_KEY +
+    "&v=3.exp&libraries=geometry,drawing,places";
+
+  const history = useHistory();
+
+  const [topBarIsVisible, setTopBarIsVisible] = useState(false);
+
+  const fetchCurrentLocation = useCallback(async () => {
+    try {
+      // const details = {
+      //   headers: { "Content-Type": "application/json" },
+      //   method: "POST",
+      // };
+
+      const response = await fetch("http://ip-api.com/json/?fields=223");
+
+      if (!response.ok) {
+        throw new Error("Something went wrong!");
+      }
+
+      const data = await response.json();
+
+      dispatch(
+        locationActions.setAdminLocation({
+          newLocation: { latitude: data.lat, longitude: data.lon },
+        })
+      );
+
+      // setMovies(loadedMovies);
+    } catch (error) {
+      // setError(error.message);
+    }
+  }, [dispatch]);
+
+  const fetchAuthenticatedAdmin = useCallback(async () => {
+    onAuthStateChanged(auth, (admin) => {
+      if (admin) {
+        const personalInformationRef = ref(
+          db,
+          "adminsList/" + admin.uid + "/personalInformation"
+        );
+
+        onValue(personalInformationRef, (snapshot) => {
+          const personalInformation = snapshot.val();
+
+          if (personalInformation) {
+            dispatch(
+              authActions.authenticateAdmin({
+                authenticatedAdmin: {
+                  email: admin.email,
+                  firstName: personalInformation.firstName,
+                  id: admin.uid,
+                  lastName: personalInformation.lastName,
+                },
+              })
+            );
+          }
+        });
+      }
+    });
+  }, [auth, db, dispatch]);
+
+  // const fetchReportsList = useCallback(async () => {
+  //   const usersListRef = ref(db, "usersList");
+
+  //   onValue(usersListRef, (snapshot) => {
+  //     const data = snapshot.val();
+
+  //     const usersList = Object.values(data);
+
+  //     dispatch(reportsListActions.clearReportsList());
+
+  //     dispatch(locationActions.clearReportsLocationList());
+
+  //     usersList.forEach((userDetails) => {
+  //       const userData = userDetails;
+
+  //       const userPersonalReportsList = Object.values(userData.personalReports);
+
+  //       userPersonalReportsList.forEach((report) => {
+  //         const reportLocation = report.location;
+
+  //         dispatch(reportsListActions.addReport({ report }));
+
+  //         if (reportLocation) {
+  //           dispatch(
+  //             locationActions.addReportLocation({
+  //               newReportLocation: {
+  //                 category: report.category,
+  //                 name: report.note ? report.note : "No note provided",
+  //                 position: {
+  //                   lat: reportLocation.latitude,
+  //                   lng: reportLocation.longitude,
+  //                 },
+  //               },
+  //             })
+  //           );
+  //         }
+  //       });
+  //     });
+  //   });
+  // }, [db, dispatch]);
+
+  const fetchUsersList = useCallback(async () => {
+    const usersListRef = ref(db, "usersList");
+
+    onValue(usersListRef, (snapshot) => {
+      const data = snapshot.val();
+
+      const usersList = Object.values(data);
+
+      dispatch(usersListActions.clearUsersList());
+
+      usersList.forEach((user) => {
+        dispatch(usersListActions.addUser({ user }));
+      });
+    });
+  }, [db, dispatch]);
+
+  useEffect(() => {
+    fetchAuthenticatedAdmin();
+    fetchCurrentLocation();
+    // fetchReportsList();
+    fetchUsersList();
+  }, [
+    dispatch,
+    fetchAuthenticatedAdmin,
+    fetchCurrentLocation,
+    // fetchReportsList,
+    fetchUsersList,
+  ]);
+
+  useEffect(() => {
+    if (location.pathname === "/page-not-found" || location.pathname === "/") {
+      if (!topBarIsVisible) {
+        setTopBarIsVisible((prevValue) => !prevValue);
+      }
+    } else if (topBarIsVisible) {
+      setTopBarIsVisible((prevValue) => !prevValue);
+    }
+  }, [location.pathname]);
+
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+
+  const adminLocation = useSelector((state) => state.location.adminLocation);
+
+  // const reportsList = useSelector((state) => state.reportsList.reportsList);
+
+  const reportsLocationList = useSelector(
+    (state) => state.location.reportsLocationList
+  );
+
+  const usersList = useSelector((state) => state.usersList.usersList);
+
+  // navigator.geolocation.getCurrentPosition((position) => {
+  //   console.log("CURRENT POSITION");
+  //   console.log(position.coords.latitude + " " + position.coords.longitude);
+  // });
+
+  return (
+    <Fragment>
+      {!topBarIsVisible && <TopBar />}
+      <Switch>
+        <Route
+          exact
+          path="/"
+          // component={() => <SplashScreen isAuthenticated={isAuthenticated} />}
+        >
+          {isAuthenticated && <Redirect to="/reports" />}
+          {!isAuthenticated && <Redirect to="/login" />}
+        </Route>
+        <Route exact path="/login">
+          {isAuthenticated && <Redirect to="/" />}
+          {!isAuthenticated && <Login />}
+        </Route>
+        <Route exact path="/register">
+          {isAuthenticated && <Redirect to="/" />}
+          {!isAuthenticated && <Register />}
+        </Route>
+        <Route
+          exact
+          path="/reports"
+          // component={() => <AllReports reports={reportsList} />}
+          component={AllReports}
+        >
+          {/* {!isAuthenticated && <Redirect to="/login" />} */}
+        </Route>
+        <Route path="/reports/:reportId">
+          {!isAuthenticated && <Redirect to="/login" />}
+          {isAuthenticated && <ReportDetails />}
+        </Route>
+        <Route exact path="/users">
+          {!isAuthenticated && <Redirect to="/login" />}
+          {isAuthenticated && <AllUsers users={usersList} />}
+        </Route>
+        <Route path="/users/:userId">
+          {!isAuthenticated && <Redirect to="/login" />}
+          {isAuthenticated && <UserProfile />}
+        </Route>
+        <Route
+          exact
+          path="/map"
+          component={() => (
+            <Map
+              isMarkerShown={false}
+              centerCoordinates={{
+                lat: adminLocation.latitude,
+                lng: adminLocation.longitude,
+              }}
+              reportsLocation={reportsLocationList}
+              // isMarkerShown // for showing a marker
+              googleMapURL={googleMapURL}
+              loadingElement={<div style={{ height: "100%" }} />}
+              containerElement={<div style={{ flex: "1", height: "100%" }} />}
+              mapElement={<div style={{ height: "100%" }} />}
+            />
+          )}
+        ></Route>
+        <Route exact path="/profile">
+          {!isAuthenticated && <Redirect to="/login" />}
+          {isAuthenticated && <Profile />}
+        </Route>
+        <Route exact path="/logout">
+          <Redirect to="/" />
+        </Route>
+        <Route
+          exact
+          path="/page-not-found"
+          component={() => <PageNotFound history={history} />}
+        />
+        <Route path="*">
+          <Redirect to="/page-not-found" />
+        </Route>
+      </Switch>
+    </Fragment>
+  );
+};
+
+export default App;
+
+
+AllReports.js:
+
+import { getDatabase, ref, onValue } from "firebase/database";
+import { useCallback, useEffect, useState } from "react";
+import { Container, Spinner } from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router";
+
+import { locationActions } from "../store/location-slice";
+import { reportsListActions } from "../store/reports-list-slice";
+
+import ReportItem from "./ReportItem";
+
+import classes from "./AllReports.module.css";
+
+const AllReports = (props) => {
+  // const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+
+  // const history = useHistory();
+
+  // if (!isAuthenticated) {
+  //   history.replace("/login");
+  // }
+
+  const [isLoading, setIsLoading] = useState(true);
+
+  const [reportsList, setReportsList] = useState([]);
+
+  const db = getDatabase();
+
+  const dispatch = useDispatch();
+
+  const fetchReportsList = useCallback(async () => {
+    const usersListRef = ref(db, "usersList");
+
+    onValue(usersListRef, (snapshot) => {
+      const data = snapshot.val();
+
+      const usersList = Object.values(data);
+
+      dispatch(reportsListActions.clearReportsList());
+
+      dispatch(locationActions.clearReportsLocationList());
+
+      usersList.forEach((userDetails) => {
+        const userData = userDetails;
+
+        const userPersonalReportsList = Object.values(userData.personalReports);
+
+        userPersonalReportsList.forEach((report) => {
+          const reportLocation = report.location;
+
+          setReportsList((previousValue) => [...previousValue, report]);
+
+          dispatch(reportsListActions.addReport({ report }));
+
+          if (reportLocation) {
+            dispatch(
+              locationActions.addReportLocation({
+                newReportLocation: {
+                  category: report.category,
+                  name: report.note ? report.note : "No note provided",
+                  position: {
+                    lat: reportLocation.latitude,
+                    lng: reportLocation.longitude,
+                  },
+                },
+              })
+            );
+          }
+        });
+      });
+    });
+  }, [db, dispatch]);
+
+  // const reportsList = props.reports;
+
+  useEffect(() => {
+    if (reportsList.length !== 0) {
+      setReportsList([]);
+    }
+
+    fetchReportsList();
+
+    if (isLoading) {
+      setIsLoading((previousValue) => !previousValue);
+    }
+  }, [fetchReportsList, reportsList.length]);
+
+  return (
+    <div
+      className={
+        !isLoading && reportsList.length !== 0
+          ? classes.container
+          : classes["empty-container"]
+      }
+    >
+      {isLoading && (
+        <Container className={classes["spinner-container"]}>
+          <Spinner className={classes.spinner} animation="border" role="status">
+            <span className="visually-hidden">Loading...</span>
+          </Spinner>
+        </Container>
+      )}
+      {!isLoading && reportsList.length > 0 && (
+        <ul>
+          {reportsList.map((report, index) => (
+            <ReportItem key={`report` + index} report={report} />
+          ))}
+        </ul>
+      )}
+      {!isLoading && reportsList.length === 0 && <h2>No reports found</h2>}
+    </div>
+  );
+};
+
+export default AllReports;
+
+
+
+
+
+https://cloudconvert.com/png-to-ico
+
+https://onlinepngtools.com/change-png-color
+
+https://icons8.com/icons/set/popular

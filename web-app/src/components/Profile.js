@@ -8,7 +8,7 @@ import {
   updatePassword,
 } from "firebase/auth";
 import { getDatabase, ref, set } from "firebase/database";
-import React, { useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router";
 
@@ -85,7 +85,7 @@ const Profile = (props) => {
 
   const adminPersonalInformationRef = ref(
     db,
-    "adminsList/" + currentAdmin.uid + "/personalInformation"
+    `adminsList/${currentAdmin.uid}/personalInformation`
   );
 
   const closeModalHandler = () => {

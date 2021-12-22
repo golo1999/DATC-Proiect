@@ -13,7 +13,7 @@ import { authActions } from "../store/auth-slice";
 
 // Custom components
 import CustomNavLink from "./CustomNavLink";
-import Logo from "./Logo";
+import Logo from "./Logo.tsx";
 import ProfileIcon from "./ProfileIcon";
 
 // Custom CSS

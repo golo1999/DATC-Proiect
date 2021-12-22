@@ -13,7 +13,11 @@ import { reportsListActions } from "./store/reports-list-slice";
 import { usersListActions } from "./store/users-list-slice";
 
 // APIs
-import { fetchCurrentLocation, getReportDetails } from "./lib/api";
+import {
+  fetchCurrentLocation,
+  // fetchReportsList,
+  getReportDetails,
+} from "./lib/api";
 
 // Utility
 import { getGoogleMapsURL } from "./utility/custom-methods";
@@ -151,6 +155,46 @@ const App = () => {
           "Failed to fetch your location. Using the default one instead"
         );
       });
+
+    // fetchReportsList()
+    //   .then((result) => {
+    //     if (result) {
+    //       // console.log(`result`);
+    //       // console.log(result);
+    //       dispatch(reportsListActions.clearReportsList());
+    //       dispatch(locationActions.clearReportsLocationList());
+
+    //       const retrievedReportsList = Object.values(result);
+
+    //       retrievedReportsList.forEach((report) => {
+    //         // console.log(`retrieved report`);
+    //         // console.log(report);
+
+    //         const reportLocation = report.location;
+
+    //         console.log(reportLocation);
+
+    //         dispatch(reportsListActions.addReport({ report }));
+
+    //         if (reportLocation) {
+    //           dispatch(
+    //             locationActions.addReportLocation({
+    //               newReportLocation: {
+    //                 id: report.reportId,
+    //                 category: report.category,
+    //                 name: report.note ? report.note : "No note provided",
+    //                 position: {
+    //                   lat: reportLocation.latitude,
+    //                   lng: reportLocation.longitude,
+    //                 },
+    //               },
+    //             })
+    //           );
+    //         }
+    //       });
+    //     }
+    //   })
+    //   .catch((error) => {});
 
     fetchReportsList();
 

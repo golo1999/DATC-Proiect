@@ -1,6 +1,6 @@
 // NPM
 import { getAuth, sendPasswordResetEmail } from "firebase/auth";
-import React, { useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { useHistory } from "react-router";
 
 // Utility

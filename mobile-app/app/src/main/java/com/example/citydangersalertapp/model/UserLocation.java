@@ -8,18 +8,12 @@ import java.util.Objects;
 
 public class UserLocation {
     private String country;
-
     private String countryCode;
-
     private String region;
-
     private String regionName;
-
     private String city;
-
     @SerializedName("lat")
     private double latitude;
-
     @SerializedName("lon")
     private double longitude;
 

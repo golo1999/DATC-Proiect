@@ -18,6 +18,28 @@ export const fetchCurrentLocation = async () => {
   return { latitude: data.lat, longitude: data.lon };
 };
 
+export const fetchReportsList = async () => {
+  const usersListRef = ref(db, `usersList`);
+
+  let reportsList = [];
+
+  onValue(usersListRef, (snapshot) => {
+    const data = snapshot.val();
+
+    const usersList = Object.values(data);
+
+    usersList.forEach((user) => {
+      const personalReportsList = Object.values(user.personalReports);
+
+      personalReportsList.forEach((report) => {
+        reportsList.push(report);
+      });
+    });
+  });
+
+  return reportsList;
+};
+
 export async function getAllReports() {
   const response = await fetch(`${FIREBASE_DOMAIN}`);
 
