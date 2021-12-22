@@ -5,13 +5,16 @@ import { Container, Spinner } from "react-bootstrap";
 // Custom components
 import ReportItem from "./ReportItem";
 
+// Models
+import ReportDetails from "../models/ReportDetails";
+
 // Custom CSS
 import classes from "./AllReports.module.css";
 
-const AllReports = (props) => {
-  const [isLoading, setIsLoading] = useState(true);
+type Props = { reportsList: ReportDetails[] };
 
-  const reportsList = props.reports;
+const AllReports = ({ reportsList }: Props) => {
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     setIsLoading((previousValue) => !previousValue);

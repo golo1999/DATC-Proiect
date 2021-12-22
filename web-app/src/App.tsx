@@ -2,7 +2,7 @@
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { getDatabase, ref, onValue } from "firebase/database";
 import { Fragment, useCallback, useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { RootStateOrAny, useDispatch, useSelector } from "react-redux";
 import { useHistory, useLocation } from "react-router";
 import { Redirect, Route, Switch } from "react-router-dom";
 
@@ -18,6 +18,9 @@ import {
   // fetchReportsList,
   getReportDetails,
 } from "./lib/api";
+
+// Models
+import User from "./models/User";
 
 // Utility
 import { getGoogleMapsURL } from "./utility/custom-methods";
@@ -85,14 +88,14 @@ const App = () => {
     onValue(usersListRef, (snapshot) => {
       const data = snapshot.val();
 
-      const usersList = Object.values(data);
+      const usersList: User[] = Object.values(data);
 
       dispatch(reportsListActions.clearReportsList());
 
       dispatch(locationActions.clearReportsLocationList());
 
       usersList.forEach((userDetails) => {
-        const userData = userDetails;
+        const userData: User = userDetails;
 
         const userPersonalReportsList = Object.values(userData.personalReports);
 
@@ -225,17 +228,27 @@ const App = () => {
     }
   }, [history, location.pathname, topBarIsVisible]);
 
-  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
-
-  const adminLocation = useSelector((state) => state.location.adminLocation);
-
-  const reportsList = useSelector((state) => state.reportsList.reportsList);
-
-  const reportsLocationList = useSelector(
-    (state) => state.location.reportsLocationList
+  const isAuthenticated = useSelector(
+    (state: RootStateOrAny) => state.auth.isAuthenticated
   );
 
-  const usersList = useSelector((state) => state.usersList.usersList);
+  const adminLocation = useSelector(
+    (state: RootStateOrAny) => state.location.adminLocation
+  );
+
+  const reportsList = useSelector(
+    (state: RootStateOrAny) => state.reportsList.reportsList
+  );
+
+  const reportsLocationList = useSelector(
+    (state: RootStateOrAny) => state.location.reportsLocationList
+  );
+
+  const usersList = useSelector(
+    (state: RootStateOrAny) => state.usersList.usersList
+  );
+
+  const reports = { reportsList };
 
   return (
     <Fragment>
@@ -260,7 +273,7 @@ const App = () => {
         <Route
           exact
           path="/reports"
-          component={() => <AllReports reports={reportsList} />}
+          component={() => <AllReports {...reports} />}
         >
           {/* {!isAuthenticated && <Redirect to="/login" />} */}
         </Route>
@@ -303,11 +316,7 @@ const App = () => {
         <Route exact path="/logout">
           <Redirect to="/" />
         </Route>
-        <Route
-          exact
-          path="/page-not-found"
-          component={() => <PageNotFound history={history} />}
-        />
+        <Route exact path="/page-not-found" component={PageNotFound} />
         <Route path="*">
           <Redirect to="/page-not-found" />
         </Route>

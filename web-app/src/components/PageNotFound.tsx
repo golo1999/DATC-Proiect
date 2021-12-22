@@ -1,5 +1,6 @@
 // NPM
 import React from "react";
+import { useHistory } from "react-router";
 
 // Bootstrap
 import { Button } from "react-bootstrap";
@@ -7,10 +8,10 @@ import { Button } from "react-bootstrap";
 // Custom CSS
 import classes from "./PageNotFound.module.css";
 
-const PageNotFound = (props) => {
-  const history = props.history;
+const PageNotFound = () => {
+  const history = useHistory();
 
-  const goBackHandler = (event) => {
+  const goBackHandler = (event: React.MouseEvent) => {
     event.preventDefault();
     history.goBack();
   };

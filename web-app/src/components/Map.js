@@ -17,7 +17,7 @@ import {
 } from "../utility/custom-methods";
 
 // Custom components
-import CustomModal from "./CustomModal";
+import CustomModal from "./CustomModal.tsx";
 
 const Map = withScriptjs(
   withGoogleMap((props) => {

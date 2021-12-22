@@ -1,5 +1,11 @@
 // NPM
-import React from "react";
+import { MouseEventHandler } from "react";
+
+// Models
+import CustomDateTime from "../models/CustomDateTime";
+import Location from "../models/Location";
+import ReportDetails from "../models/ReportDetails";
+import UserPersonalInformation from "../models/UserPersonalInformation";
 
 // Utility
 import {
@@ -14,19 +20,27 @@ import { Button, Col, Container, Modal, Row } from "react-bootstrap";
 // Custom CSS
 import classes from "./CustomModal.module.css";
 
-const CustomModal = (props) => {
-  const selectedReport = props.selectedReport;
+type Props = {
+  closeHandler: MouseEventHandler;
+  selectedReport: ReportDetails;
+  selectedReportDateTime: CustomDateTime;
+  selectedReportLocation: Location;
+  selectedUserDetails: UserPersonalInformation;
+  visible: boolean;
+};
 
-  const selectedReportLocation = props.selectedReportLocation;
-
-  const selectedReportDateTime = props.selectedReportDateTime;
-
-  const selectedUserDetails = props.selectedUserDetails;
-
+const CustomModal = ({
+  closeHandler,
+  selectedReport,
+  selectedReportDateTime,
+  selectedReportLocation,
+  selectedUserDetails,
+  visible,
+}: Props) => {
   return (
     <Modal
-      show={props.visible}
-      onHide={props.closeHandler}
+      show={visible}
+      onHide={closeHandler}
       aria-labelledby="contained-modal-title-vcenter"
     >
       <Modal.Header className={classes["modal-header"]} closeButton>
@@ -78,7 +92,7 @@ const CustomModal = (props) => {
         </Container>
       </Modal.Body>
       <Modal.Footer className={classes["modal-footer"]}>
-        <Button className={classes.button} onClick={props.closeHandler}>
+        <Button className={classes.button} onClick={closeHandler}>
           Close
         </Button>
       </Modal.Footer>

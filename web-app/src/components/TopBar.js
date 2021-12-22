@@ -12,9 +12,9 @@ import { useLocation } from "react-router-dom";
 import { authActions } from "../store/auth-slice";
 
 // Custom components
-import CustomNavLink from "./CustomNavLink";
+import CustomNavLink from "./CustomNavLink.tsx";
 import Logo from "./Logo.tsx";
-import ProfileIcon from "./ProfileIcon";
+import ProfileIcon from "./ProfileIcon.tsx";
 
 // Custom CSS
 import classes from "./TopBar.module.css";
