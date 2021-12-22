@@ -1,23 +1,44 @@
+// Models
+import CustomDate from "./CustomDate";
+
 class UserPersonalInformation {
   admin: boolean = false;
-  day: number;
-  dayName: string;
-  month: number;
-  monthName: string;
-  year: number;
+  birthDate?: CustomDate;
+  email: string;
+  firstName: string;
+  id: string;
+  lastName: string;
+  level: number = 1;
+  pin: string;
+  photoURL?: string;
+  taxReduction?: number = 0;
 
   constructor(
-    day: number,
-    dayName: string,
-    month: number,
-    monthName: string,
-    year: number
+    email: string,
+    firstName: string,
+    id: string,
+    lastName: string,
+    level: number,
+    pin: string,
+    taxReduction: number,
+    birthDate?: CustomDate,
+    photoURL?: string
   ) {
-    this.day = day;
-    this.dayName = dayName;
-    this.month = month;
-    this.monthName = monthName;
-    this.year = year;
+    this.email = email;
+    this.firstName = firstName;
+    this.id = id;
+    this.lastName = lastName;
+    this.level = level;
+    this.pin = pin;
+    this.taxReduction = taxReduction;
+
+    if (birthDate) {
+      this.birthDate = birthDate;
+    }
+
+    if (photoURL) {
+      this.photoURL = photoURL;
+    }
   }
 }
 

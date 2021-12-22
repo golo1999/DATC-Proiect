@@ -1,5 +1,9 @@
 // NPM
-import { useSelector } from "react-redux";
+import { RootStateOrAny, useSelector } from "react-redux";
+
+// Models
+import Report from "../models/Report";
+import UserPersonalInformation from "../models/UserPersonalInformation";
 
 // Utility
 import { getFormattedTaxReduction } from "../utility/custom-methods";
@@ -10,12 +14,15 @@ import { Card, Col, Container, Row } from "react-bootstrap";
 // Custom CSS
 import classes from "./UserProfile.module.css";
 
-const UserProfile = (props) => {
-  const selectedUser = useSelector((state) => state.user.user);
+const UserProfile = () => {
+  const selectedUser = useSelector((state: RootStateOrAny) => state.user.user);
 
-  const userPersonalInformation = selectedUser.personalInformation;
+  const userPersonalInformation: UserPersonalInformation =
+    selectedUser.personalInformation;
 
-  const userPersonalReports = Object.values(selectedUser.personalReports);
+  const userPersonalReports: Report[] = Object.values(
+    selectedUser.personalReports
+  );
 
   console.log(selectedUser);
 
@@ -42,13 +49,6 @@ const UserProfile = (props) => {
             <Col lg={6} md={12}>
               <Row>
                 <h1 className={classes["about-heading"]}>About</h1>
-              </Row>
-              <Row>
-                <p>
-                  {userPersonalInformation.description
-                    ? userPersonalInformation.description
-                    : "No description found"}
-                </p>
               </Row>
               <Row>
                 <Col lg={6} md={12}>
@@ -85,18 +85,6 @@ const UserProfile = (props) => {
                       </p>
                     </Col>
                     <Col>{userPersonalInformation.level}</Col>
-                  </Row>
-                  <Row>
-                    <Col>
-                      <p>
-                        <b>Phone</b>
-                      </p>
-                    </Col>
-                    <Col>
-                      {userPersonalInformation.phoneNumber
-                        ? userPersonalInformation.phoneNumber
-                        : "Unknown"}
-                    </Col>
                   </Row>
                   <Row>
                     <Col>

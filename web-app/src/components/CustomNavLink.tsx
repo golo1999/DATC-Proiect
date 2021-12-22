@@ -1,5 +1,5 @@
 // NPM
-import React, { MouseEventHandler } from "react";
+import React, { MouseEventHandler, ReactElement } from "react";
 
 // Bootstrap
 import { Nav } from "react-bootstrap";
@@ -8,8 +8,8 @@ import { Nav } from "react-bootstrap";
 import classes from "./CustomNavLink.module.css";
 
 type Props = {
-  active: boolean;
-  children: HTMLElement;
+  active?: boolean;
+  children: ReactElement | string;
   navbarIsExpanded: boolean;
   onClick: MouseEventHandler;
 };

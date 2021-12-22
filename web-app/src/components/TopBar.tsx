@@ -1,10 +1,10 @@
 // NPM
 import { getAuth, signOut } from "firebase/auth";
-import { useState } from "react";
+import { Fragment, useState } from "react";
 import { Container, Nav, Navbar } from "react-bootstrap";
 import { FaSignOutAlt } from "react-icons/fa";
 import { useCallback, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { RootStateOrAny, useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router";
 import { useLocation } from "react-router-dom";
 
@@ -12,9 +12,9 @@ import { useLocation } from "react-router-dom";
 import { authActions } from "../store/auth-slice";
 
 // Custom components
-import CustomNavLink from "./CustomNavLink.tsx";
-import Logo from "./Logo.tsx";
-import ProfileIcon from "./ProfileIcon.tsx";
+import CustomNavLink from "./CustomNavLink";
+import Logo from "./Logo";
+import ProfileIcon from "./ProfileIcon";
 
 // Custom CSS
 import classes from "./TopBar.module.css";
@@ -32,9 +32,13 @@ const TopBar = () => {
 
   const [navbarIsExpanded, setNavbarIsExpanded] = useState(false);
 
-  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+  const isAuthenticated = useSelector(
+    (state: RootStateOrAny) => state.auth.isAuthenticated
+  );
 
-  const authenticatedAdmin = useSelector((state) => state.auth.admin);
+  const authenticatedAdmin = useSelector(
+    (state: RootStateOrAny) => state.auth.admin
+  );
 
   const auth = getAuth();
 
@@ -152,7 +156,7 @@ const TopBar = () => {
       });
   };
 
-  const redirectHandler = (route) => {
+  const redirectHandler = (route: string) => {
     if (navbarIsExpanded) {
       toggleNavbarHandler();
     }
@@ -230,20 +234,24 @@ const TopBar = () => {
                   redirectHandler("/profile");
                 }}
               >
-                {!navbarIsExpanded && (
-                  <ProfileIcon admin={authenticatedAdmin} />
-                )}
-                {navbarIsExpanded && `Profile`}
+                <Fragment>
+                  {!navbarIsExpanded && (
+                    <ProfileIcon admin={authenticatedAdmin} />
+                  )}
+                  {navbarIsExpanded && `Profile`}
+                </Fragment>
               </CustomNavLink>
 
               <CustomNavLink
                 navbarIsExpanded={navbarIsExpanded}
                 onClick={logoutHandler}
               >
-                {!navbarIsExpanded && (
-                  <FaSignOutAlt className={classes["sign-out-icon"]} />
-                )}
-                {navbarIsExpanded && `Sign out`}
+                <Fragment>
+                  {!navbarIsExpanded && (
+                    <FaSignOutAlt className={classes["sign-out-icon"]} />
+                  )}
+                  {navbarIsExpanded && `Sign out`}
+                </Fragment>
               </CustomNavLink>
             </Nav>
           </Navbar.Collapse>

@@ -1,7 +1,7 @@
 import CustomDateTime from "./CustomDateTime";
 import Location from "./Location";
 
-class ReportDetails {
+class Report {
   category: number;
   checkStatus: boolean;
   dateTime: CustomDateTime;
@@ -29,4 +29,4 @@ class ReportDetails {
   }
 }
 
-export default ReportDetails;
+export default Report;

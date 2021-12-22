@@ -250,6 +250,8 @@ const App = () => {
 
   const reports = { reportsList };
 
+  const users = { usersList };
+
   return (
     <Fragment>
       {!topBarIsVisible && <TopBar />}
@@ -283,7 +285,7 @@ const App = () => {
         </Route>
         <Route exact path="/users">
           {!isAuthenticated && <Redirect to="/login" />}
-          {isAuthenticated && <AllUsers users={usersList} />}
+          {isAuthenticated && <AllUsers {...users} />}
         </Route>
         <Route path="/users/:userId">
           {!isAuthenticated && <Redirect to="/login" />}

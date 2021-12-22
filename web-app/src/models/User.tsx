@@ -1,14 +1,14 @@
 // Models
-import ReportDetails from "./ReportDetails";
+import Report from "./Report";
 import UserPersonalInformation from "./UserPersonalInformation";
 
 class User {
   personalInformation: UserPersonalInformation;
-  personalReports: ReportDetails[];
+  personalReports: Report[];
 
   constructor(
     personalInformation: UserPersonalInformation,
-    personalReports: ReportDetails[]
+    personalReports: Report[]
   ) {
     this.personalInformation = personalInformation;
     this.personalReports = personalReports;

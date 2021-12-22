@@ -2,16 +2,19 @@
 import { useEffect, useState } from "react";
 import { Container, Spinner } from "react-bootstrap";
 
+// Models
+import User from "../models/User";
+
 // Custom components
 import UserItem from "./UserItem";
 
 // Custom CSS
 import classes from "./AllUsers.module.css";
 
-const AllUsers = (props) => {
-  const [isLoading, setIsLoading] = useState(true);
+type Props = { usersList: User[] };
 
-  const usersList = props.users;
+const AllUsers = ({ usersList }: Props) => {
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     setIsLoading((previousValue) => !previousValue);
