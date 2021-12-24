@@ -4,16 +4,20 @@ import { createSlice } from "@reduxjs/toolkit";
 // Models
 import AdminPersonalInformation from "../models/AdminPersonalInformation";
 
-// type InitialState = {};
+type InitialState = {
+  admin: AdminPersonalInformation | null;
+  isAuthenticated: boolean;
+};
 
-const initialAuthState = { admin: null, isAuthenticated: false };
+const initialAuthState: InitialState = { admin: null, isAuthenticated: false };
 
 const authSlice = createSlice({
   name: "auth",
   initialState: initialAuthState,
   reducers: {
     authenticateAdmin: (state, action) => {
-      const newAuthenticatedAdmin = action.payload.authenticatedAdmin;
+      const newAuthenticatedAdmin: AdminPersonalInformation =
+        action.payload.authenticatedAdmin;
 
       state.admin = newAuthenticatedAdmin;
       state.isAuthenticated = true;
