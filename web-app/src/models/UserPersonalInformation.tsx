@@ -28,7 +28,11 @@ class UserPersonalInformation {
     this.firstName = firstName;
     this.id = id;
     this.lastName = lastName;
-    this.level = level;
+
+    if (level !== this.level) {
+      this.level = level;
+    }
+
     this.pin = pin;
     this.taxReduction = taxReduction;
 

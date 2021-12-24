@@ -7,7 +7,7 @@ import {
   signInWithEmailAndPassword,
 } from "firebase/auth";
 import { getDatabase, ref, onValue } from "firebase/database";
-import { useRef, useState } from "react";
+import { MutableRefObject, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router";
 
@@ -25,10 +25,10 @@ import {
 import { Container, Form } from "react-bootstrap";
 
 // Custom components
-import CustomAlert from "../CustomAlert.tsx";
-import CustomButton from "../CustomButton.tsx";
+import CustomAlert from "../CustomAlert";
+import CustomButton from "../CustomButton";
 import CustomInput from "../CustomInput";
-import CustomText from "../CustomText.tsx";
+import CustomText from "../CustomText";
 
 // Custom CSS
 import classes from "./Login.module.css";
@@ -40,9 +40,9 @@ const Login = () => {
 
   const history = useHistory();
 
-  const emailRef = useRef();
+  const emailRef = useRef() as MutableRefObject<HTMLInputElement>;
 
-  const passwordRef = useRef();
+  const passwordRef = useRef() as MutableRefObject<HTMLInputElement>;
 
   const [rememberMeIsChecked, setRememberMeIsChecked] = useState(false);
 
@@ -50,7 +50,7 @@ const Login = () => {
 
   const [errorMessage, setErrorMessage] = useState("");
 
-  const loginHandler = (event) => {
+  const loginHandler = (event: React.MouseEvent) => {
     event.preventDefault();
 
     const enteredEmail = emailRef.current.value;
@@ -123,11 +123,11 @@ const Login = () => {
     }
   };
 
-  const redirectHandler = (route) => {
+  const redirectHandler = (route: string) => {
     history.push(route);
   };
 
-  const rememberMeHandler = (event) => {
+  const rememberMeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     const checked = event.target.checked;
 
     if (rememberMeIsChecked !== checked) {
@@ -135,7 +135,7 @@ const Login = () => {
     }
   };
 
-  const showError = (message) => {
+  const showError = (message: string) => {
     if (!errorIsVisible) {
       setErrorIsVisible((previousValue) => !previousValue);
     }

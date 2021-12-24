@@ -20,6 +20,7 @@ import {
 } from "./lib/api";
 
 // Models
+import AdminPersonalInformation from "./models/AdminPersonalInformation";
 import User from "./models/User";
 
 // Utility
@@ -56,14 +57,14 @@ const App = () => {
 
   const fetchAuthenticatedAdmin = useCallback(async () => {
     onAuthStateChanged(auth, (admin) => {
-      if (admin) {
+      if (admin && admin.emailVerified) {
         const personalInformationRef = ref(
           db,
-          "adminsList/" + admin.uid + "/personalInformation"
+          `adminsList/${admin.uid}/personalInformation`
         );
 
         onValue(personalInformationRef, (snapshot) => {
-          const personalInformation = snapshot.val();
+          const personalInformation: AdminPersonalInformation = snapshot.val();
 
           if (personalInformation) {
             dispatch(
@@ -251,6 +252,10 @@ const App = () => {
   const reports = { reportsList };
 
   const users = { usersList };
+
+  useEffect(() => {
+    console.log(`isAuthenticated: ${isAuthenticated}`);
+  }, [isAuthenticated]);
 
   return (
     <Fragment>

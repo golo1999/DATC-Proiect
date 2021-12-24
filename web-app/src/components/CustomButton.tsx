@@ -1,5 +1,7 @@
-// Bootstrap
+// NPM
 import { MouseEventHandler } from "react";
+
+// Bootstrap
 import { Button, Col, Row } from "react-bootstrap";
 
 // Custom CSS

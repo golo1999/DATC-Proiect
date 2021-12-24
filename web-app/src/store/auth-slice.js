@@ -1,4 +1,10 @@
+// NPM
 import { createSlice } from "@reduxjs/toolkit";
+
+// Models
+import AdminPersonalInformation from "../models/AdminPersonalInformation";
+
+// type InitialState = {};
 
 const initialAuthState = { admin: null, isAuthenticated: false };
 

@@ -1,6 +1,6 @@
 // NPM
 import { set } from "firebase/database";
-import React, { useRef, useState } from "react";
+import React, { MutableRefObject, useRef, useState } from "react";
 import { useHistory } from "react-router";
 import {
   getAuth,
@@ -8,6 +8,9 @@ import {
   signOut,
   sendEmailVerification,
 } from "firebase/auth";
+
+// Models
+import AdminPersonalInformation from "../../models/AdminPersonalInformation";
 
 // Utility
 import {
@@ -22,10 +25,10 @@ import { db } from "../../utility/firebase";
 import { Container, Form } from "react-bootstrap";
 
 // Custom components
-import CustomAlert from "../CustomAlert.tsx";
-import CustomButton from "../CustomButton.tsx";
+import CustomAlert from "../CustomAlert";
+import CustomButton from "../CustomButton";
 import CustomInput from "../CustomInput";
-import CustomText from "../CustomText.tsx";
+import CustomText from "../CustomText";
 
 // Custom CSS
 import classes from "./Register.module.css";
@@ -33,22 +36,24 @@ import classes from "./Register.module.css";
 const Register = () => {
   const history = useHistory();
 
-  const emailRef = useRef();
+  const emailRef = useRef() as MutableRefObject<HTMLInputElement>;
 
-  const passwordRef = useRef();
+  const passwordRef = useRef() as MutableRefObject<HTMLInputElement>;
 
-  const firstNameRef = useRef();
+  const firstNameRef = useRef() as MutableRefObject<HTMLInputElement>;
 
-  const lastNameRef = useRef();
+  const lastNameRef = useRef() as MutableRefObject<HTMLInputElement>;
 
   const [errorIsVisible, setErrorIsVisible] = useState(false);
 
   const [errorMessage, setErrorMessage] = useState("");
 
-  const createPersonalInformationPath = (personalInformation) => {
+  const createPersonalInformationPath = (
+    personalInformation: AdminPersonalInformation
+  ) => {
     if (personalInformation) {
       const adminsListRef = db.ref(
-        "adminsList/" + personalInformation.id + "/personalInformation"
+        `adminsList/${personalInformation.id}/personalInformation`
       );
 
       set(adminsListRef, personalInformation);
@@ -59,7 +64,7 @@ const Register = () => {
     history.push("/login");
   };
 
-  const registerHandler = (event) => {
+  const registerHandler = (event: React.MouseEvent) => {
     event.preventDefault();
 
     const enteredEmail = emailRef.current.value;
@@ -88,13 +93,13 @@ const Register = () => {
                 // Email sent
                 console.log("Email verification sent");
 
-                const personalInformation = {
-                  admin: true,
-                  email: enteredEmail,
-                  firstName: enteredFirstName,
-                  id: admin.uid,
-                  lastName: enteredLastName,
-                };
+                const personalInformation: AdminPersonalInformation =
+                  new AdminPersonalInformation(
+                    enteredEmail,
+                    enteredFirstName,
+                    admin.uid,
+                    enteredLastName
+                  );
 
                 createPersonalInformationPath(personalInformation);
 
