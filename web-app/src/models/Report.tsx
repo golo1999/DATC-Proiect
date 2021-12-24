@@ -3,6 +3,7 @@ import Location from "./Location";
 
 class Report {
   category: number;
+  checkedBy: string | null = null;
   checkStatus: boolean;
   dateTime: CustomDateTime;
   location: Location;
@@ -12,6 +13,7 @@ class Report {
 
   constructor(
     category: number,
+    checkedBy: string,
     checkStatus: boolean,
     dateTime: CustomDateTime,
     location: Location,
@@ -22,10 +24,14 @@ class Report {
     this.category = category;
     this.checkStatus = checkStatus;
     this.dateTime = dateTime;
-    this.location = location;
     this.note = note;
+    this.location = location;
     this.reportId = reportId;
     this.userId = userId;
+
+    if (checkedBy) {
+      this.checkedBy = checkedBy;
+    }
   }
 }
 

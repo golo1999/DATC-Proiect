@@ -1,7 +1,7 @@
 // NPM
 import { getDatabase, ref, set } from "firebase/database";
 import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { RootStateOrAny, useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router";
 
 // Redux
@@ -10,6 +10,10 @@ import { reportsListActions } from "../store/reports-list-slice";
 
 // APIs
 import { updateUserLevel } from "../lib/api";
+
+// Models
+import CustomDateTime from "../models/CustomDateTime";
+import Report from "../models/Report";
 
 // Utility
 import {
@@ -24,8 +28,12 @@ import { FaAngleRight, FaCheck } from "react-icons/fa";
 // Custom CSS
 import classes from "./ReportItem.module.css";
 
-const ReportItem = (props) => {
-  const adminPersonalInformation = useSelector((state) => state.auth.admin);
+type Props = { report: Report };
+
+const ReportItem = ({ report }: Props) => {
+  const adminPersonalInformation = useSelector(
+    (state: RootStateOrAny) => state.auth.admin
+  );
 
   const db = getDatabase();
 
@@ -33,11 +41,9 @@ const ReportItem = (props) => {
 
   const history = useHistory();
 
-  const report = props.report;
-
   const reportDetailsRef = ref(
     db,
-    "usersList/" + report.userId + "/personalReports/" + report.reportId
+    `usersList/${report.userId}/personalReports/${report.reportId}`
   );
 
   const [modalIsVisible, setModalIsVisible] = useState(false);
@@ -65,29 +71,30 @@ const ReportItem = (props) => {
   };
 
   const modifyReportStatusHandler = () => {
-    const dateTime = {
-      day: reportDateTime.day,
-      dayName: reportDateTime.dayName,
-      hour: reportDateTime.hour,
-      minute: reportDateTime.minute,
-      month: reportDateTime.month,
-      monthName: reportDateTime.monthName,
-      second: reportDateTime.second,
-      year: reportDateTime.year,
-    };
+    const dateTime = new CustomDateTime(
+      reportDateTime.day,
+      reportDateTime.dayName,
+      reportDateTime.hour,
+      reportDateTime.minute,
+      reportDateTime.month,
+      reportDateTime.monthName,
+      reportDateTime.second,
+      reportDateTime.year
+    );
 
-    const editedReport = {
-      category: report.category,
-      checkedBy: !isChecked ? adminPersonalInformation.id : null,
-      checkStatus: !isChecked,
+    const editedReport = new Report(
+      report.category,
+      !isChecked ? adminPersonalInformation.id : null,
+      !isChecked,
       dateTime,
-      note: report.note ? report.note : null,
-      reportId: report.reportId,
-      userId: report.userId,
-    };
+      report.location,
+      report.note,
+      report.reportId,
+      report.userId
+    );
 
     set(reportDetailsRef, editedReport);
-    setIsChecked((previousValue) => !previousValue);
+    setIsChecked((previousValue: boolean) => !previousValue);
     dispatch(reportsListActions.updateReport({ updatedReport: editedReport }));
     updateUserLevel(editedReport.userId);
     closeModalHandler();

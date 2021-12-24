@@ -1,7 +1,10 @@
 // NPM
 import { getDatabase, ref, onValue } from "firebase/database";
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import { RootStateOrAny, useSelector } from "react-redux";
+
+// Models
+import UserPersonalInformation from "../models/UserPersonalInformation";
 
 // Utility
 import {
@@ -20,8 +23,10 @@ import Map from "./Map";
 // Custom CSS
 import classes from "./ReportDetails.module.css";
 
-const ReportDetails = (props) => {
-  const selectedReport = useSelector((state) => state.report.report);
+const ReportDetails = () => {
+  const selectedReport = useSelector(
+    (state: RootStateOrAny) => state.report.report
+  );
 
   const db = getDatabase();
 
@@ -29,20 +34,17 @@ const ReportDetails = (props) => {
 
   const customStyle = <div style={{ width: "100%", height: "100%" }} />;
 
-  const googleMapURL =
-    "https://maps.googleapis.com/maps/api/js?key=" +
-    GOOGLE_KEY +
-    "&v=3.exp&libraries=geometry,drawing,places";
+  const googleMapURL = `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_KEY}&v=3.exp&libraries=geometry,drawing,places`;
 
   const userPersonalInformationRef = ref(
     db,
-    "/usersList/" + selectedReport.userId + "/personalInformation"
+    `/usersList/${selectedReport.userId}/personalInformation`
   );
 
   let retrievedPersonalInformation = { firstName: "", lastName: "" };
 
   onValue(userPersonalInformationRef, (snapshot) => {
-    const personalInformation = snapshot.val();
+    const personalInformation: UserPersonalInformation = snapshot.val();
 
     if (personalInformation) {
       retrievedPersonalInformation.firstName = personalInformation.firstName;
@@ -143,7 +145,8 @@ const ReportDetails = (props) => {
                 {mapIsVisible && (
                   <Row className={classes.map}>
                     <Map
-                      isMarkerShown // for showing a marker
+                      // for showing a marker
+                      isMarkerShown
                       centerCoordinates={{
                         lat: selectedReportLocation.latitude,
                         lng: selectedReportLocation.longitude,
