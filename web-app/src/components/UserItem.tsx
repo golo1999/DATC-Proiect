@@ -6,6 +6,10 @@ import { useHistory } from "react-router";
 // Redux
 import { userActions } from "../store/user-slice";
 
+// Models
+import User from "../models/User";
+import UserPersonalInformation from "../models/UserPersonalInformation";
+
 // Bootstrap
 import { Card, Col, Container, Row } from "react-bootstrap";
 import { FaAngleRight } from "react-icons/fa";
@@ -13,19 +17,20 @@ import { FaAngleRight } from "react-icons/fa";
 // CSS
 import classes from "./UserItem.module.css";
 
-const UserItem = (props) => {
+type Props = { user: User };
+
+const UserItem = ({ user }: Props) => {
   const dispatch = useDispatch();
 
   const history = useHistory();
 
-  const user = props.user;
-
-  const userPersonalInformation = user.personalInformation;
+  const userPersonalInformation: UserPersonalInformation =
+    user.personalInformation;
 
   const checkUserDetailsHandler = () => {
     dispatch(userActions.setSelectedUser({ selectedUser: user }));
 
-    history.push("/users/" + userPersonalInformation.id);
+    history.push(`/users/${userPersonalInformation.id}`);
   };
 
   return (
@@ -72,18 +77,6 @@ const UserItem = (props) => {
               </Col>
             </Row>
           </Container>
-          {/* <div className={classes["user-name-container"]}>
-            {userPersonalInformation.firstName}
-          </div> */}
-          {/* <div className={classes["user-level-container"]}>
-            {`Level ` + userPersonalInformation.level}
-          </div> */}
-          {/* <div className={classes["icons-container"]}>
-            <FaAngleRight
-              className={classes["user-details-icon"]}
-              onClick={checkUserDetailsHandler}
-            />
-          </div> */}
         </Card.Body>
       </Card>
     </li>
