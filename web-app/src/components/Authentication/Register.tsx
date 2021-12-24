@@ -87,7 +87,7 @@ const Register = () => {
           // Signed up
           const admin = adminCredential.user;
 
-          if (admin != null) {
+          if (admin) {
             sendEmailVerification(admin)
               .then(() => {
                 // Email sent

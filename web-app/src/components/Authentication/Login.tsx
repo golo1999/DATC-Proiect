@@ -68,7 +68,7 @@ const Login = () => {
             .then((userCredential) => {
               const admin = userCredential.user;
 
-              if (admin.emailVerified) {
+              if (admin && admin.emailVerified) {
                 const db = getDatabase();
 
                 const personalInformationRef = ref(

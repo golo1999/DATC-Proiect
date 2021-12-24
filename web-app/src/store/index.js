@@ -16,6 +16,7 @@ const store = configureStore({
     user: userSlice.reducer,
     usersList: usersListSlice.reducer,
   },
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware(),
 });
 
 export default store;

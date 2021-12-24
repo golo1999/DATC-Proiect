@@ -67,17 +67,14 @@ const App = () => {
           const personalInformation: AdminPersonalInformation = snapshot.val();
 
           if (personalInformation) {
-            const authenticatedAdmin: AdminPersonalInformation =
-              new AdminPersonalInformation(
-                admin.email!,
-                personalInformation.firstName,
-                admin.uid,
-                personalInformation.lastName
-              );
-
             dispatch(
               authActions.authenticateAdmin({
-                authenticatedAdmin,
+                authenticatedAdmin: {
+                  email: admin.email,
+                  firstName: personalInformation.firstName,
+                  id: admin.uid,
+                  lastName: personalInformation.lastName,
+                },
               })
             );
           }

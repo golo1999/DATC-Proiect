@@ -1,6 +1,6 @@
 // NPM
 import { getAuth, sendPasswordResetEmail } from "firebase/auth";
-import { useRef, useState } from "react";
+import { MutableRefObject, useRef, useState } from "react";
 import { useHistory } from "react-router";
 
 // Utility
@@ -10,10 +10,10 @@ import { emailIsValid } from "../../utility/custom-methods";
 import { Container, Form } from "react-bootstrap";
 
 // Custom components
-import CustomAlert from "../CustomAlert.tsx";
-import CustomButton from "../CustomButton.tsx";
+import CustomAlert from "../CustomAlert";
+import CustomButton from "../CustomButton";
 import CustomInput from "../CustomInput";
-import CustomText from "../CustomText.tsx";
+import CustomText from "../CustomText";
 
 // Custom CSS
 import classes from "./ForgotPassword.module.css";
@@ -23,7 +23,7 @@ const ForgotPassword = () => {
 
   const history = useHistory();
 
-  const emailRef = useRef();
+  const emailRef = useRef() as MutableRefObject<HTMLInputElement>;
 
   const [alertIsVisible, setAlertIsVisible] = useState(false);
 
@@ -35,7 +35,7 @@ const ForgotPassword = () => {
     history.push("/login");
   };
 
-  const resetPasswordHandler = (event) => {
+  const resetPasswordHandler = (event: React.MouseEvent) => {
     event.preventDefault();
 
     const enteredEmail = emailRef.current.value;
