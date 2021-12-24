@@ -14,6 +14,9 @@ import { useHistory } from "react-router";
 // Redux
 import { authActions } from "../../store/auth-slice";
 
+// Models
+import AdminPersonalInformation from "../../models/AdminPersonalInformation";
+
 // Utility
 import {
   emailIsValid,
@@ -73,11 +76,12 @@ const Login = () => {
 
                 const personalInformationRef = ref(
                   db,
-                  "adminsList/" + admin.uid + "/personalInformation"
+                  `adminsList/${admin.uid}/personalInformation`
                 );
 
                 onValue(personalInformationRef, (snapshot) => {
-                  const personalInformation = snapshot.val();
+                  const personalInformation: AdminPersonalInformation =
+                    snapshot.val();
 
                   dispatch(
                     authActions.authenticateAdmin({
@@ -104,7 +108,7 @@ const Login = () => {
           showError(error.message);
         });
     } else {
-      const errMsg =
+      const errMsg: string =
         enteredEmail.length === 0 && enteredPassword.length === 0
           ? "Email and password should not be empty"
           : enteredEmail.length === 0
@@ -128,7 +132,7 @@ const Login = () => {
   };
 
   const rememberMeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const checked = event.target.checked;
+    const checked: boolean = event.target.checked;
 
     if (rememberMeIsChecked !== checked) {
       setRememberMeIsChecked(checked);

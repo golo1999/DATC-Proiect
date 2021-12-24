@@ -8,8 +8,8 @@ import {
   updatePassword,
 } from "firebase/auth";
 import { getDatabase, ref, set } from "firebase/database";
-import { useRef, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { MutableRefObject, useRef, useState } from "react";
+import { RootStateOrAny, useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router";
 
 // Redux
@@ -33,7 +33,7 @@ import {
 // Custom CSS
 import classes from "./Profile.module.css";
 
-const Profile = (props) => {
+const Profile = () => {
   const auth = getAuth();
 
   const db = getDatabase();
@@ -42,17 +42,18 @@ const Profile = (props) => {
 
   const history = useHistory();
 
-  const newEmailAddressRef = useRef();
+  const newEmailAddressRef = useRef() as MutableRefObject<HTMLInputElement>;
 
-  const oldPasswordRef = useRef();
+  const oldPasswordRef = useRef() as MutableRefObject<HTMLInputElement>;
 
-  const passwordRef = useRef();
+  const passwordRef = useRef() as MutableRefObject<HTMLInputElement>;
 
-  const passwordConfirmationRef = useRef();
+  const passwordConfirmationRef =
+    useRef() as MutableRefObject<HTMLInputElement>;
 
-  const firstNameRef = useRef();
+  const firstNameRef = useRef() as MutableRefObject<HTMLInputElement>;
 
-  const lastNameRef = useRef();
+  const lastNameRef = useRef() as MutableRefObject<HTMLInputElement>;
 
   const currentAdmin = auth.currentUser;
 
@@ -81,11 +82,13 @@ const Profile = (props) => {
 
   const [failMessage, setFailMessage] = useState("");
 
-  const adminPersonalInformation = useSelector((state) => state.auth.admin);
+  const adminPersonalInformation = useSelector(
+    (state: RootStateOrAny) => state.auth.admin
+  );
 
   const adminPersonalInformationRef = ref(
     db,
-    `adminsList/${currentAdmin.uid}/personalInformation`
+    `adminsList/${currentAdmin!.uid}/personalInformation`
   );
 
   const closeModalHandler = () => {
@@ -126,14 +129,14 @@ const Profile = (props) => {
     }
   };
 
-  const setFail = (message) => {
+  const setFail = (message: string) => {
     closeAlertHandler();
 
     setFailIsVisible(true);
     setFailMessage(message);
   };
 
-  const setSuccess = (message) => {
+  const setSuccess = (message: string) => {
     closeAlertHandler();
 
     setSuccessIsVisible(true);
@@ -154,10 +157,10 @@ const Profile = (props) => {
           enteredPassword
         );
 
-        reauthenticateWithCredential(currentAdmin, credential)
+        reauthenticateWithCredential(currentAdmin!, credential)
           .then(() => {
             // User re-authenticated
-            updateEmail(currentAdmin, enteredEmail)
+            updateEmail(currentAdmin!, enteredEmail)
               .then(() => {
                 // Email updated!
                 const updatedAdmin = {
@@ -228,10 +231,10 @@ const Profile = (props) => {
           oldPassword
         );
 
-        reauthenticateWithCredential(currentAdmin, credential)
+        reauthenticateWithCredential(currentAdmin!, credential)
           .then(() => {
             // User re-authenticated
-            updatePassword(currentAdmin, enteredPassword)
+            updatePassword(currentAdmin!, enteredPassword)
               .then(() => {
                 // Update successful
                 setSuccess("The password has been updated");
@@ -275,10 +278,10 @@ const Profile = (props) => {
           enteredPassword
         );
 
-        reauthenticateWithCredential(currentAdmin, credential)
+        reauthenticateWithCredential(currentAdmin!, credential)
           .then(() => {
             // User re-authenticated
-            deleteUser(currentAdmin)
+            deleteUser(currentAdmin!)
               .then(() => {
                 // User deleted
                 dispatch(authActions.signOutAdmin());
@@ -301,10 +304,10 @@ const Profile = (props) => {
     }
   };
 
-  const openModalHandler = (event) => {
+  const openModalHandler = (event: React.MouseEvent) => {
     event.preventDefault();
 
-    const clickedButtonId = event.target.id;
+    const clickedButtonId: string = (event.target as HTMLButtonElement).id;
 
     if (clickedButtonId === "changeEmailButton") {
       if (modalAction !== 0) {
@@ -341,7 +344,7 @@ const Profile = (props) => {
     setConfirmationModalIsVisible(true);
   };
 
-  const actionHandler = (option) => {
+  const actionHandler = (option: number) => {
     closeModalHandler();
 
     if (confirmationModalAction !== option) {
@@ -351,7 +354,7 @@ const Profile = (props) => {
     openConfirmationModalHandler();
   };
 
-  const changeNamesHandler = (event) => {
+  const changeNamesHandler = (event: React.MouseEvent) => {
     event.preventDefault();
 
     const enteredFirstName = firstNameRef.current.value.trim();
