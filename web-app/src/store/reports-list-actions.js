@@ -10,7 +10,7 @@ export const fetchReportsList = () => {
       const response = await fetch(`${DATABASE_URL}/usersList.json`);
 
       if (!response.ok) {
-        throw new Error("Couldn't fetch your location!");
+        throw new Error("Couldn't fetch reports list!");
       }
 
       const data = await response.json();
@@ -20,10 +20,6 @@ export const fetchReportsList = () => {
 
     try {
       const usersList = Object.values(await fetchUsersList());
-
-      dispatch(reportsListActions.clearReportsList());
-
-      dispatch(locationActions.clearReportsLocationList());
 
       usersList.forEach((user) => {
         const personalReportsList = Object.values(user.personalReports);
@@ -52,9 +48,8 @@ export const fetchReportsList = () => {
           console.log(report);
         });
       });
-
-      //   console.log(`users list`);
-      //   console.log(usersList);
-    } catch (error) {}
+    } catch (error) {
+      console.log("Couldn't fetch reports list!");
+    }
   };
 };

@@ -9,20 +9,14 @@ import { Redirect, Route, Switch } from "react-router-dom";
 // Redux
 import { authActions } from "./store/auth-slice";
 import { fetchCurrentLocation } from "./store/location-actions";
-import { locationActions } from "./store/location-slice";
 import { fetchReportsList } from "./store/reports-list-actions";
-import { reportsListActions } from "./store/reports-list-slice";
-import { usersListActions } from "./store/users-list-slice";
+import { fetchUsersList } from "./store/users-list-actions";
 
 // APIs
-import {
-  // fetchReportsList,
-  getReportDetails,
-} from "./lib/api";
+import { getReportDetails } from "./lib/api";
 
 // Models
 import AdminPersonalInformation from "./models/AdminPersonalInformation";
-import User from "./models/User";
 
 // Utility
 import { getGoogleMapsURL } from "./utility/custom-methods";
@@ -85,131 +79,13 @@ const App = () => {
     });
   }, [auth, db, dispatch]);
 
-  // const fetchReportsList = useCallback(async () => {
-  //   const usersListRef = ref(db, "usersList");
-
-  //   onValue(usersListRef, (snapshot) => {
-  //     const data = snapshot.val();
-
-  //     const usersList: User[] = Object.values(data);
-
-  //     dispatch(reportsListActions.clearReportsList());
-
-  //     dispatch(locationActions.clearReportsLocationList());
-
-  //     usersList.forEach((userDetails) => {
-  //       const userData: User = userDetails;
-
-  //       const userPersonalReportsList = Object.values(userData.personalReports);
-
-  //       userPersonalReportsList.forEach((report) => {
-  //         const reportLocation = report.location;
-
-  //         dispatch(reportsListActions.addReport({ report }));
-
-  //         if (reportLocation) {
-  //           dispatch(
-  //             locationActions.addReportLocation({
-  //               newReportLocation: {
-  //                 id: report.reportId,
-  //                 category: report.category,
-  //                 name: report.note ? report.note : "No note provided",
-  //                 position: {
-  //                   lat: reportLocation.latitude,
-  //                   lng: reportLocation.longitude,
-  //                 },
-  //               },
-  //             })
-  //           );
-  //         }
-  //       });
-  //     });
-  //   });
-  // }, [db, dispatch]);
-
-  const fetchUsersList = useCallback(async () => {
-    const usersListRef = ref(db, "usersList");
-
-    onValue(usersListRef, (snapshot) => {
-      const data = snapshot.val();
-
-      const usersList = Object.values(data);
-
-      dispatch(usersListActions.clearUsersList());
-
-      usersList.forEach((user) => {
-        dispatch(usersListActions.addUser({ user }));
-      });
-    });
-  }, [db, dispatch]);
-
   useEffect(() => {
     fetchAuthenticatedAdmin();
 
-    // fetchCurrentLocation()
-    //   .then((result) => {
-    //     if (result) {
-    //       dispatch(
-    //         locationActions.setAdminLocation({
-    //           newLocation: result,
-    //         })
-    //       );
-    //     }
-    //   })
-    //   .catch(() => {
-    //     console.log(
-    //       "Failed to fetch your location. Using the default one instead"
-    //     );
-    //   });
-
     dispatch(fetchCurrentLocation());
-
     dispatch(fetchReportsList());
-
-    // fetchReportsList()
-    //   .then((result) => {
-    //     if (result) {
-    //       // console.log(`result`);
-    //       // console.log(result);
-    //       dispatch(reportsListActions.clearReportsList());
-    //       dispatch(locationActions.clearReportsLocationList());
-
-    //       const retrievedReportsList = Object.values(result);
-
-    //       retrievedReportsList.forEach((report) => {
-    //         // console.log(`retrieved report`);
-    //         // console.log(report);
-
-    //         const reportLocation = report.location;
-
-    //         console.log(reportLocation);
-
-    //         dispatch(reportsListActions.addReport({ report }));
-
-    //         if (reportLocation) {
-    //           dispatch(
-    //             locationActions.addReportLocation({
-    //               newReportLocation: {
-    //                 id: report.reportId,
-    //                 category: report.category,
-    //                 name: report.note ? report.note : "No note provided",
-    //                 position: {
-    //                   lat: reportLocation.latitude,
-    //                   lng: reportLocation.longitude,
-    //                 },
-    //               },
-    //             })
-    //           );
-    //         }
-    //       });
-    //     }
-    //   })
-    //   .catch((error) => {});
-
-    fetchReportsList();
-
-    fetchUsersList();
-  }, [dispatch, fetchAuthenticatedAdmin, fetchReportsList, fetchUsersList]);
+    dispatch(fetchUsersList());
+  }, [dispatch, fetchAuthenticatedAdmin]);
 
   useEffect(() => {
     if (location.pathname === "/page-not-found" || location.pathname === "/") {

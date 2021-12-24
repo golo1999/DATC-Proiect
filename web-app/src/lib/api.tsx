@@ -49,22 +49,6 @@ export const fetchReportsList = async () => {
   return reportsList;
 };
 
-// export async function getAllReports() {
-//   const response = await fetch(`${FIREBASE_DOMAIN}`);
-
-//   const data = await response.json();
-
-//   if (!response.ok) {
-//     throw new Error(data.message || "Could not fetch quotes.");
-//   }
-
-//   console.log(data);
-
-//   const reportsList = [];
-
-//   return reportsList;
-// }
-
 export const getNumberOfSolvedReports = async (userId: string) => {
   const reportsListRef = ref(db, `usersList/${userId}/personalReports`);
 
