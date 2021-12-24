@@ -2,7 +2,6 @@
 import { MouseEventHandler } from "react";
 
 // Models
-import CustomDateTime from "../models/CustomDateTime";
 import Location from "../models/Location";
 import Report from "../models/Report";
 import UserPersonalInformation from "../models/UserPersonalInformation";
@@ -23,7 +22,7 @@ import classes from "./CustomModal.module.css";
 type Props = {
   closeHandler: MouseEventHandler;
   selectedReport: Report;
-  selectedReportDateTime: CustomDateTime;
+  selectedReportDateTime?: string;
   selectedReportLocation: Location;
   selectedUserDetails: UserPersonalInformation;
   visible: boolean;

@@ -25,6 +25,7 @@ import User from "./models/User";
 
 // Utility
 import { getGoogleMapsURL } from "./utility/custom-methods";
+import { DEFAULT_REPORT } from "./utility/custom-variables";
 
 // Custom components
 import AllReports from "./components/AllReports";
@@ -217,7 +218,7 @@ const App = () => {
 
       reportDetailsPromise
         .then((value) => {
-          if (value === {}) {
+          if (value === DEFAULT_REPORT) {
             history.push("/page-not-found");
           }
         })
@@ -306,8 +307,7 @@ const App = () => {
                 lat: adminLocation.latitude,
                 lng: adminLocation.longitude,
               }}
-              reports={reportsList}
-              reportsLocation={reportsLocationList}
+              markerDetailsList={reportsLocationList}
               // isMarkerShown // for showing a marker
               googleMapURL={getGoogleMapsURL()}
               loadingElement={<div style={{ height: "100%" }} />}

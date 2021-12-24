@@ -4,7 +4,7 @@ import Location from "./Location";
 class Report {
   category: number;
   checkedBy: string | null = null;
-  checkStatus: boolean;
+  checkStatus: boolean = false;
   dateTime: CustomDateTime;
   location: Location;
   note: string;

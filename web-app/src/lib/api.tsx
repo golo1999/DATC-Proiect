@@ -1,10 +1,19 @@
 // NPM
 import { onValue, ref, set } from "firebase/database";
 
+// Models
+import Report from "../models/Report";
+import User from "../models/User";
+import UserPersonalInformation from "../models/UserPersonalInformation";
+import {
+  DEFAULT_REPORT,
+  DEFAULT_USER_PERSONAL_INFORMATION,
+} from "../utility/custom-variables";
+
 // Utility
 import { db } from "../utility/firebase";
 
-const { REACT_APP_REALTIME_DATABASE_URL: FIREBASE_DOMAIN } = process.env;
+// const { REACT_APP_REALTIME_DATABASE_URL: FIREBASE_DOMAIN } = process.env;
 
 export const fetchCurrentLocation = async () => {
   const response = await fetch("http://ip-api.com/json/?fields=223");
@@ -21,12 +30,12 @@ export const fetchCurrentLocation = async () => {
 export const fetchReportsList = async () => {
   const usersListRef = ref(db, `usersList`);
 
-  let reportsList = [];
+  let reportsList: Report[] = [];
 
   onValue(usersListRef, (snapshot) => {
     const data = snapshot.val();
 
-    const usersList = Object.values(data);
+    const usersList: User[] = Object.values(data);
 
     usersList.forEach((user) => {
       const personalReportsList = Object.values(user.personalReports);
@@ -40,23 +49,23 @@ export const fetchReportsList = async () => {
   return reportsList;
 };
 
-export async function getAllReports() {
-  const response = await fetch(`${FIREBASE_DOMAIN}`);
+// export async function getAllReports() {
+//   const response = await fetch(`${FIREBASE_DOMAIN}`);
 
-  const data = await response.json();
+//   const data = await response.json();
 
-  if (!response.ok) {
-    throw new Error(data.message || "Could not fetch quotes.");
-  }
+//   if (!response.ok) {
+//     throw new Error(data.message || "Could not fetch quotes.");
+//   }
 
-  console.log(data);
+//   console.log(data);
 
-  const reportsList = [];
+//   const reportsList = [];
 
-  return reportsList;
-}
+//   return reportsList;
+// }
 
-export const getNumberOfSolvedReports = async (userId) => {
+export const getNumberOfSolvedReports = async (userId: string) => {
   const reportsListRef = ref(db, `usersList/${userId}/personalReports`);
 
   let numberOfSolvedReports = 0;
@@ -64,7 +73,7 @@ export const getNumberOfSolvedReports = async (userId) => {
   onValue(reportsListRef, (snapshot) => {
     const data = snapshot.val();
 
-    const personalReportsList = Object.values(data);
+    const personalReportsList: Report[] = Object.values(data);
 
     personalReportsList.forEach((report) => {
       if (report.checkStatus) {
@@ -76,18 +85,18 @@ export const getNumberOfSolvedReports = async (userId) => {
   return numberOfSolvedReports;
 };
 
-export const getReportDetails = async (reportId) => {
+export const getReportDetails = async (reportId: string): Promise<Report> => {
   const usersListRef = ref(db, "usersList");
 
-  let reportDetails = {};
+  let reportDetails = DEFAULT_REPORT;
 
   onValue(usersListRef, (snapshot) => {
     const data = snapshot.val();
 
-    const usersList = Object.values(data);
+    const usersList: User[] = Object.values(data);
 
     usersList.forEach((user) => {
-      const personalReportsList = Object.values(user.personalReports);
+      const personalReportsList: Report[] = Object.values(user.personalReports);
 
       personalReportsList.forEach((report) => {
         if (report.reportId === reportId) {
@@ -100,13 +109,16 @@ export const getReportDetails = async (reportId) => {
   return reportDetails;
 };
 
-export const getUserPersonalInformation = async (userId) => {
+export const getUserPersonalInformation = async (
+  userId: string
+): Promise<UserPersonalInformation> => {
   const userPersonalInformationRef = ref(
     db,
     `usersList/${userId}/personalInformation`
   );
 
-  let personalInformation = {};
+  let personalInformation: UserPersonalInformation =
+    DEFAULT_USER_PERSONAL_INFORMATION;
 
   onValue(userPersonalInformationRef, (snapshot) => {
     const data = snapshot.val();
@@ -117,7 +129,7 @@ export const getUserPersonalInformation = async (userId) => {
   return personalInformation;
 };
 
-export const updateUserLevel = (userId) => {
+export const updateUserLevel = (userId: string) => {
   const numberOfSolvedReportsPromise = getNumberOfSolvedReports(userId);
 
   numberOfSolvedReportsPromise.then((result) => {
@@ -126,7 +138,7 @@ export const updateUserLevel = (userId) => {
       `usersList/${userId}/personalInformation`
     );
 
-    const newUserLevel = parseInt(result / 5) + 1;
+    const newUserLevel = result / 5 + 1;
 
     const newUserTaxReduction = 0.25 * (newUserLevel - 1);
 
@@ -135,7 +147,7 @@ export const updateUserLevel = (userId) => {
     userPersonalInformationPromise.then((result) => {
       const personalInformation = result;
 
-      if (personalInformation !== {}) {
+      if (personalInformation !== DEFAULT_USER_PERSONAL_INFORMATION) {
         if (personalInformation.level !== newUserLevel) {
           personalInformation.level = newUserLevel;
         }
