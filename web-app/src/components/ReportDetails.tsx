@@ -13,6 +13,7 @@ import {
   getFormattedLocation,
   getFormattedName,
 } from "../utility/custom-methods";
+import { DEFAULT_USER_PERSONAL_INFORMATION } from "../utility/custom-variables";
 
 // Bootstrap
 import { Card, Col, Container, Row } from "react-bootstrap";
@@ -41,7 +42,7 @@ const ReportDetails = () => {
     `/usersList/${selectedReport.userId}/personalInformation`
   );
 
-  let retrievedPersonalInformation = { firstName: "", lastName: "" };
+  let retrievedPersonalInformation = DEFAULT_USER_PERSONAL_INFORMATION;
 
   onValue(userPersonalInformationRef, (snapshot) => {
     const personalInformation: UserPersonalInformation = snapshot.val();
