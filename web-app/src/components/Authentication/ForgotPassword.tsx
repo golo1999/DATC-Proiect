@@ -48,6 +48,7 @@ const ForgotPassword = () => {
           }
 
           setMessage("Email sent");
+          redirectToLoginPageHandler();
         })
         .catch((error) => {
           if (isSuccessful) {
