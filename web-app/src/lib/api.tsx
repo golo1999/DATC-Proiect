@@ -15,17 +15,17 @@ import { db } from "../utility/firebase";
 
 // const { REACT_APP_REALTIME_DATABASE_URL: FIREBASE_DOMAIN } = process.env;
 
-export const fetchCurrentLocation = async () => {
-  const response = await fetch("http://ip-api.com/json/?fields=223");
+// export const fetchCurrentLocation = async () => {
+//   const response = await fetch("http://ip-api.com/json/?fields=223");
 
-  const data = await response.json();
+//   const data = await response.json();
 
-  if (!response.ok) {
-    throw new Error(data.message || "Couldn't fetch your location");
-  }
+//   if (!response.ok) {
+//     throw new Error(data.message || "Couldn't fetch your location");
+//   }
 
-  return { latitude: data.lat, longitude: data.lon };
-};
+//   return { latitude: data.lat, longitude: data.lon };
+// };
 
 export const fetchReportsList = async () => {
   const usersListRef = ref(db, `usersList`);

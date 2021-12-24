@@ -8,13 +8,14 @@ import { Redirect, Route, Switch } from "react-router-dom";
 
 // Redux
 import { authActions } from "./store/auth-slice";
+import { fetchCurrentLocation } from "./store/location-actions";
 import { locationActions } from "./store/location-slice";
+import { fetchReportsList } from "./store/reports-list-actions";
 import { reportsListActions } from "./store/reports-list-slice";
 import { usersListActions } from "./store/users-list-slice";
 
 // APIs
 import {
-  fetchCurrentLocation,
   // fetchReportsList,
   getReportDetails,
 } from "./lib/api";
@@ -84,47 +85,47 @@ const App = () => {
     });
   }, [auth, db, dispatch]);
 
-  const fetchReportsList = useCallback(async () => {
-    const usersListRef = ref(db, "usersList");
+  // const fetchReportsList = useCallback(async () => {
+  //   const usersListRef = ref(db, "usersList");
 
-    onValue(usersListRef, (snapshot) => {
-      const data = snapshot.val();
+  //   onValue(usersListRef, (snapshot) => {
+  //     const data = snapshot.val();
 
-      const usersList: User[] = Object.values(data);
+  //     const usersList: User[] = Object.values(data);
 
-      dispatch(reportsListActions.clearReportsList());
+  //     dispatch(reportsListActions.clearReportsList());
 
-      dispatch(locationActions.clearReportsLocationList());
+  //     dispatch(locationActions.clearReportsLocationList());
 
-      usersList.forEach((userDetails) => {
-        const userData: User = userDetails;
+  //     usersList.forEach((userDetails) => {
+  //       const userData: User = userDetails;
 
-        const userPersonalReportsList = Object.values(userData.personalReports);
+  //       const userPersonalReportsList = Object.values(userData.personalReports);
 
-        userPersonalReportsList.forEach((report) => {
-          const reportLocation = report.location;
+  //       userPersonalReportsList.forEach((report) => {
+  //         const reportLocation = report.location;
 
-          dispatch(reportsListActions.addReport({ report }));
+  //         dispatch(reportsListActions.addReport({ report }));
 
-          if (reportLocation) {
-            dispatch(
-              locationActions.addReportLocation({
-                newReportLocation: {
-                  id: report.reportId,
-                  category: report.category,
-                  name: report.note ? report.note : "No note provided",
-                  position: {
-                    lat: reportLocation.latitude,
-                    lng: reportLocation.longitude,
-                  },
-                },
-              })
-            );
-          }
-        });
-      });
-    });
-  }, [db, dispatch]);
+  //         if (reportLocation) {
+  //           dispatch(
+  //             locationActions.addReportLocation({
+  //               newReportLocation: {
+  //                 id: report.reportId,
+  //                 category: report.category,
+  //                 name: report.note ? report.note : "No note provided",
+  //                 position: {
+  //                   lat: reportLocation.latitude,
+  //                   lng: reportLocation.longitude,
+  //                 },
+  //               },
+  //             })
+  //           );
+  //         }
+  //       });
+  //     });
+  //   });
+  // }, [db, dispatch]);
 
   const fetchUsersList = useCallback(async () => {
     const usersListRef = ref(db, "usersList");
@@ -145,21 +146,25 @@ const App = () => {
   useEffect(() => {
     fetchAuthenticatedAdmin();
 
-    fetchCurrentLocation()
-      .then((result) => {
-        if (result) {
-          dispatch(
-            locationActions.setAdminLocation({
-              newLocation: result,
-            })
-          );
-        }
-      })
-      .catch(() => {
-        console.log(
-          "Failed to fetch your location. Using the default one instead"
-        );
-      });
+    // fetchCurrentLocation()
+    //   .then((result) => {
+    //     if (result) {
+    //       dispatch(
+    //         locationActions.setAdminLocation({
+    //           newLocation: result,
+    //         })
+    //       );
+    //     }
+    //   })
+    //   .catch(() => {
+    //     console.log(
+    //       "Failed to fetch your location. Using the default one instead"
+    //     );
+    //   });
+
+    dispatch(fetchCurrentLocation());
+
+    dispatch(fetchReportsList());
 
     // fetchReportsList()
     //   .then((result) => {
