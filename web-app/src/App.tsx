@@ -1,26 +1,17 @@
 // NPM
-import { getAuth, onAuthStateChanged } from "firebase/auth";
-import { getDatabase, ref, onValue } from "firebase/database";
-import { Fragment, useCallback, useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { RootStateOrAny, useDispatch, useSelector } from "react-redux";
 import { useHistory, useLocation } from "react-router";
 import { Redirect, Route, Switch } from "react-router-dom";
 
 // Redux
-import { authActions } from "./store/auth-slice";
+import { fetchAuthenticatedAdmin } from "./store/auth-actions";
 import { fetchCurrentLocation } from "./store/location-actions";
 import { fetchReportsList } from "./store/reports-list-actions";
 import { fetchUsersList } from "./store/users-list-actions";
 
-// APIs
-import { getReportDetails } from "./lib/api";
-
-// Models
-import AdminPersonalInformation from "./models/AdminPersonalInformation";
-
 // Utility
 import { getGoogleMapsURL } from "./utility/custom-methods";
-import { DEFAULT_REPORT } from "./utility/custom-variables";
 
 // Custom components
 import AllReports from "./components/AllReports";
@@ -39,10 +30,6 @@ import UserProfile from "./components/UserProfile";
 import "./App.css";
 
 const App = () => {
-  const auth = getAuth();
-
-  const db = getDatabase();
-
   const dispatch = useDispatch();
 
   const location = useLocation();
@@ -51,61 +38,18 @@ const App = () => {
 
   const [topBarIsVisible, setTopBarIsVisible] = useState(false);
 
-  const fetchAuthenticatedAdmin = useCallback(async () => {
-    onAuthStateChanged(auth, (admin) => {
-      if (admin && admin.emailVerified) {
-        const personalInformationRef = ref(
-          db,
-          `adminsList/${admin.uid}/personalInformation`
-        );
-
-        onValue(personalInformationRef, (snapshot) => {
-          const personalInformation: AdminPersonalInformation = snapshot.val();
-
-          if (personalInformation) {
-            dispatch(
-              authActions.authenticateAdmin({
-                authenticatedAdmin: {
-                  email: admin.email,
-                  firstName: personalInformation.firstName,
-                  id: admin.uid,
-                  lastName: personalInformation.lastName,
-                },
-              })
-            );
-          }
-        });
-      }
-    });
-  }, [auth, db, dispatch]);
-
   useEffect(() => {
-    fetchAuthenticatedAdmin();
-
+    dispatch(fetchAuthenticatedAdmin());
     dispatch(fetchCurrentLocation());
     dispatch(fetchReportsList());
     dispatch(fetchUsersList());
-  }, [dispatch, fetchAuthenticatedAdmin]);
+  }, [dispatch]);
 
   useEffect(() => {
     if (location.pathname === "/page-not-found" || location.pathname === "/") {
       if (!topBarIsVisible) {
         setTopBarIsVisible((prevValue) => !prevValue);
       }
-    } else if (location.pathname.substring(0, 9) === "/reports/") {
-      const reportIdFromURL = location.pathname.substring(9);
-
-      const reportDetailsPromise = getReportDetails(reportIdFromURL);
-
-      reportDetailsPromise
-        .then((value) => {
-          if (value === DEFAULT_REPORT) {
-            history.push("/page-not-found");
-          }
-        })
-        .catch((error) => {
-          console.log(error.message);
-        });
     } else if (topBarIsVisible) {
       setTopBarIsVisible((prevValue) => !prevValue);
     }
@@ -134,10 +78,6 @@ const App = () => {
   const reports = { reportsList };
 
   const users = { usersList };
-
-  useEffect(() => {
-    console.log(`isAuthenticated: ${isAuthenticated}`);
-  }, [isAuthenticated]);
 
   return (
     <Fragment>

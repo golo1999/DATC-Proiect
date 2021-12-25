@@ -27,7 +27,7 @@ import { db } from "../utility/firebase";
 //   return { latitude: data.lat, longitude: data.lon };
 // };
 
-export const fetchReportsList = async () => {
+export const fetchReportsList = async (): Promise<Report[]> => {
   const usersListRef = ref(db, `usersList`);
 
   let reportsList: Report[] = [];
@@ -49,7 +49,9 @@ export const fetchReportsList = async () => {
   return reportsList;
 };
 
-export const getNumberOfSolvedReports = async (userId: string) => {
+export const getNumberOfSolvedReports = async (
+  userId: string
+): Promise<number> => {
   const reportsListRef = ref(db, `usersList/${userId}/personalReports`);
 
   let numberOfSolvedReports = 0;
@@ -113,7 +115,7 @@ export const getUserPersonalInformation = async (
   return personalInformation;
 };
 
-export const updateUserLevel = (userId: string) => {
+export const updateUserLevel = (userId: string): void => {
   const numberOfSolvedReportsPromise = getNumberOfSolvedReports(userId);
 
   numberOfSolvedReportsPromise.then((result) => {

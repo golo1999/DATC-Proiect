@@ -44,8 +44,6 @@ export const fetchReportsList = () => {
               })
             );
           }
-
-          console.log(report);
         });
       });
     } catch (error) {

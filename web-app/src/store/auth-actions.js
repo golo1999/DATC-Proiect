@@ -1,23 +1,40 @@
-import { getAuth } from "firebase/auth";
+// NPM
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { getDatabase, ref, onValue } from "firebase/database";
 
+// Redux
 import { authActions } from "./auth-slice";
 
 export const fetchAuthenticatedAdmin = () => {
   return async (dispatch) => {
-    const fetchAdmin = async () => {
-      const auth = getAuth();
+    const auth = getAuth();
 
-      const admin = auth.currentUser;
+    const db = getDatabase();
 
-      return admin.uid;
-    };
+    onAuthStateChanged(auth, (admin) => {
+      if (admin && admin.emailVerified) {
+        const personalInformationRef = ref(
+          db,
+          `adminsList/${admin.uid}/personalInformation`
+        );
 
-    try {
-      const adminId = await fetchAdmin();
+        onValue(personalInformationRef, (snapshot) => {
+          const personalInformation = snapshot.val();
 
-      console.log(adminId ? adminId : "no user");
-    } catch (error) {
-      console.log(error.message);
-    }
+          if (personalInformation) {
+            dispatch(
+              authActions.authenticateAdmin({
+                authenticatedAdmin: {
+                  email: admin.email,
+                  firstName: personalInformation.firstName,
+                  id: admin.uid,
+                  lastName: personalInformation.lastName,
+                },
+              })
+            );
+          }
+        });
+      }
+    });
   };
 };
