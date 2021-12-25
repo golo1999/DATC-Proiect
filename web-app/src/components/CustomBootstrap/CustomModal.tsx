@@ -2,16 +2,16 @@
 import { MouseEventHandler } from "react";
 
 // Models
-import Location from "../models/Location";
-import Report from "../models/Report";
-import UserPersonalInformation from "../models/UserPersonalInformation";
+import Location from "../../models/Location";
+import Report from "../../models/Report";
+import UserPersonalInformation from "../../models/UserPersonalInformation";
 
 // Utility
 import {
   getFormattedCategoryName,
   getFormattedLocation,
   getFormattedName,
-} from "../utility/custom-methods";
+} from "../../utility/custom-methods";
 
 // Bootstrap
 import { Button, Col, Container, Modal, Row } from "react-bootstrap";

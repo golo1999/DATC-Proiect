@@ -13,10 +13,10 @@ import { RootStateOrAny, useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router";
 
 // Redux
-import { authActions } from "../store/auth-slice";
+import { authActions } from "../../store/auth-slice";
 
 // Utility
-import { emailIsValid } from "../utility/custom-methods";
+import { emailIsValid } from "../../utility/custom-methods";
 
 // Bootstrap
 import {

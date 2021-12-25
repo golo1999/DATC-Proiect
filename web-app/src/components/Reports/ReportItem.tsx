@@ -5,21 +5,21 @@ import { RootStateOrAny, useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router";
 
 // Redux
-import { reportActions } from "../store/report-slice";
-import { reportsListActions } from "../store/reports-list-slice";
+import { reportActions } from "../../store/report-slice";
+import { reportsListActions } from "../../store/reports-list-slice";
 
 // APIs
-import { updateUserLevel } from "../lib/api";
+import { updateUserLevel } from "../../lib/api";
 
 // Models
-import CustomDateTime from "../models/CustomDateTime";
-import Report from "../models/Report";
+import CustomDateTime from "../../models/CustomDateTime";
+import Report from "../../models/Report";
 
 // Utility
 import {
   getFormattedCategoryName,
   getFormattedDateTime,
-} from "../utility/custom-methods";
+} from "../../utility/custom-methods";
 
 // Bootstrap
 import { Button, Card, Col, Container, Modal, Row } from "react-bootstrap";

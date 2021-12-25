@@ -9,12 +9,12 @@ import { useHistory } from "react-router";
 import { useLocation } from "react-router-dom";
 
 // Redux
-import { authActions } from "../store/auth-slice";
+import { authActions } from "../../store/auth-slice";
 
 // Custom components
-import CustomNavLink from "./CustomNavLink";
+import CustomNavLink from "../CustomBootstrap/CustomNavLink";
 import Logo from "./Logo";
-import ProfileIcon from "./ProfileIcon";
+import ProfileIcon from "../Profile/ProfileIcon";
 
 // Custom CSS
 import classes from "./TopBar.module.css";

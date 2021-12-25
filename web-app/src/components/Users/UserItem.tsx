@@ -4,11 +4,11 @@ import { useDispatch } from "react-redux";
 import { useHistory } from "react-router";
 
 // Redux
-import { userActions } from "../store/user-slice";
+import { userActions } from "../../store/user-slice";
 
 // Models
-import User from "../models/User";
-import UserPersonalInformation from "../models/UserPersonalInformation";
+import User from "../../models/User";
+import UserPersonalInformation from "../../models/UserPersonalInformation";
 
 // Bootstrap
 import { Card, Col, Container, Row } from "react-bootstrap";

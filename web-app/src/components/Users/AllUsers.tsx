@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { Container, Spinner } from "react-bootstrap";
 
 // Models
-import User from "../models/User";
+import User from "../../models/User";
 
 // Custom components
 import UserItem from "./UserItem";

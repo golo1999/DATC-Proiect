@@ -27,7 +27,7 @@ import {
 } from "../utility/custom-variables";
 
 // Custom components
-import CustomModal from "./CustomModal";
+import CustomModal from "./CustomBootstrap/CustomModal";
 
 type Props = {
   centerCoordinates: MapCenterCoordinates;

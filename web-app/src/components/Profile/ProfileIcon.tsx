@@ -1,5 +1,5 @@
 // Models
-import AuthenticatedAdmin from "../models/AuthenticatedAdmin";
+import AuthenticatedAdmin from "../../models/AuthenticatedAdmin";
 
 // Custom CSS
 import classes from "./ProfileIcon.module.css";

@@ -6,7 +6,7 @@ import { Container, Spinner } from "react-bootstrap";
 import ReportItem from "./ReportItem";
 
 // Models
-import Report from "../models/Report";
+import Report from "../../models/Report";
 
 // Custom CSS
 import classes from "./AllReports.module.css";

@@ -28,10 +28,10 @@ import {
 import { Container, Form } from "react-bootstrap";
 
 // Custom components
-import CustomAlert from "../CustomAlert";
-import CustomButton from "../CustomButton";
-import CustomInput from "../CustomInput";
-import CustomText from "../CustomText";
+import CustomAlert from "../CustomBootstrap/CustomAlert";
+import CustomButton from "../CustomBootstrap/CustomButton";
+import CustomInput from "../CustomBootstrap/CustomInput";
+import CustomText from "../CustomBootstrap/CustomText";
 
 // Custom CSS
 import classes from "./Login.module.css";

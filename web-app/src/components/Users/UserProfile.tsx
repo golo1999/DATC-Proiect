@@ -2,11 +2,11 @@
 import { RootStateOrAny, useSelector } from "react-redux";
 
 // Models
-import Report from "../models/Report";
-import UserPersonalInformation from "../models/UserPersonalInformation";
+import Report from "../../models/Report";
+import UserPersonalInformation from "../../models/UserPersonalInformation";
 
 // Utility
-import { getFormattedTaxReduction } from "../utility/custom-methods";
+import { getFormattedTaxReduction } from "../../utility/custom-methods";
 
 // Bootstrap
 import { Card, Col, Container, Row } from "react-bootstrap";

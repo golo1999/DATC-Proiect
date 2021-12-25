@@ -14,17 +14,17 @@ import { fetchUsersList } from "./store/users-list-actions";
 import { getGoogleMapsURL } from "./utility/custom-methods";
 
 // Custom components
-import AllReports from "./components/AllReports";
-import AllUsers from "./components/AllUsers";
+import AllReports from "./components/Reports/AllReports";
+import AllUsers from "./components/Users/AllUsers";
 import ForgotPassword from "./components/Authentication/ForgotPassword";
 import Login from "./components/Authentication/Login";
 import Map from "./components/Map";
 import PageNotFound from "./components/PageNotFound";
-import Profile from "./components/Profile";
+import Profile from "./components/Profile/Profile";
 import Register from "./components/Authentication/Register";
-import ReportDetails from "./components/ReportDetails";
-import TopBar from "./components/TopBar";
-import UserProfile from "./components/UserProfile";
+import ReportDetails from "./components/Reports/ReportDetails";
+import TopBar from "./components/TopBar/TopBar";
+import UserProfile from "./components/Users/UserProfile";
 
 // Custom CSS
 import "./App.css";

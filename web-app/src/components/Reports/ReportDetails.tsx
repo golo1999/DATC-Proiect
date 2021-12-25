@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { RootStateOrAny, useSelector } from "react-redux";
 
 // Models
-import UserPersonalInformation from "../models/UserPersonalInformation";
+import UserPersonalInformation from "../../models/UserPersonalInformation";
 
 // Utility
 import {
@@ -12,14 +12,14 @@ import {
   getFormattedDateTime,
   getFormattedLocation,
   getFormattedName,
-} from "../utility/custom-methods";
-import { DEFAULT_USER_PERSONAL_INFORMATION } from "../utility/custom-variables";
+} from "../../utility/custom-methods";
+import { DEFAULT_USER_PERSONAL_INFORMATION } from "../../utility/custom-variables";
 
 // Bootstrap
 import { Card, Col, Container, Row } from "react-bootstrap";
 
 // Custom components
-import Map from "./Map";
+import Map from "../Map";
 
 // Custom CSS
 import classes from "./ReportDetails.module.css";
