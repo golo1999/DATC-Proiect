@@ -13,42 +13,6 @@ import {
 // Utility
 import { db } from "../utility/firebase";
 
-// const { REACT_APP_REALTIME_DATABASE_URL: FIREBASE_DOMAIN } = process.env;
-
-// export const fetchCurrentLocation = async () => {
-//   const response = await fetch("http://ip-api.com/json/?fields=223");
-
-//   const data = await response.json();
-
-//   if (!response.ok) {
-//     throw new Error(data.message || "Couldn't fetch your location");
-//   }
-
-//   return { latitude: data.lat, longitude: data.lon };
-// };
-
-export const fetchReportsList = async (): Promise<Report[]> => {
-  const usersListRef = ref(db, `usersList`);
-
-  let reportsList: Report[] = [];
-
-  onValue(usersListRef, (snapshot) => {
-    const data = snapshot.val();
-
-    const usersList: User[] = Object.values(data);
-
-    usersList.forEach((user) => {
-      const personalReportsList = Object.values(user.personalReports);
-
-      personalReportsList.forEach((report) => {
-        reportsList.push(report);
-      });
-    });
-  });
-
-  return reportsList;
-};
-
 export const getNumberOfSolvedReports = async (
   userId: string
 ): Promise<number> => {

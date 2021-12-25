@@ -32,18 +32,18 @@ import "./App.css";
 const App = () => {
   const dispatch = useDispatch();
 
-  const location = useLocation();
-
-  const history = useHistory();
-
-  const [topBarIsVisible, setTopBarIsVisible] = useState(false);
-
   useEffect(() => {
     dispatch(fetchAuthenticatedAdmin());
     dispatch(fetchCurrentLocation());
     dispatch(fetchReportsList());
     dispatch(fetchUsersList());
   }, [dispatch]);
+
+  const location = useLocation();
+
+  const history = useHistory();
+
+  const [topBarIsVisible, setTopBarIsVisible] = useState(true);
 
   useEffect(() => {
     if (location.pathname === "/page-not-found" || location.pathname === "/") {
